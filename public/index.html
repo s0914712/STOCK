@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>台灣股票即時看板</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>📈 台灣股票即時看板</h1>
+    <p class="subtitle">Taiwan Stock Dashboard — 即時報價 · K線圖 · 技術分析 · AI 多智能體建議</p>
+  </header>
+
+  <main>
+    <!-- Section 1: Real-time Quote -->
+    <section class="panel" id="quote-panel">
+      <h2>🔍 即時報價查詢</h2>
+      <div class="input-row">
+        <input type="text" id="quote-input" placeholder="輸入股票代碼（多檔用逗號分隔，例: 2330,2317,2454）" value="2330">
+        <button id="quote-btn" onclick="fetchQuote()">查詢</button>
+      </div>
+      <div id="quote-result" class="result-area"></div>
+    </section>
+
+    <!-- Section 2: K-Line Chart + Technical Analysis -->
+    <section class="panel" id="kline-panel">
+      <h2>📊 K線圖與技術分析</h2>
+      <div class="input-row">
+        <input type="text" id="kline-input" placeholder="股票代碼（例: 2330）" value="2330">
+        <button id="kline-btn" onclick="fetchKline()">載入K線</button>
+      </div>
+      <div class="chart-container">
+        <canvas id="kline-chart"></canvas>
+      </div>
+      <div class="chart-container" style="height:200px">
+        <canvas id="rsi-chart"></canvas>
+      </div>
+      <div id="ta-summary" class="result-area"></div>
+    </section>
+
+    <!-- Section 3: Market Overview -->
+    <section class="panel" id="market-panel">
+      <h2>🏛️ 大盤概況</h2>
+      <button onclick="fetchMarket()">載入大盤資料</button>
+      <div id="market-result" class="result-area"></div>
+      <div class="chart-container" style="height:250px">
+        <canvas id="market-chart"></canvas>
+      </div>
+    </section>
+
+    <!-- Section 4: Multi-Agent AI Suggestion -->
+    <section class="panel" id="agent-panel">
+      <h2>🤖 AI 多智能體分析建議</h2>
+      <p class="description">由 Claude + Gemini 多個 AI 角色（基本面、技術面、情緒面、總經分析師 + 多空研究員 + 交易員）進行辯論後產生投資建議</p>
+      <div class="input-row">
+        <input type="text" id="agent-input" placeholder="股票代碼（例: 2330）" value="2330">
+        <button id="agent-btn" onclick="runAgentAnalysis()">開始 AI 分析</button>
+      </div>
+      <div id="agent-loading" class="loading" style="display:none">
+        <div class="spinner"></div>
+        <span>AI 智能體分析中，請稍候（約 30-60 秒）...</span>
+      </div>
+      <div id="agent-result" class="result-area"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>資料來源：台灣證券交易所 (TWSE) | AI 分析僅供參考，不構成投資建議</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

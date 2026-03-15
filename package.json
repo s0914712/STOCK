@@ -1,0 +1,16 @@
+{
+  "name": "taiwan-stock-dashboard",
+  "version": "1.0.0",
+  "description": "台灣股票即時看板 - Taiwan Stock Dashboard with Multi-Agent AI Trading Suggestions",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@google/generative-ai": "^0.21.0",
+    "dotenv": "^16.4.5"
+  }
+}
