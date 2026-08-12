@@ -78,6 +78,11 @@ function aggregateSector(sector, symbols, featureMap) {
     sector,
     symbols,
     availableSymbols: available.map(item => item.symbol),
+    members: available.map(item => ({
+      symbol: item.symbol,
+      asOf: item.features.asOf,
+      close: item.features.close,
+    })),
     coverage: available.length / symbols.length,
     asOf: available.map(item => item.features.asOf).sort().at(-1),
     momentum5: mean(available.map(item => item.features.momentum5)),
