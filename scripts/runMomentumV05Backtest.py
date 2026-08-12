@@ -21,6 +21,10 @@ def pct(x):
     return "—" if x is None else f"{x * 100:.2f}%"
 
 
+def num(x, suffix=""):
+    return "—" if x is None else f"{x:.2f}{suffix}"
+
+
 def main():
     months = month_keys(96)
     histories, taiex = fetch_universe(month_count=96, workers=5)
@@ -46,7 +50,7 @@ def main():
     }
     out = ROOT / "data/backtests/momentum_rotation_v0.5.json"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    out.write_text(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
 
     lines = [
         "# Momentum Rotation Challenger v0.5 — Walk-forward Backtest",
@@ -61,12 +65,12 @@ def main():
     for s in strategies:
         m = s["metrics"]
         t = m.get("totalReturn")
+        excess_taiex = None if t is None or m.get("taiexReturn") is None else t - m["taiexReturn"]
+        excess_0050 = None if t is None or m.get("0050Return") is None else t - m["0050Return"]
         lines.append(
             f"| {s['mode']} | {pct(t)} | {pct(m.get('annualizedReturn'))} | {pct(m.get('maxDrawdown'))} | "
-            f"{('—' if m.get('sharpe') is None else f'{m.get("sharpe"):.2f}')} | "
-            f"{('—' if m.get('turnover') is None else f'{m.get("turnover"):.2f}x')} | {pct(m.get('precisionAtK'))} | "
-            f"{pct(None if t is None or m.get('taiexReturn') is None else t - m.get('taiexReturn'))} | "
-            f"{pct(None if t is None or m.get('0050Return') is None else t - m.get('0050Return'))} |"
+            f"{num(m.get('sharpe'))} | {num(m.get('turnover'), 'x')} | {pct(m.get('precisionAtK'))} | "
+            f"{pct(excess_taiex)} | {pct(excess_0050)} |"
         )
     lines += [
         "",
