@@ -1,0 +1,45 @@
+name: Momentum Rotation v0.5 Backtest
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/momentum-rotation-v05
+    paths:
+      - '.github/workflows/momentum-v05-backtest.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: momentum-v05-backtest-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-ml.txt
+      - run: pip install -r requirements-ml.txt
+      - name: Run 5Y monthly walk-forward ablation
+        run: python scripts/runMomentumV05Backtest.py
+      - name: Commit v0.5 backtest report
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/backtests/momentum_rotation_v0.5.json docs/MOMENTUM_ROTATION_V05.md
+          if git diff --cached --quiet; then
+            echo "No v0.5 backtest changes."
+            exit 0
+          fi
+          git commit -m "backtest: update momentum rotation v0.5"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin HEAD:"$GITHUB_REF_NAME"
