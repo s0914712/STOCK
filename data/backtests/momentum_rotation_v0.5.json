@@ -398,7 +398,8 @@
         "estimatedCost": 0.637982274107823,
         "precisionAtK": 0.3860062893081761,
         "taiexReturn": 1.6422240900716192,
-        "0050Return": -0.21697059918124295
+        "0050Return": 2.132117603275028,
+        "0050ReturnRawUnadjusted": -0.21697059918124295
       },
       "decisions": [
         {
@@ -29153,7 +29154,8 @@
         "estimatedCost": 0.7356377726587998,
         "precisionAtK": 0.3883495145631068,
         "taiexReturn": 1.6422240900716192,
-        "0050Return": -0.21697059918124295
+        "0050Return": 2.132117603275028,
+        "0050ReturnRawUnadjusted": -0.21697059918124295
       },
       "decisions": [
         {
@@ -49423,7 +49425,8 @@
         "estimatedCost": 0.0,
         "precisionAtK": null,
         "taiexReturn": 1.6422240900716192,
-        "0050Return": -0.21697059918124295
+        "0050Return": 2.132117603275028,
+        "0050ReturnRawUnadjusted": -0.21697059918124295
       },
       "decisions": [
         {
@@ -58542,7 +58545,8 @@
         "estimatedCost": 0.0,
         "precisionAtK": null,
         "taiexReturn": 1.6422240900716192,
-        "0050Return": -0.21697059918124295
+        "0050Return": 2.132117603275028,
+        "0050ReturnRawUnadjusted": -0.21697059918124295
       },
       "decisions": [
         {
@@ -67661,7 +67665,8 @@
         "estimatedCost": 0.0,
         "precisionAtK": null,
         "taiexReturn": 1.6422240900716192,
-        "0050Return": -0.21697059918124295
+        "0050Return": 2.132117603275028,
+        "0050ReturnRawUnadjusted": -0.21697059918124295
       },
       "decisions": [
         {
@@ -76780,7 +76785,8 @@
         "estimatedCost": 0.0,
         "precisionAtK": null,
         "taiexReturn": 1.6422240900716192,
-        "0050Return": -0.21697059918124295
+        "0050Return": 2.132117603275028,
+        "0050ReturnRawUnadjusted": -0.21697059918124295
       },
       "decisions": [
         {
@@ -85899,7 +85905,8 @@
         "estimatedCost": 0.0,
         "precisionAtK": null,
         "taiexReturn": 1.6422240900716192,
-        "0050Return": -0.21697059918124295
+        "0050Return": 2.132117603275028,
+        "0050ReturnRawUnadjusted": -0.21697059918124295
       },
       "decisions": [
         {
@@ -95002,5 +95009,16 @@
         }
       ]
     }
-  ]
+  ],
+  "benchmarks": {
+    "TAIEX": "price index",
+    "0050": {
+      "type": "split-adjusted price return; dividends not reinvested",
+      "splitDate": "2025-06-18",
+      "splitRatio": 4.0,
+      "sourceSeries": "TWSE STOCK_DAY raw prices",
+      "correction": "pre-split prices divided by four; equivalent total-period return correction applied to the first-run report"
+    }
+  },
+  "benchmarkCorrectionAppliedAt": "2026-08-12T07:41:38.558772+00:00"
 }
