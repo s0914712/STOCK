@@ -175,7 +175,18 @@ Dashboard 顯示：
 - 5Y rotation / trailing-stop 策略比較
 - TWSE official proxy correlation
 
-部署入口預期為：`https://s0914712.github.io/STOCK/`
+預期正式入口：`https://s0914712.github.io/STOCK/`
+
+### 一次性 GitHub Pages 設定
+
+GitHub App 可以建立與執行 Pages workflow，但無法替 repository 第一次開啟 Pages。Repo owner 需做一次：
+
+1. `Settings` → `Pages`
+2. `Build and deployment` → `Source`
+3. 選擇 `GitHub Actions`
+4. 回到 `Actions` 手動執行 `Deploy Research Dashboard`，或在 workflow 合併到 `main` 後由資料更新自動部署
+
+第一次啟用後，後續 Shadow / backtest JSON 更新會自動重新部署，不需手動修改 HTML。
 
 ## 8. Repo map
 
