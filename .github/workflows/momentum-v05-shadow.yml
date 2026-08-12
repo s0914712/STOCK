@@ -7,6 +7,9 @@ on:
       - feature/momentum-rotation-v05
     paths:
       - 'data/models/v05/**'
+      - 'scripts/runMomentumV05Shadow.py'
+      - 'momentumV05Features.py'
+      - 'momentumV05Models.py'
       - '.github/workflows/momentum-v05-shadow.yml'
   schedule:
     # Weekdays 15:40 Asia/Taipei. Scheduled workflows run from default branch after merge.
