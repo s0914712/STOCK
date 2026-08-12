@@ -152,6 +152,41 @@ v0.4 的參數敏感度本身就是警訊：trailing stop 從 8% 移到 12%，�
 
 細節見 `docs/ROTATION_V05.md`。
 
+## 3.6 0050 對決 — 目前 0050 比較強
+
+前面所有版本都拿 TAIEX 當基準，但 TAIEX 是價格指數，沒有人買得到。真正的對照組是 **0050**：可以買、會配息、而且是不跑這整套系統的人的預設選擇。
+
+換成這個基準之後，用 repo 內既有的真實回測資料就能判定：
+
+| | 五年總報酬 | MaxDD | 贏過大盤年數 |
+|---|---:|---:|---:|
+| v0.4 rotation（fixed 20/20） | +185.48% | **-59.09%** | 2 / 6 |
+| TAIEX 價格指數 | +161.92% | — | — |
+| TAIEX + 3.5%/年股息（0050 近似） | **+211.07%** | 約 -30% | — |
+
+**含息之後策略是輸的**，而且回撤是兩倍，超額幾乎全部來自 2026 單一年份（2022–2025 連四年落後）。
+
+### 為什麼會輸：成本
+
+台股一趟買賣 0.1425% + 0.1425% + 0.3% = **0.585%**。五年做 150 次交易 ≈ 先賠掉 **60%** 的投入資金。10 日動能在六個類股間的排名幾乎每天洗牌，任何「排名變了就換股」的規則都會踩進去 —— 本次開發第一版 core-satellite 實測就做了 466 筆交易、其中 465 筆持有一天。
+
+### Core-satellite：為了贏 0050 而設計
+
+`coreSatellite.js` 的預設持倉就是 0050，只有真的有訊號時才偏離：
+
+- 帳戶分 K 個 slot，有合格類股就持有類股籃子，否則持有 0050 —— 永遠不會在多頭裡空手
+- **完全沒有訊號時，數學上等於 0050 買進持有**（測試驗證：報酬差 < 1e-9、beta = 1、tracking error = 0）
+- `exitRankBuffer` / `minHoldingDays` / `rebalanceEvery` / `cooldownDays` 四道機制壓 turnover
+- `maxSatelliteSlots` 控制 tracking error 上限
+- 股息同時計入 benchmark 與策略 core 部位，兩邊都不能靠股息假設佔便宜
+- 衡量指標含 IR、beta、up/down capture、**滾動一年勝率**、實付手續費
+
+### 目前狀態
+
+**真實數字尚未產生。** 開發環境只允許連 GitHub，TWSE / Yahoo / FinMind 全部被擋，拿不到 0050 真實價格。本次只用合成資料驗證程式路徑，合成資料在建構上就沒有橫斷面動能 edge，因此不能用來判斷策略好壞，產出也刻意沒有 commit。
+
+執行 `Benchmark Battle vs 0050` workflow（或 `npm run battle:0050`）產生真實報告。判讀順序見 `docs/BENCHMARK_0050.md`。
+
 ## 4. TWSE 官方類股 proxy cross-check
 
 使用 TWSE `EFTRI_HIST` 可直接對照的產業類股：
@@ -174,6 +209,7 @@ v0.4 的參數敏感度本身就是警訊：trailing stop 從 8% 移到 12%，�
 4. 必須跨不同 market regimes，而不是只靠單一強勢年份。
 5. 策略層還要同時考慮 drawdown、turnover、交易成本與參數穩定性。
 6. 策略設定必須通過 v0.5 robustness gate：鄰近參數也要能用，且採用的是 family 的中位數參數而非最佳參數。
+7. 策略必須在**含息**的基礎上贏過 0050，而不只是贏過 TAIEX 價格指數。
 
 ## 6. 自動化排程
 
@@ -187,6 +223,7 @@ GitHub Actions：
 - `.github/workflows/sector-shadow.yml`
 - `.github/workflows/rotation-v04.yml`
 - `.github/workflows/rotation-v05.yml`
+- `.github/workflows/benchmark-battle-0050.yml`
 - `.github/workflows/pages.yml`
 
 ## 7. Research Dashboard
@@ -227,13 +264,15 @@ STOCK/
 ├─ mlChallenger.py                # ML feature/model/scoring core
 ├─ rotationBacktest.js            # rotation backtest engine (regime gate, vol stop, topK)
 ├─ rotationRobustness.js          # parameter sweep, family scoring, promotion gate
+├─ coreSatellite.js               # 0050-core + sector-satellite engine and benchmark stats
 ├─ scripts/
 │  ├─ shadowRunner.js
 │  ├─ trainMlChallenger.py
 │  ├─ runMlShadow.py
 │  ├─ twseData.js                 # shared TWSE fetch + on-disk cache
 │  ├─ runRotationV04.js
-│  └─ runRotationV05.js
+│  ├─ runRotationV05.js
+│  └─ runBenchmarkBattle.js
 ├─ data/
 │  ├─ shadow/                     # append-only OOS ledgers + latest snapshot
 │  ├─ models/                     # trained challenger artifacts
@@ -246,7 +285,8 @@ STOCK/
 ├─ docs/
 │  ├─ SECTOR_RADAR.md
 │  ├─ CHALLENGER_V031_V04.md
-│  └─ ROTATION_V05.md
+│  ├─ ROTATION_V05.md
+│  └─ BENCHMARK_0050.md
 └─ .github/workflows/
 ```
 

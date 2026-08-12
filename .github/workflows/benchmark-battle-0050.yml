@@ -1,0 +1,40 @@
+name: Benchmark Battle vs 0050
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: benchmark-battle-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  battle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Run 0050 head-to-head
+        run: node scripts/runBenchmarkBattle.js --refresh
+      - name: Commit battle report
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/backtests/benchmark_battle_0050.json data/backtests/benchmark_battle_0050.md
+          if git diff --cached --quiet; then
+            echo "No battle report changes."
+            exit 0
+          fi
+          git commit -m "data: refresh 0050 benchmark battle report"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin HEAD:"$GITHUB_REF_NAME"
