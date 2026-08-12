@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - feature/momentum-rotation-v05
     paths:
       - 'public/research-dashboard.html'
       - 'public/research-dashboard.css'
@@ -12,6 +13,8 @@ on:
       - 'data/shadow/**'
       - 'data/backtests/ml_challenger_v031.json'
       - 'data/backtests/rotation_v0.4.json'
+      - 'data/backtests/momentum_rotation_v0.5.json'
+      - 'data/backtests/momentum_v05_ml_validation.json'
       - '.github/workflows/pages.yml'
 
 permissions:
@@ -40,9 +43,16 @@ jobs:
           cp data/shadow/challenger_latest.json _site/data/shadow/challenger_latest.json
           cp data/backtests/ml_challenger_v031.json _site/data/backtests/ml_challenger_v031.json
           cp data/backtests/rotation_v0.4.json _site/data/backtests/rotation_v0.4.json
-          if [ -f data/shadow/latest.json ]; then
-            cp data/shadow/latest.json _site/data/shadow/latest.json
-          fi
+          for f in \
+            data/shadow/latest.json \
+            data/shadow/momentum_v05_latest.json \
+            data/backtests/momentum_rotation_v0.5.json \
+            data/backtests/momentum_v05_ml_validation.json; do
+            if [ -f "$f" ]; then
+              mkdir -p "_site/$(dirname "$f")"
+              cp "$f" "_site/$f"
+            fi
+          done
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
