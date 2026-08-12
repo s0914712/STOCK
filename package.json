@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "test": "node test/sectorRadar.test.js"
+    "shadow": "node scripts/shadowRunner.js",
+    "test": "node test/sectorRadar.test.js && node test/shadowPrediction.test.js"
   },
   "dependencies": {
     "express": "^4.21.0",
