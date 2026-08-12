@@ -213,9 +213,22 @@ v0.4 的參數敏感度本身就是警訊：trailing stop 從 8% 移到 12%，�
 
 ## 6. 自動化排程
 
-- **週日 10:00 Asia/Taipei**：重新訓練 Baseline calibrator、LightGBM、XGBoost
-- **週一至週五 15:30 Asia/Taipei**：Daily Shadow inference + mature scoring
-- v0.4 5Y validation：research/manual workflow，需要時重新執行
+| 排程 | Cron (UTC) | 台北時間 | 內容 |
+|---|---|---|---|
+| `sector-shadow.yml` | `30 7 * * 1-5` | 平日 15:30 | Daily Shadow inference + mature scoring |
+| `ml-challenger-train.yml` | `0 2 * * 0` | 週日 10:00 | 重新訓練 Baseline calibrator、LightGBM、XGBoost |
+| `weekly-research.yml` | `0 1 * * 6` | **週六 09:00** | 抓一次 TWSE 資料，跑 0050 對決 + v0.5 robustness sweep |
+
+`weekly-research.yml` 是唯一會自動抓資料做策略比較的排程。它刻意**只抓一次**：
+
+1. 先跑 `runBenchmarkBattle.js --refresh` —— 這支需要的 symbol 最多（18 檔類股成分 + 0050），下載後寫入快取
+2. 再跑 `runRotationV05.js --offline` —— 只需要那 18 檔，直接重用同一份快取
+
+用 `--offline` 而不是讓它自己重抓，是為了保證兩份報告一定出自同一個 snapshot；快取不在就直接失敗，而不是默默抓到不同的資料。
+
+以下維持手動 (`workflow_dispatch`)，供臨時單獨執行：`rotation-v04.yml`、`rotation-v05.yml`、`benchmark-battle-0050.yml`。
+
+> **注意：** GitHub 的 scheduled workflow 只會從 **default branch** 執行。這些檔案還在 `claude/improvement-strategy-9t1zar` 上，**合併進 `main` 之前 cron 不會啟動**。
 
 GitHub Actions：
 
@@ -224,6 +237,7 @@ GitHub Actions：
 - `.github/workflows/rotation-v04.yml`
 - `.github/workflows/rotation-v05.yml`
 - `.github/workflows/benchmark-battle-0050.yml`
+- `.github/workflows/weekly-research.yml`
 - `.github/workflows/pages.yml`
 
 ## 7. Research Dashboard
