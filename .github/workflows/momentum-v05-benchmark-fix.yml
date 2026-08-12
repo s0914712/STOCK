@@ -1,0 +1,38 @@
+name: Patch v0.5 0050 Benchmark
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/momentum-rotation-v05
+    paths:
+      - '.github/workflows/momentum-v05-benchmark-fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply official 0050 4:1 split correction
+        run: python scripts/patchMomentumV05Benchmark.py
+      - name: Commit corrected benchmark/report
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/backtests/momentum_rotation_v0.5.json docs/MOMENTUM_ROTATION_V05.md
+          if git diff --cached --quiet; then
+            echo "No benchmark correction changes."
+            exit 0
+          fi
+          git commit -m "backtest: split-adjust 0050 benchmark"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin HEAD:"$GITHUB_REF_NAME"
