@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
+      - claude/taiwan-stock-dashboard-AsiJO
       - main
       - feature/momentum-rotation-v05
     paths:
@@ -61,9 +62,9 @@ jobs:
           path: _site
 
   deploy:
-    # The repository-created github-pages environment is restricted to the
-    # old default branch. A separate environment lets the v0.5 feature branch
-    # publish a preview without weakening that protection rule.
+    # Keep a separate preview environment while stacked PRs are on feature branches.
+    # After the stack lands on the repository default branch, the same workflow
+    # continues to publish the canonical Pages site without branch-root deployment.
     environment:
       name: github-pages-preview
       url: ${{ steps.deployment.outputs.page_url }}
