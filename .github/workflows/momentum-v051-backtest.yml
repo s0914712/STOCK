@@ -27,6 +27,8 @@ jobs:
         run: python scripts/selfTestMomentumV051.py
       - name: Run 5Y calibration / trend ablation
         run: python scripts/runMomentumV051Backtest.py
+      - name: Compact detailed trace
+        run: python scripts/compactMomentumV051Report.py
       - name: Commit compact v0.5.1 report
         shell: bash
         run: |
