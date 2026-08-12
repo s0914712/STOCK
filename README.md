@@ -139,7 +139,7 @@ forward_10d_max_drawdown >= -10%
 | XGBoost | 0.2236 | 0.6396 | 0.4997 |
 | OOS ensemble | 0.2232 | 0.6389 | **0.5400** |
 
-目前結論仍是 **不升級 ML**：Baseline 的 calibration 最好；ensemble 雖然 ROC-AUC 稍高，但幅度不足以單獨構成 promotion。真正判定交給 portfolio-level walk-forward 與未來 Shadow。
+目前結論仍是 **不升級 ML**：Baseline 的 calibration 最好；ensemble 雖然 ROC-AUC 稍高，但幅度不足以單獨構成 promotion。
 
 ### 4.4 Portfolio rules
 
@@ -159,7 +159,7 @@ forward_10d_max_drawdown >= -10%
 - Slippage：0.10% per side
 - ML target 額外要求 1.0% cost buffer
 
-### 4.6 Walk-forward ablation
+### 4.6 Walk-forward ablation design
 
 所有層級共用同一批 **monthly expanding walk-forward OOS predictions**：
 
@@ -173,6 +173,31 @@ forward_10d_max_drawdown >= -10%
 
 某月開始預測前，training rows 必須滿足 `targetDate < 該月第一個預測日`，避免 overlapping 10D labels 洩漏進模型。
 
+### 4.7 5Y walk-forward 實際結果
+
+回測期間：**2021-08-11 ～ 2026-08-12**。
+
+| Layer | Net return | CAGR | Max DD | Sharpe | Turnover | Precision@K | Excess vs TAIEX | Excess vs split-adjusted 0050 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| **Momentum only** | **+92.63%** | 14.57% | -54.15% | 0.53 | 184.77x | 38.60% | -71.59% | -120.58% |
+| Momentum + Trend | -16.77% | -3.74% | -57.77% | 0.10 | 260.87x | 38.83% | -181.00% | -229.99% |
+| Baseline probability | 0.00% | 0.00% | 0.00% | — | 0.00x | — | -164.22% | -213.21% |
+| LightGBM | 0.00% | 0.00% | 0.00% | — | 0.00x | — | -164.22% | -213.21% |
+| XGBoost | 0.00% | 0.00% | 0.00% | — | 0.00x | — | -164.22% | -213.21% |
+| OOS ensemble | 0.00% | 0.00% | 0.00% | — | 0.00x | — | -164.22% | -213.21% |
+| Full Portfolio | 0.00% | 0.00% | 0.00% | — | 0.00x | — | -164.22% | -213.21% |
+
+0050 benchmark 使用 TWSE `STOCK_DAY` raw price 並對 **2025-06-18 生效的 4:1 分割**做 split adjustment；目前比較的是 price return，未將配息再投資。
+
+**v0.5.0 明確未通過 promotion gate：**
+
+- Momentum-only 雖為正報酬，但 Max DD -54.15%、turnover 184.77x，且落後 TAIEX / 0050。
+- 現行 Trend gate 並未改善 momentum，反而把績效降到 -16.77% 並增加 turnover。
+- 0.60 absolute probability gate 過嚴，Baseline / LightGBM / XGBoost / ensemble / full portfolio 五層全部零交易。
+- 因此目前沒有證據顯示 ML 對 `Momentum + Trend` 增加可投資價值，也沒有模型可以升級 Champion。
+
+下一版研究方向應先處理 **threshold calibration / trend-filter ablation / turnover control**，而不是直接增加模型複雜度。
+
 Portfolio promotion 主要比較：
 
 - after-cost net return
@@ -182,8 +207,6 @@ Portfolio promotion 主要比較：
 - Sharpe
 - turnover
 - Precision@K
-
-**ML 只有在上述投資層指標也持續勝過 `Momentum + Trend` 時，才有資格升級。**
 
 ## 5. TWSE 官方類股 proxy cross-check
 
@@ -228,6 +251,8 @@ realized_return
 
 Prediction ledger append-only；`realized_return` 預測當下為 `null`，10D outcome 成熟後寫入 score ledger，不回頭修改 prediction snapshot。
 
+第一筆真實 v0.5 Shadow：`asOf=2026-08-12`。當日不是 weekly rotation day，且 Top-5 中唯一通過 Trend gate 的 3008 ensemble probability 約 35%，低於 60% entry gate，因此組合正確保持 **100% CASH**。
+
 ## 7. Champion / Challenger Promotion Gate
 
 1. 不以單次 backtest 或單一 AUC 決定升級。
@@ -247,7 +272,7 @@ Prediction ledger append-only；`realized_return` 預測當下為 `null`，10D o
 
 ## 9. Research Dashboard
 
-GitHub Pages 已使用 **GitHub Actions workflow deployment**，入口：
+GitHub Pages 使用 **GitHub Actions workflow deployment**，入口：
 
 `https://s0914712.github.io/STOCK/`
 
@@ -290,7 +315,8 @@ STOCK/
 ├─ docs/
 │  ├─ SECTOR_RADAR.md
 │  ├─ CHALLENGER_V031_V04.md
-│  └─ MOMENTUM_ROTATION_V05_DESIGN.md
+│  ├─ MOMENTUM_ROTATION_V05_DESIGN.md
+│  └─ MOMENTUM_ROTATION_V05.md
 └─ .github/workflows/
 ```
 
@@ -298,6 +324,7 @@ STOCK/
 
 - v0.5 第一版仍只使用目前 curated 18-stock research universe，存在 hindsight / survivorship-selection risk。
 - thematic sectors 尚未完整重建 historical point-in-time constituents。
-- 目前 v0.5 live OOS sample 尚少，不能因 chronological holdout 或 walk-forward 結果漂亮就宣稱 production-ready。
+- 0050 benchmark 目前為 split-adjusted **price return**，不是含息 total return。
+- 目前 v0.5 live OOS sample 尚少；v0.5.0 已因 walk-forward 結果不佳而維持 Challenger / Shadow，不應用於 production allocation。
 - Backtest / Shadow 都不等於實際成交績效；真實 liquidity、partial fills、limit moves 與券商費率仍可能不同。
 - 本專案為研究用途，不構成投資建議。
