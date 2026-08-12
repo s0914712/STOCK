@@ -2,11 +2,6 @@ name: ML Challenger Train v0.3.1
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - feature/sector-radar-v031-v04
-    paths:
-      - '.github/workflows/ml-challenger-train.yml'
   schedule:
     # Sunday 10:00 Asia/Taipei. Uses only labels already mature at run time.
     - cron: '0 2 * * 0'
