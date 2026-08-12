@@ -4,7 +4,7 @@
 
 > **Momentum ranking → Trend confirmation → ML continuation probability → Portfolio rotation**
 
-目前主線版本為 **v0.3.1 Challenger + v0.4 Rotation Validation**。核心原則是：**Baseline 先當 Champion，LightGBM / XGBoost 只當 Challenger；任何模型或策略都不能因為單次回測較漂亮就直接升級。**
+目前主線版本為 **v0.3.1 Challenger + v0.4 Rotation Validation + v0.5 Robustness Sweep**。核心原則是：**Baseline 先當 Champion，LightGBM / XGBoost 只當 Challenger；任何模型或策略都不能因為單次回測較漂亮就直接升級。**
 
 ## 1. 系統架構
 
@@ -123,6 +123,35 @@ flowchart LR
 
 > **Sector momentum / trend holding 可能有訊號，但高度 regime-dependent。**
 
+## 3.5 v0.5 — 策略改善與參數穩健度
+
+v0.4 的參數敏感度本身就是警訊：trailing stop 從 8% 移到 12%，五年結果從 +683.64% 變成 -27.96%。v0.5 針對這點與「只 gate 進場、不 gate 出場」做了三個引擎改動，並把「怎麼選設定」整個換掉。
+
+### 引擎改動（`rotationBacktest.js`）
+
+| 選項 | 作用 | 針對的問題 |
+|---|---|---|
+| `regimeFilter: { lookback, mode }` | TAIEX 對自身 MA 的 regime gate，可只擋進場或連同強制出場 | 部位可一路抱到 -20%（v0.4 首筆抱 210 個交易日，peak +14.7% → -24.0%） |
+| `trailingStopVolMultiple` | 停損距離 = k × 籃子自身 20 日已實現波動，夾在 3%–30% | 固定百分比對航運與金融代表完全不同的意義 |
+| `topK` | 同時持有動能前 K 名類股，資金平均分配 | 全押單一三檔籃子 |
+
+`topK: 1` 且未設 regime filter 時，新引擎與 v0.4 引擎在 240 個合成情境下**逐筆交易與逐日淨值完全相同**，v0.3 / v0.4 已發佈數字仍可重現。
+
+### 選設定的方式（`rotationRobustness.js`）
+
+56 個設定（4 regime × 2 topK × 7 trailing），每個都跑完整視窗 + 前後半段 + 逐年。只差一個 trailing 參數的設定歸為同一個 **family**，用鄰域行為評分而不是單一最佳成員：
+
+- `cagrSpread`（family 內 CAGR 極差）是脆弱度指標
+- Promotion gate 要求 spread ≤ 35pp、`worstCalmar` ≥ 0.5、`medianCalmar` ≥ 0.8、沒有成員在後半段為負
+- 通過後選的是 family 的**中位數參數**，不是表現最好的那個
+- 沒有 family 通過時輸出 `no-promotion`
+
+### 目前狀態
+
+**v0.5 的真實五年數字尚未產生。** 開發環境不允許連線 TWSE，本次只用合成資料驗證程式路徑跑通，合成結果刻意沒有 commit。真實報告要等 `Rotation Robustness v0.5` workflow 在 Actions 上執行後才會出現在 `data/backtests/rotation_v0.5.{json,md}`。
+
+細節見 `docs/ROTATION_V05.md`。
+
 ## 4. TWSE 官方類股 proxy cross-check
 
 使用 TWSE `EFTRI_HIST` 可直接對照的產業類股：
@@ -144,6 +173,7 @@ flowchart LR
 3. Challenger 至少要在 calibration（Brier）、ranking（Top-k / ROC-AUC）上持續勝出。
 4. 必須跨不同 market regimes，而不是只靠單一強勢年份。
 5. 策略層還要同時考慮 drawdown、turnover、交易成本與參數穩定性。
+6. 策略設定必須通過 v0.5 robustness gate：鄰近參數也要能用，且採用的是 family 的中位數參數而非最佳參數。
 
 ## 6. 自動化排程
 
@@ -156,6 +186,7 @@ GitHub Actions：
 - `.github/workflows/ml-challenger-train.yml`
 - `.github/workflows/sector-shadow.yml`
 - `.github/workflows/rotation-v04.yml`
+- `.github/workflows/rotation-v05.yml`
 - `.github/workflows/pages.yml`
 
 ## 7. Research Dashboard
@@ -194,15 +225,19 @@ GitHub App 可以建立與執行 Pages workflow，但無法替 repository 第一
 STOCK/
 ├─ sectorRadar.js                 # sector feature/ranking baseline
 ├─ mlChallenger.py                # ML feature/model/scoring core
-├─ rotationBacktest.js            # rotation backtest engine
+├─ rotationBacktest.js            # rotation backtest engine (regime gate, vol stop, topK)
+├─ rotationRobustness.js          # parameter sweep, family scoring, promotion gate
 ├─ scripts/
 │  ├─ shadowRunner.js
 │  ├─ trainMlChallenger.py
 │  ├─ runMlShadow.py
-│  └─ runRotationV04.js
+│  ├─ twseData.js                 # shared TWSE fetch + on-disk cache
+│  ├─ runRotationV04.js
+│  └─ runRotationV05.js
 ├─ data/
 │  ├─ shadow/                     # append-only OOS ledgers + latest snapshot
 │  ├─ models/                     # trained challenger artifacts
+│  ├─ cache/                      # TWSE price snapshot (gitignored)
 │  └─ backtests/                  # ML validation + rotation reports
 ├─ public/
 │  ├─ research-dashboard.html
@@ -210,7 +245,8 @@ STOCK/
 │  └─ research-dashboard.js
 ├─ docs/
 │  ├─ SECTOR_RADAR.md
-│  └─ CHALLENGER_V031_V04.md
+│  ├─ CHALLENGER_V031_V04.md
+│  └─ ROTATION_V05.md
 └─ .github/workflows/
 ```
 

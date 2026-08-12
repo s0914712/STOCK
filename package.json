@@ -9,10 +9,11 @@
     "shadow": "node scripts/shadowRunner.js",
     "backtest:rotation": "node scripts/runRotationBacktest.js",
     "backtest:v04": "node scripts/runRotationV04.js",
+    "backtest:v05": "node scripts/runRotationV05.js",
     "ml:self-test": "python mlChallenger.py",
     "ml:train": "python scripts/trainMlChallenger.py",
     "ml:shadow": "python scripts/runMlShadow.py",
-    "test": "node test/sectorRadar.test.js && node test/shadowPrediction.test.js && node test/rotationBacktest.test.js"
+    "test": "node test/sectorRadar.test.js && node test/shadowPrediction.test.js && node test/rotationBacktest.test.js && node test/rotationRobustness.test.js"
   },
   "dependencies": {
     "express": "^4.21.0",
