@@ -6,6 +6,7 @@ const https = require('https');
 const { buildSectorRadar } = require('../sectorRadar');
 const {
   makePredictionSnapshot,
+  getTargetDate,
   scorePredictionSnapshot,
   summarizeScores,
 } = require('../shadowPrediction');
@@ -187,21 +188,34 @@ async function main() {
   if (pending.length) {
     console.log(`Checking ${pending.length} unscored snapshot(s)...`);
     const taiexRows = await fetchTaiexHistory(4);
-    const symbols = [...new Set(pending.flatMap(row => row.sectors.flatMap(sector =>
-      (sector.anchors || []).map(anchor => anchor.symbol))))];
-    const histories = await mapLimit(symbols, 3, async symbol => [symbol, await fetchStockHistory(symbol, 4)]);
-    const stockHistoryBySymbol = new Map(histories);
+    const tradingDates = taiexRows.map(row => row.date);
+    const mature = pending.filter(row => getTargetDate(
+      row.asOf,
+      tradingDates,
+      row.horizonTradingDays || 5,
+    ));
 
-    for (const prediction of pending) {
-      const result = scorePredictionSnapshot(prediction, { taiexRows, stockHistoryBySymbol });
-      if (!result) {
-        console.log(`Not mature yet: ${prediction.id}`);
-        continue;
+    for (const prediction of pending.filter(row => !mature.includes(row))) {
+      console.log(`Not mature yet: ${prediction.id}`);
+    }
+
+    if (mature.length) {
+      const symbols = [...new Set(mature.flatMap(row => row.sectors.flatMap(sector =>
+        (sector.anchors || []).map(anchor => anchor.symbol))))];
+      const histories = await mapLimit(symbols, 3, async symbol => [symbol, await fetchStockHistory(symbol, 4)]);
+      const stockHistoryBySymbol = new Map(histories);
+
+      for (const prediction of mature) {
+        const result = scorePredictionSnapshot(prediction, { taiexRows, stockHistoryBySymbol });
+        if (!result) {
+          console.log(`Mature calendar but insufficient price coverage: ${prediction.id}`);
+          continue;
+        }
+        appendJsonl(SCORES_PATH, result);
+        scores.push(result);
+        scoredIds.add(result.id);
+        console.log(`Scored ${result.id} -> target ${result.targetDate}, top3 hit ${(100 * result.metrics.top3HitRate).toFixed(1)}%`);
       }
-      appendJsonl(SCORES_PATH, result);
-      scores.push(result);
-      scoredIds.add(result.id);
-      console.log(`Scored ${result.id} -> target ${result.targetDate}, top3 hit ${(100 * result.metrics.top3HitRate).toFixed(1)}%`);
     }
   }
 
