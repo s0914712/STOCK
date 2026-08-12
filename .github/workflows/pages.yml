@@ -45,6 +45,7 @@ jobs:
           cp data/backtests/ml_challenger_v031.json _site/data/backtests/ml_challenger_v031.json
           cp data/backtests/rotation_v0.4.json _site/data/backtests/rotation_v0.4.json
           # Optional v0.5 files are copied as soon as their Shadow/backtest jobs exist.
+          # momentum_rotation_v0.5.json contains the split-adjusted 0050 benchmark.
           for f in \
             data/shadow/latest.json \
             data/shadow/momentum_v05_latest.json \
