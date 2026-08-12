@@ -81,25 +81,25 @@
     "scoredSnapshots": 0,
     "models": {
       "baseline": {
-        "meanBrier": NaN,
-        "meanLogloss": NaN,
-        "meanRocAuc": NaN,
-        "top1HitRate": NaN,
-        "meanTop3HitRate": NaN
+        "meanBrier": null,
+        "meanLogloss": null,
+        "meanRocAuc": null,
+        "top1HitRate": null,
+        "meanTop3HitRate": null
       },
       "lightgbm": {
-        "meanBrier": NaN,
-        "meanLogloss": NaN,
-        "meanRocAuc": NaN,
-        "top1HitRate": NaN,
-        "meanTop3HitRate": NaN
+        "meanBrier": null,
+        "meanLogloss": null,
+        "meanRocAuc": null,
+        "top1HitRate": null,
+        "meanTop3HitRate": null
       },
       "xgboost": {
-        "meanBrier": NaN,
-        "meanLogloss": NaN,
-        "meanRocAuc": NaN,
-        "top1HitRate": NaN,
-        "meanTop3HitRate": NaN
+        "meanBrier": null,
+        "meanLogloss": null,
+        "meanRocAuc": null,
+        "top1HitRate": null,
+        "meanTop3HitRate": null
       }
     },
     "brierWins": {
