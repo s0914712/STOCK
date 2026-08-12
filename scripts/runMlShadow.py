@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from mlChallenger import (
     build_feature_rows,
@@ -12,7 +17,6 @@ from mlChallenger import (
     summarize_scores,
 )
 
-ROOT = Path(__file__).resolve().parents[1]
 SHADOW = ROOT / "data" / "shadow"
 MODEL_DIR = ROOT / "data" / "models" / "sector_challenger_v031"
 BASELINE_LEDGER = SHADOW / "predictions.jsonl"
@@ -44,7 +48,6 @@ def main():
         raise RuntimeError("baseline shadow ledger is empty")
     as_of = baseline_predictions[-1]["asOf"]
 
-    # Daily inference/scoring only needs recent data. Weekly training owns the long history fetch.
     histories, taiex = fetch_universe(month_count=4, workers=5)
     feature_rows = build_feature_rows(histories, taiex, include_unmatured=True)
     models = load_models(MODEL_DIR)
