@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 import json
+import sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from mlChallenger import build_feature_rows, fetch_universe, train_models
 
-ROOT = Path(__file__).resolve().parents[1]
 MODEL_DIR = ROOT / "data" / "models" / "sector_challenger_v031"
 REPORT = ROOT / "data" / "backtests" / "ml_challenger_v031.json"
 
