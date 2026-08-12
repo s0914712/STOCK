@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import math
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -34,7 +35,17 @@ def read_jsonl(path: Path):
 def append_jsonl(path: Path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as f:
-        f.write(json.dumps(value, ensure_ascii=False, separators=(",", ":")) + "\n")
+        f.write(json.dumps(value, ensure_ascii=False, separators=(",", ":"), allow_nan=False) + "\n")
+
+
+def strict_json(value):
+    if isinstance(value, float) and not math.isfinite(value):
+        return None
+    if isinstance(value, dict):
+        return {k: strict_json(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [strict_json(v) for v in value]
+    return value
 
 
 def main():
@@ -72,7 +83,7 @@ def main():
             "modelTrainedThrough": metadata.get("trainedThrough"),
             "sectors": sectors,
         }
-        append_jsonl(PRED_PATH, snapshot)
+        append_jsonl(PRED_PATH, strict_json(snapshot))
         predictions.append(snapshot)
         print(f"Appended challenger prediction {snapshot_id}")
     else:
@@ -81,24 +92,28 @@ def main():
     for prediction in predictions:
         if prediction["id"] in scored_ids:
             continue
-        score = score_shadow_prediction(prediction, feature_rows)
-        if score is None:
+        score = score_prediction = score_shadow_prediction(prediction, feature_rows)
+        if score_prediction is None:
             print(f"Not mature yet: {prediction['id']}")
             continue
+        score = strict_json(score_prediction)
         append_jsonl(SCORE_PATH, score)
         scores.append(score)
         scored_ids.add(score["id"])
         print(f"Scored {score['id']} winner={score['winnerByBrier']}")
 
-    latest = {
+    latest = strict_json({
         "version": "v0.3.1",
         "latestPrediction": predictions[-1] if predictions else None,
         "latestScore": scores[-1] if scores else None,
         "performance": summarize_scores(scores),
         "training": metadata,
-    }
-    LATEST_PATH.write_text(json.dumps(latest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps(latest["performance"], ensure_ascii=False, indent=2))
+    })
+    LATEST_PATH.write_text(
+        json.dumps(latest, ensure_ascii=False, indent=2, allow_nan=False) + "\n",
+        encoding="utf-8",
+    )
+    print(json.dumps(latest["performance"], ensure_ascii=False, indent=2, allow_nan=False))
 
 
 if __name__ == "__main__":
