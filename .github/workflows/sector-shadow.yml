@@ -2,11 +2,6 @@ name: Sector Shadow Prediction
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - feature/sector-radar-v031-v04
-    paths:
-      - '.github/workflows/sector-shadow.yml'
   schedule:
     # 15:30 Asia/Taipei, Monday-Friday. Runner is idempotent on holidays/weekends.
     - cron: '30 7 * * 1-5'
@@ -57,5 +52,3 @@ jobs:
           git commit -m "data: update baseline and ML shadow ledgers"
           git pull --rebase origin "$GITHUB_REF_NAME"
           git push origin HEAD:"$GITHUB_REF_NAME"
-
-# Seed strict-JSON challenger summary once on the feature branch.
