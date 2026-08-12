@@ -1,6 +1,7 @@
 {
   "version": "v0.3",
-  "generatedAt": "2026-08-12T05:08:02.034Z",
+  "revision": "positive-momentum-gate-and-universe-baseline",
+  "generatedAt": "2026-08-12T05:12:58.756Z",
   "dataSource": "TWSE STOCK_DAY + FMTQIK",
   "universe": {
     "半導體": [
@@ -45,6 +46,231 @@
     "sellTax": 0.003
   },
   "primary": {
+    "strategy": "positive-10d-leader-entry-hold-tp20-sl20",
+    "assumptions": {
+      "signal": "rank sector by trailing 10 trading-day equal-weight constituent close return",
+      "execution": "signal after close; trade at next session open",
+      "basket": "equal capital weight in sector representative stocks at entry",
+      "takeProfit": 0.2,
+      "stopLoss": -0.2,
+      "minMomentum": 0,
+      "switchOnLeaderChange": false,
+      "costs": {
+        "buyCommission": 0.001425,
+        "sellCommission": 0.001425,
+        "sellTax": 0.003
+      }
+    },
+    "period": {
+      "start": "2024-08-12",
+      "end": "2026-08-11",
+      "tradingDays": 485
+    },
+    "metrics": {
+      "initialCapital": 1,
+      "finalCapital": 5.006715944273956,
+      "totalReturn": 4.006715944273956,
+      "annualizedReturn": 1.30929311008384,
+      "taiexReturn": 1.0722996923749593,
+      "excessVsTaiex": 2.9344162518989965,
+      "maxDrawdown": -0.31806194362778684,
+      "tradeCount": 14,
+      "winRate": 0.7857142857142857,
+      "profitFactor": 4.585107488269401,
+      "avgTradeReturn": 0.1370662383183647,
+      "medianHoldingTradingDays": 24.5,
+      "exposure": 0.9855670103092784,
+      "takeProfitCount": 11,
+      "stopLossCount": 2,
+      "leaderChangeCount": 0,
+      "momentumGateExitCount": 0
+    },
+    "trades": [
+      {
+        "sector": "航運",
+        "signalDate": "2024-08-12",
+        "entryDate": "2024-08-13",
+        "exitDate": "2024-09-30",
+        "exitReason": "take_profit",
+        "signalMomentum10d": 0.10037722908093276,
+        "grossReturn": 0.2022518995632112,
+        "netReturn": 0.19522873396174845,
+        "holdingTradingDays": 33,
+        "startCapital": 1,
+        "endCapital": 1.1952287339617484
+      },
+      {
+        "sector": "航運",
+        "signalDate": "2024-09-27",
+        "entryDate": "2024-09-30",
+        "exitDate": "2025-04-09",
+        "exitReason": "stop_loss",
+        "signalMomentum10d": 0.2361281085513974,
+        "grossReturn": -0.23857730136142508,
+        "netReturn": -0.2430252857706775,
+        "holdingTradingDays": 122,
+        "startCapital": 1.1952287339617484,
+        "endCapital": 0.9047579293293695
+      },
+      {
+        "sector": "航運",
+        "signalDate": "2025-04-16",
+        "entryDate": "2025-04-17",
+        "exitDate": "2025-05-19",
+        "exitReason": "take_profit",
+        "signalMomentum10d": 0.001888717151189508,
+        "grossReturn": 0.2539121041331429,
+        "netReturn": 0.2465871563745199,
+        "holdingTradingDays": 21,
+        "startCapital": 0.9047579293293695,
+        "endCapital": 1.1278596143299975
+      },
+      {
+        "sector": "航運",
+        "signalDate": "2025-05-16",
+        "entryDate": "2025-05-19",
+        "exitDate": "2025-07-10",
+        "exitReason": "stop_loss",
+        "signalMomentum10d": 0.253661180178164,
+        "grossReturn": -0.2197553856586909,
+        "netReturn": -0.22431332159387996,
+        "holdingTradingDays": 37,
+        "startCapital": 1.1278596143299975,
+        "endCapital": 0.8748656779480434
+      },
+      {
+        "sector": "PCB",
+        "signalDate": "2025-07-09",
+        "entryDate": "2025-07-10",
+        "exitDate": "2025-08-11",
+        "exitReason": "take_profit",
+        "signalMomentum10d": 0.10109950563694459,
+        "grossReturn": 0.238697601174777,
+        "netReturn": 0.23146153160703875,
+        "holdingTradingDays": 22,
+        "startCapital": 0.8748656779480434,
+        "endCapital": 1.0773634277163278
+      },
+      {
+        "sector": "PCB",
+        "signalDate": "2025-08-08",
+        "entryDate": "2025-08-11",
+        "exitDate": "2025-11-14",
+        "exitReason": "take_profit",
+        "signalMomentum10d": 0.13702432397168848,
+        "grossReturn": 0.1890070263410406,
+        "netReturn": 0.1820612329924669,
+        "holdingTradingDays": 65,
+        "startCapital": 1.0773634277163278,
+        "endCapital": 1.273509541747353
+      },
+      {
+        "sector": "PCB",
+        "signalDate": "2025-11-13",
+        "entryDate": "2025-11-14",
+        "exitDate": "2026-01-13",
+        "exitReason": "take_profit",
+        "signalMomentum10d": 0.12992069761789016,
+        "grossReturn": 0.22001613217903793,
+        "netReturn": 0.21288919369313275,
+        "holdingTradingDays": 40,
+        "startCapital": 1.273509541747353,
+        "endCapital": 1.544625961250458
+      },
+      {
+        "sector": "半導體",
+        "signalDate": "2026-01-12",
+        "entryDate": "2026-01-13",
+        "exitDate": "2026-01-28",
+        "exitReason": "take_profit",
+        "signalMomentum10d": 0.08987790158644704,
+        "grossReturn": 0.22703915855438273,
+        "netReturn": 0.21987119382657672,
+        "holdingTradingDays": 11,
+        "startCapital": 1.544625961250458,
+        "endCapital": 1.8842447153661197
+      },
+      {
+        "sector": "PCB",
+        "signalDate": "2026-01-27",
+        "entryDate": "2026-01-28",
+        "exitDate": "2026-03-16",
+        "exitReason": "take_profit",
+        "signalMomentum10d": 0.2252519065930926,
+        "grossReturn": 0.26715265806219923,
+        "netReturn": 0.2597503632825964,
+        "holdingTradingDays": 25,
+        "startCapital": 1.8842447153661197,
+        "endCapital": 2.3736779646957817
+      },
+      {
+        "sector": "PCB",
+        "signalDate": "2026-03-13",
+        "entryDate": "2026-03-16",
+        "exitDate": "2026-04-21",
+        "exitReason": "take_profit",
+        "signalMomentum10d": 0.054202453311145,
+        "grossReturn": 0.2506483715911223,
+        "netReturn": 0.24334248949929482,
+        "holdingTradingDays": 24,
+        "startCapital": 2.3736779646957817,
+        "endCapital": 2.9512946698944726
+      },
+      {
+        "sector": "電子零組件",
+        "signalDate": "2026-04-20",
+        "entryDate": "2026-04-21",
+        "exitDate": "2026-05-15",
+        "exitReason": "take_profit",
+        "signalMomentum10d": 0.29793565222104096,
+        "grossReturn": 0.24468479032896195,
+        "netReturn": 0.23741374554435546,
+        "holdingTradingDays": 17,
+        "startCapital": 2.9512946698944726,
+        "endCapital": 3.6519725916792116
+      },
+      {
+        "sector": "半導體",
+        "signalDate": "2026-05-14",
+        "entryDate": "2026-05-15",
+        "exitDate": "2026-05-28",
+        "exitReason": "take_profit",
+        "signalMomentum10d": 0.2710929767624349,
+        "grossReturn": 0.2202879946493086,
+        "netReturn": 0.21315946803104135,
+        "holdingTradingDays": 9,
+        "startCapital": 3.6519725916792116,
+        "endCapital": 4.4304251265854955
+      },
+      {
+        "sector": "電子零組件",
+        "signalDate": "2026-05-27",
+        "entryDate": "2026-05-28",
+        "exitDate": "2026-06-17",
+        "exitReason": "take_profit",
+        "signalMomentum10d": 0.354281488941754,
+        "grossReturn": 0.21953595759261813,
+        "netReturn": 0.21241182413088433,
+        "holdingTradingDays": 14,
+        "startCapital": 4.4304251265854955,
+        "endCapital": 5.371499809398824
+      },
+      {
+        "sector": "金融",
+        "signalDate": "2026-06-16",
+        "entryDate": "2026-06-17",
+        "exitDate": "2026-08-11",
+        "exitReason": "end_of_test",
+        "signalMomentum10d": 0.16503275033907264,
+        "grossReturn": -0.06243403287697202,
+        "netReturn": -0.06791098912199256,
+        "holdingTradingDays": 37,
+        "startCapital": 5.371499809398824,
+        "endCapital": 5.006715944273956
+      }
+    ]
+  },
+  "ungated": {
     "strategy": "10d-leader-entry-hold-tp20-sl20",
     "assumptions": {
       "signal": "rank sector by trailing 10 trading-day equal-weight constituent close return",
@@ -52,6 +278,7 @@
       "basket": "equal capital weight in sector representative stocks at entry",
       "takeProfit": 0.2,
       "stopLoss": -0.2,
+      "minMomentum": null,
       "switchOnLeaderChange": false,
       "costs": {
         "buyCommission": 0.001425,
@@ -80,7 +307,8 @@
       "exposure": 0.9979381443298969,
       "takeProfitCount": 8,
       "stopLossCount": 1,
-      "leaderChangeCount": 0
+      "leaderChangeCount": 0,
+      "momentumGateExitCount": 0
     },
     "trades": [
       {
@@ -216,13 +444,14 @@
     ]
   },
   "activeRotation": {
-    "strategy": "10d-leader-rotation-tp20-sl20",
+    "strategy": "positive-10d-leader-rotation-tp20-sl20",
     "assumptions": {
       "signal": "rank sector by trailing 10 trading-day equal-weight constituent close return",
       "execution": "signal after close; trade at next session open",
       "basket": "equal capital weight in sector representative stocks at entry",
       "takeProfit": 0.2,
       "stopLoss": -0.2,
+      "minMomentum": 0,
       "switchOnLeaderChange": true,
       "costs": {
         "buyCommission": 0.001425,
@@ -237,21 +466,22 @@
     },
     "metrics": {
       "initialCapital": 1,
-      "finalCapital": 2.1676322244510704,
-      "totalReturn": 1.1676322244510704,
-      "annualizedReturn": 0.4947685805021287,
+      "finalCapital": 2.295785155016049,
+      "totalReturn": 1.2957851550160489,
+      "annualizedReturn": 0.5400520844889005,
       "taiexReturn": 1.0722996923749593,
-      "excessVsTaiex": 0.09533253207611114,
-      "maxDrawdown": -0.41019861177103933,
-      "tradeCount": 123,
-      "winRate": 0.4878048780487805,
-      "profitFactor": 1.5527175266864304,
-      "avgTradeReturn": 0.0076611526569402375,
-      "medianHoldingTradingDays": 3,
-      "exposure": 0.9979381443298969,
+      "excessVsTaiex": 0.2234854626410896,
+      "maxDrawdown": -0.2642563439195017,
+      "tradeCount": 122,
+      "winRate": 0.45901639344262296,
+      "profitFactor": 1.648398895859957,
+      "avgTradeReturn": 0.008039943204341435,
+      "medianHoldingTradingDays": 2,
+      "exposure": 0.9257731958762887,
       "takeProfitCount": 2,
       "stopLossCount": 0,
-      "leaderChangeCount": 120
+      "leaderChangeCount": 106,
+      "momentumGateExitCount": 13
     },
     "trades": [
       {
@@ -350,7 +580,7 @@
         "signalDate": "2024-09-03",
         "entryDate": "2024-09-04",
         "exitDate": "2024-09-05",
-        "exitReason": "leader_change",
+        "exitReason": "momentum_gate",
         "signalMomentum10d": 0.027288333189624907,
         "grossReturn": -0.0011923100796190633,
         "netReturn": -0.007027020603157186,
@@ -360,55 +590,29 @@
       },
       {
         "sector": "金融",
-        "signalDate": "2024-09-04",
-        "entryDate": "2024-09-05",
-        "exitDate": "2024-09-12",
-        "exitReason": "leader_change",
-        "signalMomentum10d": -0.013077986652283657,
-        "grossReturn": -0.006295109723833847,
-        "netReturn": -0.012100011347136341,
-        "holdingTradingDays": 5,
-        "startCapital": 0.8595681209008103,
-        "endCapital": 0.8491673368842738
-      },
-      {
-        "sector": "航運",
-        "signalDate": "2024-09-11",
-        "entryDate": "2024-09-12",
-        "exitDate": "2024-09-16",
-        "exitReason": "leader_change",
-        "signalMomentum10d": -0.013381446701526412,
-        "grossReturn": -0.001392167792423571,
-        "netReturn": -0.007225710812035047,
+        "signalDate": "2024-09-05",
+        "entryDate": "2024-09-06",
+        "exitDate": "2024-09-10",
+        "exitReason": "momentum_gate",
+        "signalMomentum10d": 0.009860024183862412,
+        "grossReturn": -0.015350956966764806,
+        "netReturn": -0.02110295726807987,
         "holdingTradingDays": 2,
-        "startCapital": 0.8491673368842738,
-        "endCapital": 0.8430314992769221
-      },
-      {
-        "sector": "金融",
-        "signalDate": "2024-09-13",
-        "entryDate": "2024-09-16",
-        "exitDate": "2024-09-18",
-        "exitReason": "leader_change",
-        "signalMomentum10d": -0.021456813080057573,
-        "grossReturn": 0.00963326907933193,
-        "netReturn": 0.0037353190340323472,
-        "holdingTradingDays": 1,
-        "startCapital": 0.8430314992769221,
-        "endCapital": 0.8461804908824601
+        "startCapital": 0.8595681209008103,
+        "endCapital": 0.8414286915764367
       },
       {
         "sector": "航運",
-        "signalDate": "2024-09-16",
-        "entryDate": "2024-09-18",
+        "signalDate": "2024-09-18",
+        "entryDate": "2024-09-19",
         "exitDate": "2024-09-23",
         "exitReason": "leader_change",
-        "signalMomentum10d": -0.003662964835320137,
-        "grossReturn": 0.03233629965107565,
-        "netReturn": 0.026305725865760854,
-        "holdingTradingDays": 3,
-        "startCapital": 0.8461804908824601,
-        "endCapital": 0.868439882908569
+        "signalMomentum10d": 0.017665375881166307,
+        "grossReturn": 0.013537866224433648,
+        "netReturn": 0.0076171067892158995,
+        "holdingTradingDays": 2,
+        "startCapital": 0.8414286915764367,
+        "endCapital": 0.8478379437756847
       },
       {
         "sector": "AI伺服器",
@@ -418,10 +622,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.036054621004229036,
         "grossReturn": 0.0031798487185135116,
-        "netReturn": -0.0026804025384487007,
+        "netReturn": -0.0026804025384484786,
         "holdingTradingDays": 1,
-        "startCapital": 0.868439882908569,
-        "endCapital": 0.8661121144419308
+        "startCapital": 0.8478379437756847,
+        "endCapital": 0.8455653967989953
       },
       {
         "sector": "航運",
@@ -433,8 +637,8 @@
         "grossReturn": -0.00003806973509912215,
         "netReturn": -0.005879522956308558,
         "holdingTradingDays": 7,
-        "startCapital": 0.8661121144419308,
-        "endCapital": 0.8610197883823325
+        "startCapital": 0.8455653967989953,
+        "endCapital": 0.8405938756374555
       },
       {
         "sector": "AI伺服器",
@@ -444,10 +648,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.04938806787082654,
         "grossReturn": 0.0989889739455323,
-        "netReturn": 0.09256903685830009,
+        "netReturn": 0.09256903685830031,
         "holdingTradingDays": 13,
-        "startCapital": 0.8610197883823325,
-        "endCapital": 0.9407235609088225
+        "startCapital": 0.8405938756374555,
+        "endCapital": 0.9184068410942006
       },
       {
         "sector": "航運",
@@ -459,8 +663,8 @@
         "grossReturn": 0.02776968266562907,
         "netReturn": 0.021765785575388774,
         "holdingTradingDays": 1,
-        "startCapital": 0.9407235609088225,
-        "endCapital": 0.96119914822128
+        "startCapital": 0.9184068410942006,
+        "endCapital": 0.9383966874684271
       },
       {
         "sector": "PCB",
@@ -472,8 +676,8 @@
         "grossReturn": -0.006502023541362534,
         "netReturn": -0.012305716441263215,
         "holdingTradingDays": 1,
-        "startCapital": 0.96119914822128,
-        "endCapital": 0.9493709040596853
+        "startCapital": 0.9383966874684271,
+        "endCapital": 0.9268490439230199
       },
       {
         "sector": "航運",
@@ -485,8 +689,8 @@
         "grossReturn": 0.07961160941636658,
         "netReturn": 0.07330486860693419,
         "holdingTradingDays": 8,
-        "startCapital": 0.9493709040596853,
-        "endCapital": 1.0189644134410267
+        "startCapital": 0.9268490439230199,
+        "endCapital": 0.9947915913062595
       },
       {
         "sector": "AI伺服器",
@@ -496,10 +700,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.077998859288069,
         "grossReturn": -0.025116277367858486,
-        "netReturn": -0.030811231835140562,
+        "netReturn": -0.030811231835140673,
         "holdingTradingDays": 1,
-        "startCapital": 1.0189644134410267,
-        "endCapital": 0.9875688646667372
+        "startCapital": 0.9947915913062595,
+        "endCapital": 0.9641408369588739
       },
       {
         "sector": "航運",
@@ -511,21 +715,21 @@
         "grossReturn": -0.04238977371327801,
         "netReturn": -0.04798382201822082,
         "holdingTradingDays": 12,
-        "startCapital": 0.9875688646667372,
-        "endCapital": 0.940181536033832
+        "startCapital": 0.9641408369588739,
+        "endCapital": 0.9178776746377408
       },
       {
         "sector": "金融",
         "signalDate": "2024-11-27",
         "entryDate": "2024-11-28",
-        "exitDate": "2024-12-03",
-        "exitReason": "leader_change",
+        "exitDate": "2024-12-02",
+        "exitReason": "momentum_gate",
         "signalMomentum10d": 0.0009323020500392465,
-        "grossReturn": 0.018905020881733625,
-        "netReturn": 0.012952908270047025,
-        "holdingTradingDays": 3,
-        "startCapital": 0.940181536033832,
-        "endCapital": 0.9523596212272702
+        "grossReturn": -0.00492299939863905,
+        "netReturn": -0.010735916445365534,
+        "holdingTradingDays": 2,
+        "startCapital": 0.9178776746377408,
+        "endCapital": 0.9080234166157637
       },
       {
         "sector": "PCB",
@@ -537,8 +741,8 @@
         "grossReturn": -0.016436039520240087,
         "netReturn": -0.022181701121265274,
         "holdingTradingDays": 1,
-        "startCapital": 0.9523596212272702,
-        "endCapital": 0.9312346647492455
+        "startCapital": 0.9080234166157637,
+        "endCapital": 0.8878819125772827
       },
       {
         "sector": "金融",
@@ -548,10 +752,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.02353314646964877,
         "grossReturn": -0.002206811255634822,
-        "netReturn": -0.008035595392394623,
+        "netReturn": -0.008035595392394401,
         "holdingTradingDays": 1,
-        "startCapital": 0.9312346647492455,
-        "endCapital": 0.9237516397679484
+        "startCapital": 0.8878819125772827,
+        "endCapital": 0.8807472527715863
       },
       {
         "sector": "電子零組件",
@@ -561,10 +765,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.04714908145692361,
         "grossReturn": -0.01591275471915754,
-        "netReturn": -0.021661473180243473,
+        "netReturn": -0.021661473180243362,
         "holdingTradingDays": 2,
-        "startCapital": 0.9237516397679484,
-        "endCapital": 0.903741818397909
+        "startCapital": 0.8807472527715863,
+        "endCapital": 0.8616689697771015
       },
       {
         "sector": "金融",
@@ -574,10 +778,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.03147995518348301,
         "grossReturn": -0.002430607259323647,
-        "netReturn": -0.008258084052426673,
+        "netReturn": -0.008258084052426451,
         "holdingTradingDays": 2,
-        "startCapital": 0.903741818397909,
-        "endCapital": 0.8962786424998862
+        "startCapital": 0.8616689697771015,
+        "endCapital": 0.8545532349993145
       },
       {
         "sector": "半導體",
@@ -589,8 +793,8 @@
         "grossReturn": 0.01664023871203657,
         "netReturn": 0.010701356223117964,
         "holdingTradingDays": 1,
-        "startCapital": 0.8962786424998862,
-        "endCapital": 0.90587003952845
+        "startCapital": 0.8545532349993145,
+        "endCapital": 0.8636981135786599
       },
       {
         "sector": "PCB",
@@ -600,10 +804,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.06518915698540362,
         "grossReturn": 0.006188905490870367,
-        "netReturn": 0.00031107630034510336,
+        "netReturn": 0.0003110763003453254,
         "holdingTradingDays": 10,
-        "startCapital": 0.90587003952845,
-        "endCapital": 0.9061518342289401
+        "startCapital": 0.8636981135786599,
+        "endCapital": 0.8639667895924471
       },
       {
         "sector": "半導體",
@@ -615,8 +819,8 @@
         "grossReturn": -0.0071794391680796155,
         "netReturn": -0.012979174825634376,
         "holdingTradingDays": 1,
-        "startCapital": 0.9061518342289401,
-        "endCapital": 0.8943907311539134
+        "startCapital": 0.8639667895924471,
+        "endCapital": 0.8527532135867847
       },
       {
         "sector": "電子零組件",
@@ -628,8 +832,8 @@
         "grossReturn": -0.012527887708058572,
         "netReturn": -0.01829637946421392,
         "holdingTradingDays": 4,
-        "startCapital": 0.8943907311539134,
-        "endCapital": 0.8780266189474457
+        "startCapital": 0.8527532135867847,
+        "endCapital": 0.837150917201673
       },
       {
         "sector": "PCB",
@@ -639,36 +843,36 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.029249879063477497,
         "grossReturn": -0.004467648641377497,
-        "netReturn": -0.010283225699517673,
+        "netReturn": -0.010283225699517562,
         "holdingTradingDays": 2,
-        "startCapital": 0.8780266189474457,
-        "endCapital": 0.8689976730546247
+        "startCapital": 0.837150917201673,
+        "endCapital": 0.8285423053755301
       },
       {
         "sector": "電子零組件",
         "signalDate": "2025-01-06",
         "entryDate": "2025-01-07",
-        "exitDate": "2025-01-14",
-        "exitReason": "leader_change",
+        "exitDate": "2025-01-13",
+        "exitReason": "momentum_gate",
         "signalMomentum10d": 0.05506419488922528,
-        "grossReturn": -0.05105284599239479,
-        "netReturn": -0.05659628743927747,
-        "holdingTradingDays": 5,
-        "startCapital": 0.8689976730546247,
-        "endCapital": 0.8198156309663619
+        "grossReturn": -0.028525556800079177,
+        "netReturn": -0.03420059536284681,
+        "holdingTradingDays": 4,
+        "startCapital": 0.8285423053755301,
+        "endCapital": 0.8002056652483813
       },
       {
         "sector": "半導體",
-        "signalDate": "2025-01-13",
-        "entryDate": "2025-01-14",
-        "exitDate": "2025-02-03",
-        "exitReason": "leader_change",
-        "signalMomentum10d": -0.034553367122174494,
-        "grossReturn": -0.005811422086984153,
-        "netReturn": -0.011619149256558714,
-        "holdingTradingDays": 7,
-        "startCapital": 0.8198156309663619,
-        "endCapital": 0.8102900707873039
+        "signalDate": "2025-01-16",
+        "entryDate": "2025-01-17",
+        "exitDate": "2025-01-21",
+        "exitReason": "momentum_gate",
+        "signalMomentum10d": 0.023280360753099544,
+        "grossReturn": 0.005607751679715944,
+        "netReturn": -0.00026668259876361233,
+        "holdingTradingDays": 2,
+        "startCapital": 0.8002056652483813,
+        "endCapital": 0.7999922643220275
       },
       {
         "sector": "電子零組件",
@@ -678,10 +882,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.009321256000002073,
         "grossReturn": 0.021172547784079176,
-        "netReturn": 0.015207189015787215,
+        "netReturn": 0.015207189015786993,
         "holdingTradingDays": 2,
-        "startCapital": 0.8102900707873039,
-        "endCapital": 0.8226123050513819
+        "startCapital": 0.7999922643220275,
+        "endCapital": 0.8121578978967401
       },
       {
         "sector": "金融",
@@ -693,8 +897,8 @@
         "grossReturn": 0.008074525945439559,
         "netReturn": 0.0021856815718910294,
         "holdingTradingDays": 1,
-        "startCapital": 0.8226123050513819,
-        "endCapital": 0.8244102736073435
+        "startCapital": 0.8121578978967401,
+        "endCapital": 0.8139330164476387
       },
       {
         "sector": "電子零組件",
@@ -706,8 +910,8 @@
         "grossReturn": -0.015185409109230164,
         "netReturn": -0.020938376487427246,
         "holdingTradingDays": 3,
-        "startCapital": 0.8244102736073435,
-        "endCapital": 0.80714846091845
+        "startCapital": 0.8139330164476387,
+        "endCapital": 0.7968905805137108
       },
       {
         "sector": "金融",
@@ -719,8 +923,8 @@
         "grossReturn": 0.0011398165616063327,
         "netReturn": -0.004708517489256603,
         "holdingTradingDays": 2,
-        "startCapital": 0.80714846091845,
-        "endCapital": 0.803347988273789
+        "startCapital": 0.7968905805137108,
+        "endCapital": 0.7931384072783381
       },
       {
         "sector": "航運",
@@ -730,10 +934,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.04424324896896814,
         "grossReturn": 0.047646584674700065,
-        "netReturn": 0.04152657317074615,
+        "netReturn": 0.04152657317074637,
         "holdingTradingDays": 3,
-        "startCapital": 0.803347988273789,
-        "endCapital": 0.8367082772904122
+        "startCapital": 0.7931384072783381,
+        "endCapital": 0.8260747273827111
       },
       {
         "sector": "AI伺服器",
@@ -743,10 +947,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.10157849804599269,
         "grossReturn": 0.014182759907513942,
-        "netReturn": 0.008258233212595334,
+        "netReturn": 0.008258233212595112,
         "holdingTradingDays": 1,
-        "startCapital": 0.8367082772904122,
-        "endCapital": 0.8436180093751853
+        "startCapital": 0.8260747273827111,
+        "endCapital": 0.8328966451324685
       },
       {
         "sector": "航運",
@@ -758,8 +962,8 @@
         "grossReturn": 0.00115856121837421,
         "netReturn": -0.004689882332692963,
         "holdingTradingDays": 1,
-        "startCapital": 0.8436180093751853,
-        "endCapital": 0.839661540177475
+        "startCapital": 0.8328966451324685,
+        "endCapital": 0.8289904578715025
       },
       {
         "sector": "AI伺服器",
@@ -769,23 +973,36 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.11011566907464736,
         "grossReturn": -0.02295153023360097,
-        "netReturn": -0.028659130451423986,
+        "netReturn": -0.028659130451423875,
         "holdingTradingDays": 3,
-        "startCapital": 0.839661540177475,
-        "endCapital": 0.8155975705624852
+        "startCapital": 0.8289904578715025,
+        "endCapital": 0.8052323121963775
       },
       {
         "sector": "航運",
         "signalDate": "2025-02-24",
         "entryDate": "2025-02-25",
+        "exitDate": "2025-03-13",
+        "exitReason": "momentum_gate",
+        "signalMomentum10d": 0.08561638840479129,
+        "grossReturn": 0.004979190021651592,
+        "netReturn": -0.0008915724035193362,
+        "holdingTradingDays": 11,
+        "startCapital": 0.8052323121963775,
+        "endCapital": 0.8045143892884011
+      },
+      {
+        "sector": "航運",
+        "signalDate": "2025-03-14",
+        "entryDate": "2025-03-17",
         "exitDate": "2025-03-26",
         "exitReason": "leader_change",
-        "signalMomentum10d": 0.08561638840479129,
-        "grossReturn": 0.030846255499734854,
-        "netReturn": 0.02482438606900006,
-        "holdingTradingDays": 20,
-        "startCapital": 0.8155975705624852,
-        "endCapital": 0.8358442795310669
+        "signalMomentum10d": 0.006561499771376285,
+        "grossReturn": 0.039692576915146605,
+        "netReturn": 0.03361903014434131,
+        "holdingTradingDays": 7,
+        "startCapital": 0.8045143892884011,
+        "endCapital": 0.8315613827934443
       },
       {
         "sector": "半導體",
@@ -795,10 +1012,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.04021682957388828,
         "grossReturn": -0.02383243228925247,
-        "netReturn": -0.02953488656302017,
+        "netReturn": -0.02953488656302028,
         "holdingTradingDays": 1,
-        "startCapital": 0.8358442795310669,
-        "endCapital": 0.8111577135507675
+        "startCapital": 0.8315613827934443,
+        "endCapital": 0.8070013116824516
       },
       {
         "sector": "航運",
@@ -808,75 +1025,49 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.032229336070814275,
         "grossReturn": -0.01211600697592663,
-        "netReturn": -0.01788690480571009,
+        "netReturn": -0.01788690480570998,
         "holdingTradingDays": 1,
-        "startCapital": 0.8111577135507675,
-        "endCapital": 0.7966486127460675
+        "startCapital": 0.8070013116824516,
+        "endCapital": 0.7925665560423045
       },
       {
         "sector": "半導體",
         "signalDate": "2025-03-27",
         "entryDate": "2025-03-28",
-        "exitDate": "2025-04-08",
-        "exitReason": "leader_change",
+        "exitDate": "2025-04-01",
+        "exitReason": "momentum_gate",
         "signalMomentum10d": 0.028754354148201045,
-        "grossReturn": -0.13899749612173073,
-        "netReturn": -0.1440271934507248,
-        "holdingTradingDays": 5,
-        "startCapital": 0.7966486127460675,
-        "endCapital": 0.6819095488858381
+        "grossReturn": -0.00016358803212790374,
+        "netReturn": -0.006004308016162807,
+        "holdingTradingDays": 2,
+        "startCapital": 0.7925665560423045,
+        "endCapital": 0.7878077423165172
       },
       {
         "sector": "航運",
-        "signalDate": "2025-04-07",
-        "entryDate": "2025-04-08",
-        "exitDate": "2025-04-09",
-        "exitReason": "leader_change",
-        "signalMomentum10d": -0.11988696670069221,
-        "grossReturn": -0.049191479793180726,
-        "netReturn": -0.05474579473759489,
-        "holdingTradingDays": 1,
-        "startCapital": 0.6819095488858381,
-        "endCapital": 0.6445778686929281
-      },
-      {
-        "sector": "半導體",
-        "signalDate": "2025-04-08",
-        "entryDate": "2025-04-09",
-        "exitDate": "2025-04-15",
-        "exitReason": "leader_change",
-        "signalMomentum10d": -0.12749193638082526,
-        "grossReturn": 0.10058557016547831,
-        "netReturn": 0.09415630628104554,
-        "holdingTradingDays": 4,
-        "startCapital": 0.6445778686929281,
-        "endCapital": 0.705268939919563
-      },
-      {
-        "sector": "航運",
-        "signalDate": "2025-04-14",
-        "entryDate": "2025-04-15",
+        "signalDate": "2025-04-16",
+        "entryDate": "2025-04-17",
         "exitDate": "2025-04-18",
-        "exitReason": "leader_change",
-        "signalMomentum10d": -0.04456630665625864,
-        "grossReturn": -0.026498845814837524,
-        "netReturn": -0.032185723765740804,
-        "holdingTradingDays": 3,
-        "startCapital": 0.705268939919563,
-        "endCapital": 0.6825693486387551
+        "exitReason": "momentum_gate",
+        "signalMomentum10d": 0.001888717151189508,
+        "grossReturn": -0.008900711529909344,
+        "netReturn": -0.014690392072685965,
+        "holdingTradingDays": 1,
+        "startCapital": 0.7878077423165172,
+        "endCapital": 0.77623453770399
       },
       {
         "sector": "AI伺服器",
-        "signalDate": "2025-04-17",
-        "entryDate": "2025-04-18",
+        "signalDate": "2025-04-21",
+        "entryDate": "2025-04-22",
         "exitDate": "2025-04-28",
         "exitReason": "leader_change",
-        "signalMomentum10d": -0.04735927093005136,
-        "grossReturn": 0.034196883740661654,
-        "netReturn": 0.028155441026646022,
-        "holdingTradingDays": 6,
-        "startCapital": 0.6825693486387551,
-        "endCapital": 0.7017873896809498
+        "signalMomentum10d": 0.07447826096001386,
+        "grossReturn": 0.03610069912635705,
+        "netReturn": 0.030048134940432902,
+        "holdingTradingDays": 4,
+        "startCapital": 0.77623453770399,
+        "endCapital": 0.799558937838344
       },
       {
         "sector": "PCB",
@@ -888,8 +1079,8 @@
         "grossReturn": 0.11167350528195308,
         "netReturn": 0.10517946927736022,
         "holdingTradingDays": 11,
-        "startCapital": 0.7017873896809498,
-        "endCapital": 0.775601014873136
+        "startCapital": 0.799558937838344,
+        "endCapital": 0.8836561225761509
       },
       {
         "sector": "航運",
@@ -899,10 +1090,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.1226292173903752,
         "grossReturn": 0.08393426723943853,
-        "netReturn": 0.07760227486522098,
+        "netReturn": 0.0776022748652212,
         "holdingTradingDays": 12,
-        "startCapital": 0.775601014873136,
-        "endCapital": 0.8357894180150656
+        "startCapital": 0.8836561225761509,
+        "endCapital": 0.9522298478866409
       },
       {
         "sector": "PCB",
@@ -912,10 +1103,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.07886324869970496,
         "grossReturn": 0.06167126689744107,
-        "netReturn": 0.055469327749377184,
+        "netReturn": 0.05546932774937696,
         "holdingTradingDays": 8,
-        "startCapital": 0.8357894180150656,
-        "endCapital": 0.8821500951724044
+        "startCapital": 0.9522298478866409,
+        "endCapital": 1.0050493974118044
       },
       {
         "sector": "金融",
@@ -925,10 +1116,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.08493634436872706,
         "grossReturn": -0.0003516735680847427,
-        "netReturn": -0.006191294817431192,
+        "netReturn": -0.006191294817431081,
         "holdingTradingDays": 3,
-        "startCapital": 0.8821500951724044,
-        "endCapital": 0.876688443859967
+        "startCapital": 1.0050493974118044,
+        "endCapital": 0.9988268402863465
       },
       {
         "sector": "PCB",
@@ -940,8 +1131,8 @@
         "grossReturn": -0.013951926878973175,
         "netReturn": -0.019712099860232923,
         "holdingTradingDays": 1,
-        "startCapital": 0.876688443859967,
-        "endCapital": 0.8594070737082872
+        "startCapital": 0.9988268402863465,
+        "endCapital": 0.9791378658675411
       },
       {
         "sector": "AI伺服器",
@@ -951,10 +1142,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.04327293003272925,
         "grossReturn": -0.005164419198394832,
-        "netReturn": -0.010975925948964682,
+        "netReturn": -0.010975925948964793,
         "holdingTradingDays": 1,
-        "startCapital": 0.8594070737082872,
-        "endCapital": 0.8499742853072486
+        "startCapital": 0.9791378658675411,
+        "endCapital": 0.9683909211579516
       },
       {
         "sector": "PCB",
@@ -964,10 +1155,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.048402060432925574,
         "grossReturn": -0.007338861999144797,
-        "netReturn": -0.013137666360235278,
+        "netReturn": -0.013137666360235167,
         "holdingTradingDays": 1,
-        "startCapital": 0.8499742853072486,
-        "endCapital": 0.8388076067321025
+        "startCapital": 0.9683909211579516,
+        "endCapital": 0.9556685243294976
       },
       {
         "sector": "半導體",
@@ -977,10 +1168,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.03574076351147296,
         "grossReturn": -0.01647855745355431,
-        "netReturn": -0.022223970678605376,
+        "netReturn": -0.022223970678605265,
         "holdingTradingDays": 1,
-        "startCapital": 0.8388076067321025,
-        "endCapital": 0.8201659710750971
+        "startCapital": 0.9556685243294976,
+        "endCapital": 0.9344297750663328
       },
       {
         "sector": "AI伺服器",
@@ -990,10 +1181,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.035431251991354294,
         "grossReturn": 0.032810270507821704,
-        "netReturn": 0.026776927938512385,
+        "netReturn": 0.026776927938512163,
         "holdingTradingDays": 1,
-        "startCapital": 0.8201659710750971,
-        "endCapital": 0.842127496180195
+        "startCapital": 0.9344297750663328,
+        "endCapital": 0.9594509338168842
       },
       {
         "sector": "PCB",
@@ -1005,8 +1196,8 @@
         "grossReturn": 0.00987715017541313,
         "netReturn": 0.003977775455862309,
         "holdingTradingDays": 2,
-        "startCapital": 0.842127496180195,
-        "endCapital": 0.8454772902652073
+        "startCapital": 0.9594509338168842,
+        "endCapital": 0.9632674141925252
       },
       {
         "sector": "AI伺服器",
@@ -1016,10 +1207,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.05503385844452061,
         "grossReturn": -0.0077268780555869165,
-        "netReturn": -0.013523415752743295,
+        "netReturn": -0.013523415752743184,
         "holdingTradingDays": 1,
-        "startCapital": 0.8454772902652073,
-        "endCapital": 0.8340435493594481
+        "startCapital": 0.9632674141925252,
+        "endCapital": 0.9502407484693297
       },
       {
         "sector": "PCB",
@@ -1029,10 +1220,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.042566392295414514,
         "grossReturn": 0.05720553656800398,
-        "netReturn": 0.051029684767896155,
+        "netReturn": 0.05102968476789638,
         "holdingTradingDays": 12,
-        "startCapital": 0.8340435493594481,
-        "endCapital": 0.8766045287659581
+        "startCapital": 0.9502407484693297,
+        "endCapital": 0.9987312343173295
       },
       {
         "sector": "半導體",
@@ -1044,8 +1235,8 @@
         "grossReturn": 0.014280654836409168,
         "netReturn": 0.008355556271071762,
         "holdingTradingDays": 1,
-        "startCapital": 0.8766045287659581,
-        "endCapital": 0.8839290472335384
+        "startCapital": 0.9987312343173295,
+        "endCapital": 1.0070761893453448
       },
       {
         "sector": "PCB",
@@ -1057,8 +1248,8 @@
         "grossReturn": 0.017249198006357824,
         "netReturn": 0.011306758174780551,
         "holdingTradingDays": 3,
-        "startCapital": 0.8839290472335384,
-        "endCapital": 0.8939234192142722
+        "startCapital": 1.0070761893453448,
+        "endCapital": 1.0184629562818521
       },
       {
         "sector": "電子零組件",
@@ -1070,8 +1261,8 @@
         "grossReturn": 0.006685847602827977,
         "netReturn": 0.0008051154376866876,
         "holdingTradingDays": 1,
-        "startCapital": 0.8939234192142722,
-        "endCapital": 0.8946431307591913
+        "startCapital": 1.0184629562818521,
+        "endCapital": 1.0192829365306666
       },
       {
         "sector": "PCB",
@@ -1081,10 +1272,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.13114821866215096,
         "grossReturn": -0.007152775861910321,
-        "netReturn": -0.012952667277850494,
+        "netReturn": -0.012952667277850605,
         "holdingTradingDays": 1,
-        "startCapital": 0.8946431307591913,
-        "endCapital": 0.8830551159540531
+        "startCapital": 1.0192829365306666,
+        "endCapital": 1.0060805037917944
       },
       {
         "sector": "電子零組件",
@@ -1094,10 +1285,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.10411108485349592,
         "grossReturn": 0.008034625842600063,
-        "netReturn": 0.002146014552509401,
+        "netReturn": 0.002146014552509179,
         "holdingTradingDays": 3,
-        "startCapital": 0.8830551159540531,
-        "endCapital": 0.8849501650835583
+        "startCapital": 1.0060805037917944,
+        "endCapital": 1.0082395671939273
       },
       {
         "sector": "PCB",
@@ -1107,10 +1298,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.0901638226585632,
         "grossReturn": 0.04899245168934496,
-        "netReturn": 0.04286457806687438,
+        "netReturn": 0.04286457806687416,
         "holdingTradingDays": 6,
-        "startCapital": 0.8849501650835583,
-        "endCapital": 0.9228831805200759
+        "startCapital": 1.0082395671939273,
+        "endCapital": 1.0514573308320228
       },
       {
         "sector": "電子零組件",
@@ -1122,8 +1313,8 @@
         "grossReturn": 0.01307768782020835,
         "netReturn": 0.0071596165979517234,
         "holdingTradingDays": 1,
-        "startCapital": 0.9228831805200759,
-        "endCapital": 0.9294906702572979
+        "startCapital": 1.0514573308320228,
+        "endCapital": 1.0589853621898857
       },
       {
         "sector": "AI伺服器",
@@ -1133,10 +1324,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.10633372611538554,
         "grossReturn": 0.025146275721517286,
-        "netReturn": 0.01915770372364345,
+        "netReturn": 0.019157703723643227,
         "holdingTradingDays": 3,
-        "startCapital": 0.9294906702572979,
-        "endCapital": 0.9472975771319779
+        "startCapital": 1.0589853621898857,
+        "endCapital": 1.0792730900063945
       },
       {
         "sector": "PCB",
@@ -1148,8 +1339,8 @@
         "grossReturn": 0.041878411443628805,
         "netReturn": 0.035792095736566054,
         "holdingTradingDays": 11,
-        "startCapital": 0.9472975771319779,
-        "endCapital": 0.9812033427037028
+        "startCapital": 1.0792730900063945,
+        "endCapital": 1.117902535769803
       },
       {
         "sector": "金融",
@@ -1159,10 +1350,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.015252466937052364,
         "grossReturn": -0.01829555238971281,
-        "netReturn": -0.024030351319757726,
+        "netReturn": -0.024030351319757948,
         "holdingTradingDays": 1,
-        "startCapital": 0.9812033427037028,
-        "endCapital": 0.9576246816624122
+        "startCapital": 1.117902535769803,
+        "endCapital": 1.0910389450940063
       },
       {
         "sector": "半導體",
@@ -1172,36 +1363,36 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.017821586491039376,
         "grossReturn": -0.005795693186579132,
-        "netReturn": -0.011603512239287572,
+        "netReturn": -0.011603512239287794,
         "holdingTradingDays": 1,
-        "startCapital": 0.9576246816624122,
-        "endCapital": 0.9465128719480985
+        "startCapital": 1.0910389450940063,
+        "endCapital": 1.0783790613410684
       },
       {
         "sector": "PCB",
         "signalDate": "2025-08-27",
         "entryDate": "2025-08-28",
         "exitDate": "2025-09-02",
-        "exitReason": "leader_change",
+        "exitReason": "momentum_gate",
         "signalMomentum10d": 0.04136409286504953,
         "grossReturn": -0.062235612590544,
-        "netReturn": -0.06771372794251285,
+        "netReturn": -0.06771372794251296,
         "holdingTradingDays": 3,
-        "startCapital": 0.9465128719480985,
-        "endCapital": 0.8824209568429184
+        "startCapital": 1.0783790613410684,
+        "endCapital": 1.0053579949625169
       },
       {
         "sector": "電子零組件",
-        "signalDate": "2025-09-01",
-        "entryDate": "2025-09-02",
+        "signalDate": "2025-09-02",
+        "entryDate": "2025-09-03",
         "exitDate": "2025-09-09",
         "exitReason": "leader_change",
-        "signalMomentum10d": -0.01155462184873951,
-        "grossReturn": 0.033173085532457236,
-        "netReturn": 0.027137623515466558,
-        "holdingTradingDays": 5,
-        "startCapital": 0.8824209568429184,
-        "endCapital": 0.9063677645518793
+        "signalMomentum10d": 0.012868899386860144,
+        "grossReturn": 0.040091492438553145,
+        "netReturn": 0.03401561533266362,
+        "holdingTradingDays": 4,
+        "startCapital": 1.0053579949625169,
+        "endCapital": 1.0395558657907797
       },
       {
         "sector": "半導體",
@@ -1213,8 +1404,8 @@
         "grossReturn": 0.023072615682710795,
         "netReturn": 0.017096157334113737,
         "holdingTradingDays": 1,
-        "startCapital": 0.9063677645518793,
-        "endCapital": 0.9218631704572271
+        "startCapital": 1.0395558657907797,
+        "endCapital": 1.0573282764299397
       },
       {
         "sector": "電子零組件",
@@ -1224,10 +1415,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.04747637046218504,
         "grossReturn": 0.10146635211061472,
-        "netReturn": 0.09503194298377338,
+        "netReturn": 0.0950319429837736,
         "holdingTradingDays": 14,
-        "startCapital": 0.9218631704572271,
-        "endCapital": 1.0094696187109589
+        "startCapital": 1.0573282764299397,
+        "endCapital": 1.1578082369107612
       },
       {
         "sector": "AI伺服器",
@@ -1237,10 +1428,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.07548561841812702,
         "grossReturn": -0.042586791756925924,
-        "netReturn": -0.048179689146368165,
+        "netReturn": -0.04817968914636794,
         "holdingTradingDays": 8,
-        "startCapital": 1.0094696187109589,
-        "endCapital": 0.9608336862787621
+        "startCapital": 1.1578082369107612,
+        "endCapital": 1.1020253959652964
       },
       {
         "sector": "航運",
@@ -1250,10 +1441,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.06021554123916332,
         "grossReturn": -0.01986305361632157,
-        "netReturn": -0.025588695712678855,
+        "netReturn": -0.025588695712678633,
         "holdingTradingDays": 1,
-        "startCapital": 0.9608336862787621,
-        "endCapital": 0.9362472054500833
+        "startCapital": 1.1020253959652964,
+        "endCapital": 1.0738260034402962
       },
       {
         "sector": "電子零組件",
@@ -1265,8 +1456,8 @@
         "grossReturn": 0.06900917609895107,
         "netReturn": 0.06276437126565959,
         "holdingTradingDays": 5,
-        "startCapital": 0.9362472054500833,
-        "endCapital": 0.9950101726493886
+        "startCapital": 1.0738260034402962,
+        "endCapital": 1.1412240173949424
       },
       {
         "sector": "航運",
@@ -1278,8 +1469,8 @@
         "grossReturn": 0.0113144859860419,
         "netReturn": 0.00540671481693944,
         "holdingTradingDays": 1,
-        "startCapital": 0.9950101726493886,
-        "endCapital": 1.0003899088928576
+        "startCapital": 1.1412240173949424,
+        "endCapital": 1.1473942901992389
       },
       {
         "sector": "電子零組件",
@@ -1291,8 +1482,8 @@
         "grossReturn": -0.012354617954259628,
         "netReturn": -0.018124121896110013,
         "holdingTradingDays": 4,
-        "startCapital": 1.0003899088928576,
-        "endCapital": 0.982258720240445
+        "startCapital": 1.1473942901992389,
+        "endCapital": 1.1265987762207672
       },
       {
         "sector": "AI伺服器",
@@ -1304,8 +1495,8 @@
         "grossReturn": -0.025988707934665123,
         "netReturn": -0.031678565945581716,
         "holdingTradingDays": 1,
-        "startCapital": 0.982258720240445,
-        "endCapital": 0.9511421725956853
+        "startCapital": 1.1265987762207672,
+        "endCapital": 1.090909742594046
       },
       {
         "sector": "電子零組件",
@@ -1315,10 +1506,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.1148517692967687,
         "grossReturn": -0.0009572920602174406,
-        "netReturn": -0.006793375482788022,
+        "netReturn": -0.006793375482788133,
         "holdingTradingDays": 1,
-        "startCapital": 0.9511421725956853,
-        "endCapital": 0.944680706679728
+        "startCapital": 1.090909742594046,
+        "endCapital": 1.0834987830947729
       },
       {
         "sector": "PCB",
@@ -1330,21 +1521,21 @@
         "grossReturn": -0.041490919845366236,
         "netReturn": -0.04709021896302823,
         "holdingTradingDays": 10,
-        "startCapital": 0.944680706679728,
-        "endCapital": 0.9001954853520314
+        "startCapital": 1.0834987830947729,
+        "endCapital": 1.0324765881526654
       },
       {
         "sector": "金融",
         "signalDate": "2025-11-17",
         "entryDate": "2025-11-18",
-        "exitDate": "2025-11-21",
-        "exitReason": "leader_change",
+        "exitDate": "2025-11-19",
+        "exitReason": "momentum_gate",
         "signalMomentum10d": 0.007767500686546265,
-        "grossReturn": -0.004778680368158206,
-        "netReturn": -0.0105924404798452,
-        "holdingTradingDays": 3,
-        "startCapital": 0.9001954853520314,
-        "endCapital": 0.8906602182532146
+        "grossReturn": 0.0005592052271621295,
+        "netReturn": -0.005285737080628183,
+        "holdingTradingDays": 1,
+        "startCapital": 1.0324765881526654,
+        "endCapital": 1.0270191883657864
       },
       {
         "sector": "PCB",
@@ -1354,10 +1545,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.0499274637134571,
         "grossReturn": 0.020477261009749448,
-        "netReturn": 0.014515963881250427,
+        "netReturn": 0.014515963881250649,
         "holdingTradingDays": 2,
-        "startCapital": 0.8906602182532146,
-        "endCapital": 0.903589009811845
+        "startCapital": 1.0270191883657864,
+        "endCapital": 1.0419273618094556
       },
       {
         "sector": "金融",
@@ -1369,8 +1560,8 @@
         "grossReturn": 0.00724431995020236,
         "netReturn": 0.0013603253707694662,
         "holdingTradingDays": 1,
-        "startCapital": 0.903589009811845,
-        "endCapital": 0.9048181848666405
+        "startCapital": 1.0419273618094556,
+        "endCapital": 1.0433447220342238
       },
       {
         "sector": "PCB",
@@ -1382,8 +1573,8 @@
         "grossReturn": 0.031144997324772605,
         "netReturn": 0.025121382741204235,
         "holdingTradingDays": 7,
-        "startCapital": 0.9048181848666405,
-        "endCapital": 0.9275484687998771
+        "startCapital": 1.0433447220342238,
+        "endCapital": 1.069554984127461
       },
       {
         "sector": "半導體",
@@ -1395,8 +1586,8 @@
         "grossReturn": 0.018754298888687737,
         "netReturn": 0.012803066745992187,
         "holdingTradingDays": 1,
-        "startCapital": 0.9275484687998771,
-        "endCapital": 0.9394239337560648
+        "startCapital": 1.069554984127461,
+        "endCapital": 1.0832485679777535
       },
       {
         "sector": "PCB",
@@ -1408,8 +1599,8 @@
         "grossReturn": 0.01910689038615976,
         "netReturn": 0.013153598518312437,
         "holdingTradingDays": 2,
-        "startCapital": 0.9394239337560648,
-        "endCapital": 0.9517807390191858
+        "startCapital": 1.0832485679777535,
+        "endCapital": 1.0974971847364696
       },
       {
         "sector": "半導體",
@@ -1421,8 +1612,8 @@
         "grossReturn": 0.005457119801471899,
         "netReturn": -0.00041643453443807044,
         "holdingTradingDays": 1,
-        "startCapital": 0.9517807390191858,
-        "endCapital": 0.9513843846502452
+        "startCapital": 1.0974971847364696,
+        "endCapital": 1.0970401490072967
       },
       {
         "sector": "PCB",
@@ -1432,10 +1623,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.10020201069898842,
         "grossReturn": -0.03473261391592375,
-        "netReturn": -0.040371392864513855,
+        "netReturn": -0.040371392864513966,
         "holdingTradingDays": 2,
-        "startCapital": 0.9513843846502452,
-        "endCapital": 0.9129756718923664
+        "startCapital": 1.0970401490072967,
+        "endCapital": 1.0527511101635783
       },
       {
         "sector": "金融",
@@ -1447,8 +1638,8 @@
         "grossReturn": 0.060779550497292556,
         "netReturn": 0.05458282046717633,
         "holdingTradingDays": 11,
-        "startCapital": 0.9129756718923664,
-        "endCapital": 0.9628084590821671
+        "startCapital": 1.0527511101635783,
+        "endCapital": 1.1102132350062575
       },
       {
         "sector": "電子零組件",
@@ -1460,8 +1651,8 @@
         "grossReturn": 0.08043144217537357,
         "netReturn": 0.0741199121689069,
         "holdingTradingDays": 8,
-        "startCapital": 0.9628084590821671,
-        "endCapital": 1.0341717375048178
+        "startCapital": 1.1102132350062575,
+        "endCapital": 1.1925021424736792
       },
       {
         "sector": "半導體",
@@ -1471,10 +1662,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.08987790158644704,
         "grossReturn": -0.001278472190723412,
-        "netReturn": -0.007112679383158627,
+        "netReturn": -0.0071126793831581825,
         "holdingTradingDays": 2,
-        "startCapital": 1.0341717375048178,
-        "endCapital": 1.026816005508822
+        "startCapital": 1.1925021424736792,
+        "endCapital": 1.1840202570705347
       },
       {
         "sector": "電子零組件",
@@ -1484,10 +1675,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.10661077528268985,
         "grossReturn": 0.0016992838521714404,
-        "netReturn": -0.00415231842511854,
+        "netReturn": -0.004152318425118429,
         "holdingTradingDays": 1,
-        "startCapital": 1.026816005508822,
-        "endCapital": 1.022552338489941
+        "startCapital": 1.1840202570705347,
+        "endCapital": 1.1791038279413872
       },
       {
         "sector": "半導體",
@@ -1499,8 +1690,8 @@
         "grossReturn": 0.10623408616551089,
         "netReturn": 0.09977182548291541,
         "holdingTradingDays": 4,
-        "startCapital": 1.022552338489941,
-        "endCapital": 1.1245742519529065
+        "startCapital": 1.1791038279413872,
+        "endCapital": 1.2967451692889929
       },
       {
         "sector": "PCB",
@@ -1510,10 +1701,10 @@
         "exitReason": "take_profit",
         "signalMomentum10d": 0.11312836624856652,
         "grossReturn": 0.20338076197526544,
-        "netReturn": 0.1963510019257806,
+        "netReturn": 0.1963510019257808,
         "holdingTradingDays": 9,
-        "startCapital": 1.1245742519529065,
-        "endCapital": 1.345385533063795
+        "startCapital": 1.2967451692889929,
+        "endCapital": 1.5513623825213028
       },
       {
         "sector": "PCB",
@@ -1525,8 +1716,8 @@
         "grossReturn": 0.06888255572613589,
         "netReturn": 0.0626384905679882,
         "holdingTradingDays": 10,
-        "startCapital": 1.345385533063795,
-        "endCapital": 1.4296584520869193
+        "startCapital": 1.5513623825213028,
+        "endCapital": 1.648537380486395
       },
       {
         "sector": "電子零組件",
@@ -1538,8 +1729,8 @@
         "grossReturn": 0.03235617462557605,
         "netReturn": 0.026325484737107496,
         "holdingTradingDays": 1,
-        "startCapital": 1.4296584520869193,
-        "endCapital": 1.4672949038466103
+        "startCapital": 1.648537380486395,
+        "endCapital": 1.6919359261349407
       },
       {
         "sector": "航運",
@@ -1549,10 +1740,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.10525177504487855,
         "grossReturn": -0.012205314804630718,
-        "netReturn": -0.017975690927049093,
+        "netReturn": -0.017975690927049315,
         "holdingTradingDays": 9,
-        "startCapital": 1.4672949038466103,
-        "endCapital": 1.4409192641562294
+        "startCapital": 1.6919359261349407,
+        "endCapital": 1.661522208858368
       },
       {
         "sector": "PCB",
@@ -1562,36 +1753,36 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.054202453311145,
         "grossReturn": -0.08102785684341451,
-        "netReturn": -0.08639619400043197,
+        "netReturn": -0.08639619400043186,
         "holdingTradingDays": 9,
-        "startCapital": 1.4409192641562294,
-        "endCapital": 1.3164293238712281
+        "startCapital": 1.661522208858368,
+        "endCapital": 1.5179730137658145
       },
       {
         "sector": "電子零組件",
         "signalDate": "2026-03-26",
         "entryDate": "2026-03-27",
         "exitDate": "2026-04-01",
-        "exitReason": "leader_change",
+        "exitReason": "momentum_gate",
         "signalMomentum10d": 0.028672597925036254,
         "grossReturn": -0.005964390641039263,
-        "netReturn": -0.011771224217942189,
+        "netReturn": -0.011771224217942078,
         "holdingTradingDays": 3,
-        "startCapital": 1.3164293238712281,
-        "endCapital": 1.300933339132866
+        "startCapital": 1.5179730137658145,
+        "endCapital": 1.500104613063992
       },
       {
         "sector": "金融",
-        "signalDate": "2026-03-31",
-        "entryDate": "2026-04-01",
+        "signalDate": "2026-04-02",
+        "entryDate": "2026-04-07",
         "exitDate": "2026-04-09",
         "exitReason": "leader_change",
-        "signalMomentum10d": -0.03739316379418748,
-        "grossReturn": 0.03826595560037238,
-        "netReturn": 0.03220074268850959,
-        "holdingTradingDays": 4,
-        "startCapital": 1.300933339132866,
-        "endCapital": 1.342824358841187
+        "signalMomentum10d": 0.018153233028230648,
+        "grossReturn": 0.024465233779997986,
+        "netReturn": 0.018480640208224708,
+        "holdingTradingDays": 2,
+        "startCapital": 1.500104613063992,
+        "endCapital": 1.5278275066927258
       },
       {
         "sector": "PCB",
@@ -1601,10 +1792,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.10738684282955917,
         "grossReturn": 0.06102105364176347,
-        "netReturn": 0.05482291282861773,
+        "netReturn": 0.05482291282861795,
         "holdingTradingDays": 4,
-        "startCapital": 1.342824358841187,
-        "endCapital": 1.416441901610082
+        "startCapital": 1.5278275066927258,
+        "endCapital": 1.6115874609093057
       },
       {
         "sector": "電子零組件",
@@ -1614,10 +1805,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.1872143666845653,
         "grossReturn": 0.0023028900969181976,
-        "netReturn": -0.0035522382522511498,
+        "netReturn": -0.0035522382522512608,
         "holdingTradingDays": 2,
-        "startCapital": 1.416441901610082,
-        "endCapital": 1.4114103625050913
+        "startCapital": 1.6115874609093057,
+        "endCapital": 1.6058627182838152
       },
       {
         "sector": "PCB",
@@ -1627,10 +1818,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.33947429371129373,
         "grossReturn": 0.05882575059724293,
-        "netReturn": 0.052640434032353856,
+        "netReturn": 0.05264043403235408,
         "holdingTradingDays": 2,
-        "startCapital": 1.4114103625050913,
-        "endCapital": 1.4857076165851213
+        "startCapital": 1.6058627182838152,
+        "endCapital": 1.6903960287706512
       },
       {
         "sector": "電子零組件",
@@ -1642,8 +1833,8 @@
         "grossReturn": 0.009361190956282961,
         "netReturn": 0.003464830303119504,
         "holdingTradingDays": 1,
-        "startCapital": 1.4857076165851213,
-        "endCapital": 1.4908553413566408
+        "startCapital": 1.6903960287706512,
+        "endCapital": 1.6962529641554085
       },
       {
         "sector": "半導體",
@@ -1655,8 +1846,8 @@
         "grossReturn": 0.07247528403497472,
         "netReturn": 0.06621023132348403,
         "holdingTradingDays": 4,
-        "startCapital": 1.4908553413566408,
-        "endCapital": 1.5895652183777156
+        "startCapital": 1.6962529641554085,
+        "endCapital": 1.8085622652952835
       },
       {
         "sector": "PCB",
@@ -1666,10 +1857,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.32825153271370394,
         "grossReturn": -0.0627313853142143,
-        "netReturn": -0.06820660452275396,
+        "netReturn": -0.06820660452275407,
         "holdingTradingDays": 1,
-        "startCapital": 1.5895652183777156,
-        "endCapital": 1.4811463721647018
+        "startCapital": 1.8085622652952835,
+        "endCapital": 1.685206374111512
       },
       {
         "sector": "半導體",
@@ -1681,8 +1872,8 @@
         "grossReturn": 0.06646714920799113,
         "netReturn": 0.06023719407119432,
         "holdingTradingDays": 2,
-        "startCapital": 1.4811463721647018,
-        "endCapital": 1.5703664736326324
+        "startCapital": 1.685206374111512,
+        "endCapital": 1.7867184775188807
       },
       {
         "sector": "PCB",
@@ -1694,8 +1885,8 @@
         "grossReturn": 0.042548349184504675,
         "netReturn": 0.03645811991847947,
         "holdingTradingDays": 2,
-        "startCapital": 1.5703664736326324,
-        "endCapital": 1.6276190828442905
+        "startCapital": 1.7867184775188807,
+        "endCapital": 1.851858874032827
       },
       {
         "sector": "半導體",
@@ -1707,8 +1898,8 @@
         "grossReturn": 0.049531722901527075,
         "netReturn": 0.043400699031567846,
         "holdingTradingDays": 8,
-        "startCapital": 1.6276190828442905,
-        "endCapital": 1.698258888796852
+        "startCapital": 1.851858874032827,
+        "endCapital": 1.9322308436736637
       },
       {
         "sector": "電子零組件",
@@ -1718,10 +1909,10 @@
         "exitReason": "take_profit",
         "signalMomentum10d": 0.25503979689277273,
         "grossReturn": 0.2475107813243287,
-        "netReturn": 0.240223228017044,
+        "netReturn": 0.2402232280170442,
         "holdingTradingDays": 6,
-        "startCapital": 1.698258888796852,
-        "endCapital": 2.10622012107227
+        "startCapital": 1.9322308436736637,
+        "endCapital": 2.396397574215048
       },
       {
         "sector": "電子零組件",
@@ -1733,8 +1924,8 @@
         "grossReturn": 0.06830789931209669,
         "netReturn": 0.06206719111030834,
         "holdingTradingDays": 7,
-        "startCapital": 2.10622012107227,
-        "endCapital": 2.236947287847239
+        "startCapital": 2.396397574215048,
+        "endCapital": 2.5451352404301324
       },
       {
         "sector": "AI伺服器",
@@ -1744,10 +1935,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.3965273259596617,
         "grossReturn": -0.1496065770438587,
-        "netReturn": -0.1545742995635616,
+        "netReturn": -0.1545742995635614,
         "holdingTradingDays": 2,
-        "startCapital": 2.236947287847239,
-        "endCapital": 1.8911727276676433
+        "startCapital": 2.5451352404301324,
+        "endCapital": 2.151722743346108
       },
       {
         "sector": "金融",
@@ -1757,10 +1948,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.21725143435710756,
         "grossReturn": 0.18153848962898045,
-        "netReturn": 0.17463632504917692,
+        "netReturn": 0.17463632504917714,
         "holdingTradingDays": 9,
-        "startCapital": 1.8911727276676433,
-        "endCapital": 2.2214401828607486
+        "startCapital": 2.151722743346108,
+        "endCapital": 2.527491695768806
       },
       {
         "sector": "電子零組件",
@@ -1770,10 +1961,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.23277816486278402,
         "grossReturn": -0.04519991722247518,
-        "netReturn": -0.05077754958061331,
+        "netReturn": -0.050777549580613424,
         "holdingTradingDays": 3,
-        "startCapital": 2.2214401828607486,
-        "endCapital": 2.10864089383517
+        "startCapital": 2.527491695768806,
+        "endCapital": 2.399151860872317
       },
       {
         "sector": "半導體",
@@ -1783,23 +1974,49 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.13016556218742095,
         "grossReturn": -0.035442386143936244,
-        "netReturn": -0.04107701883341175,
+        "netReturn": -0.04107701883341186,
         "holdingTradingDays": 8,
-        "startCapital": 2.10864089383517,
-        "endCapital": 2.0220242121262006
+        "startCapital": 2.399151860872317,
+        "endCapital": 2.3006018546990497
       },
       {
         "sector": "航運",
         "signalDate": "2026-07-06",
         "entryDate": "2026-07-07",
+        "exitDate": "2026-07-08",
+        "exitReason": "momentum_gate",
+        "signalMomentum10d": 0.006708836325044524,
+        "grossReturn": -0.013380772025583076,
+        "netReturn": -0.019144281508220784,
+        "holdingTradingDays": 1,
+        "startCapital": 2.3006018546990497,
+        "endCapital": 2.2565584851543563
+      },
+      {
+        "sector": "航運",
+        "signalDate": "2026-07-08",
+        "entryDate": "2026-07-09",
+        "exitDate": "2026-07-21",
+        "exitReason": "momentum_gate",
+        "signalMomentum10d": 0.024039480824148862,
+        "grossReturn": -0.007098327880770694,
+        "netReturn": -0.012898537364154472,
+        "holdingTradingDays": 7,
+        "startCapital": 2.2565584851543563,
+        "endCapital": 2.227452181219193
+      },
+      {
+        "sector": "航運",
+        "signalDate": "2026-07-21",
+        "entryDate": "2026-07-22",
         "exitDate": "2026-07-24",
         "exitReason": "leader_change",
-        "signalMomentum10d": 0.006708836325044524,
-        "grossReturn": 0.03392740374486647,
-        "netReturn": 0.027887535245570527,
-        "holdingTradingDays": 12,
-        "startCapital": 2.0220242121262006,
-        "endCapital": 2.078413483609267
+        "signalMomentum10d": 0.021246843282021605,
+        "grossReturn": -0.005937586302126596,
+        "netReturn": -0.011744576461282352,
+        "holdingTradingDays": 2,
+        "startCapital": 2.227452181219193,
+        "endCapital": 2.201291698763014
       },
       {
         "sector": "AI伺服器",
@@ -1809,10 +2026,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.05325251732095019,
         "grossReturn": -0.03329333833270842,
-        "netReturn": -0.03894052506237233,
+        "netReturn": -0.038940525062372444,
         "holdingTradingDays": 3,
-        "startCapital": 2.078413483609267,
-        "endCapital": 1.9974789712608079
+        "startCapital": 2.201291698763014,
+        "endCapital": 2.1155722441977405
       },
       {
         "sector": "航運",
@@ -1822,10 +2039,10 @@
         "exitReason": "leader_change",
         "signalMomentum10d": 0.045808120134081864,
         "grossReturn": -0.004322354845485599,
-        "netReturn": -0.0101387806628499,
+        "netReturn": -0.010138780662849678,
         "holdingTradingDays": 3,
-        "startCapital": 1.9974789712608079,
-        "endCapital": 1.9772269700925396
+        "startCapital": 2.1155722441977405,
+        "endCapital": 2.094122921237407
       },
       {
         "sector": "AI伺服器",
@@ -1837,8 +2054,8 @@
         "grossReturn": 0.07887140274443549,
         "netReturn": 0.07256898598226647,
         "holdingTradingDays": 4,
-        "startCapital": 1.9772269700925396,
-        "endCapital": 2.1207123263689445
+        "startCapital": 2.094122921237407,
+        "endCapital": 2.2460912981538272
       },
       {
         "sector": "PCB",
@@ -1850,31 +2067,43 @@
         "grossReturn": 0.028130598913239213,
         "netReturn": 0.022124593467357068,
         "holdingTradingDays": 2,
-        "startCapital": 2.1207123263689445,
-        "endCapital": 2.1676322244510704
+        "startCapital": 2.2460912981538272,
+        "endCapital": 2.295785155016049
       }
     ]
   },
+  "universeBuyHold": {
+    "name": "equal-weight-18-stock-buy-hold",
+    "entryDate": "2024-08-13",
+    "exitDate": "2026-08-11",
+    "metrics": {
+      "totalReturn": 1.243879194583223,
+      "annualizedReturn": 0.53399254767754,
+      "maxDrawdown": -0.294592672114377
+    }
+  },
+  "rotationAlphaVsUniverse": 2.7628367496907327,
   "sensitivity": [
     {
       "lookback": 5,
       "threshold": 0.15,
       "initialCapital": 1,
-      "finalCapital": 3.2285147952232607,
-      "totalReturn": 2.2285147952232607,
-      "annualizedReturn": 0.8385335020207083,
+      "finalCapital": 3.1363226294742734,
+      "totalReturn": 2.1363226294742734,
+      "annualizedReturn": 0.8110651385814405,
       "taiexReturn": 1.0722996923749593,
-      "excessVsTaiex": 1.1562151028483014,
-      "maxDrawdown": -0.2931354319863031,
+      "excessVsTaiex": 1.0640229370993142,
+      "maxDrawdown": -0.29198204443072506,
       "tradeCount": 11,
       "winRate": 0.9090909090909091,
-      "profitFactor": 6.771658388276201,
-      "avgTradeReturn": 0.1197068721631742,
+      "profitFactor": 6.638848126315622,
+      "avgTradeReturn": 0.11695232572592032,
       "medianHoldingTradingDays": 18,
-      "exposure": 0.9979381443298969,
+      "exposure": 0.9938144329896907,
       "takeProfitCount": 9,
       "stopLossCount": 1,
-      "leaderChangeCount": 0
+      "leaderChangeCount": 0,
+      "momentumGateExitCount": 0
     },
     {
       "lookback": 5,
@@ -1894,7 +2123,8 @@
       "exposure": 0.9979381443298969,
       "takeProfitCount": 2,
       "stopLossCount": 0,
-      "leaderChangeCount": 0
+      "leaderChangeCount": 0,
+      "momentumGateExitCount": 0
     },
     {
       "lookback": 5,
@@ -1914,47 +2144,50 @@
       "exposure": 0.9979381443298969,
       "takeProfitCount": 3,
       "stopLossCount": 1,
-      "leaderChangeCount": 0
+      "leaderChangeCount": 0,
+      "momentumGateExitCount": 0
     },
     {
       "lookback": 10,
       "threshold": 0.15,
       "initialCapital": 1,
-      "finalCapital": 3.0159988003581555,
-      "totalReturn": 2.0159988003581555,
-      "annualizedReturn": 0.7746246183480758,
+      "finalCapital": 3.0371150978821775,
+      "totalReturn": 2.0371150978821775,
+      "annualizedReturn": 0.7810696257968632,
       "taiexReturn": 1.0722996923749593,
-      "excessVsTaiex": 0.9436991079831962,
-      "maxDrawdown": -0.3239581763433421,
+      "excessVsTaiex": 0.9648154055072182,
+      "maxDrawdown": -0.31922491839731026,
       "tradeCount": 15,
       "winRate": 0.8,
-      "profitFactor": 3.181203702125644,
-      "avgTradeReturn": 0.0881378387569752,
-      "medianHoldingTradingDays": 25,
-      "exposure": 0.9979381443298969,
+      "profitFactor": 3.1745239405622394,
+      "avgTradeReturn": 0.08886581739927114,
+      "medianHoldingTradingDays": 20,
+      "exposure": 0.9855670103092784,
       "takeProfitCount": 11,
       "stopLossCount": 3,
-      "leaderChangeCount": 0
+      "leaderChangeCount": 0,
+      "momentumGateExitCount": 0
     },
     {
       "lookback": 10,
       "threshold": 0.2,
       "initialCapital": 1,
-      "finalCapital": 3.5434980283645117,
-      "totalReturn": 2.5434980283645117,
-      "annualizedReturn": 0.9296483465082905,
+      "finalCapital": 5.006715944273956,
+      "totalReturn": 4.006715944273956,
+      "annualizedReturn": 1.30929311008384,
       "taiexReturn": 1.0722996923749593,
-      "excessVsTaiex": 1.4711983359895524,
-      "maxDrawdown": -0.29611652016204915,
-      "tradeCount": 10,
-      "winRate": 0.8,
-      "profitFactor": 5.763305048751792,
-      "avgTradeReturn": 0.148108432803633,
-      "medianHoldingTradingDays": 35,
-      "exposure": 0.9979381443298969,
-      "takeProfitCount": 8,
-      "stopLossCount": 1,
-      "leaderChangeCount": 0
+      "excessVsTaiex": 2.9344162518989965,
+      "maxDrawdown": -0.31806194362778684,
+      "tradeCount": 14,
+      "winRate": 0.7857142857142857,
+      "profitFactor": 4.585107488269401,
+      "avgTradeReturn": 0.1370662383183647,
+      "medianHoldingTradingDays": 24.5,
+      "exposure": 0.9855670103092784,
+      "takeProfitCount": 11,
+      "stopLossCount": 2,
+      "leaderChangeCount": 0,
+      "momentumGateExitCount": 0
     },
     {
       "lookback": 10,
@@ -1974,47 +2207,50 @@
       "exposure": 0.9979381443298969,
       "takeProfitCount": 6,
       "stopLossCount": 2,
-      "leaderChangeCount": 0
+      "leaderChangeCount": 0,
+      "momentumGateExitCount": 0
     },
     {
       "lookback": 20,
       "threshold": 0.15,
       "initialCapital": 1,
-      "finalCapital": 4.219730757947827,
-      "totalReturn": 3.2197307579478274,
-      "annualizedReturn": 1.1129548456999019,
+      "finalCapital": 4.112487375282662,
+      "totalReturn": 3.1124873752826616,
+      "annualizedReturn": 1.084880375407022,
       "taiexReturn": 1.0722996923749593,
-      "excessVsTaiex": 2.147431065572868,
-      "maxDrawdown": -0.2971950650576961,
+      "excessVsTaiex": 2.0401876829077024,
+      "maxDrawdown": -0.3035270871246517,
       "tradeCount": 15,
       "winRate": 0.8666666666666667,
-      "profitFactor": 4.68633938263565,
-      "avgTradeReturn": 0.11077838522357518,
-      "medianHoldingTradingDays": 22,
-      "exposure": 0.9979381443298969,
+      "profitFactor": 4.627336255265832,
+      "avgTradeReturn": 0.1090052790348292,
+      "medianHoldingTradingDays": 21,
+      "exposure": 0.9835051546391752,
       "takeProfitCount": 12,
       "stopLossCount": 2,
-      "leaderChangeCount": 0
+      "leaderChangeCount": 0,
+      "momentumGateExitCount": 0
     },
     {
       "lookback": 20,
       "threshold": 0.2,
       "initialCapital": 1,
-      "finalCapital": 2.9356779260637595,
-      "totalReturn": 1.9356779260637595,
-      "annualizedReturn": 0.7499091513655907,
+      "finalCapital": 2.032239510219461,
+      "totalReturn": 1.032239510219461,
+      "annualizedReturn": 0.4455061479394673,
       "taiexReturn": 1.0722996923749593,
-      "excessVsTaiex": 0.8633782336888003,
-      "maxDrawdown": -0.29611652016204915,
+      "excessVsTaiex": -0.040060182155498225,
+      "maxDrawdown": -0.32218112750971395,
       "tradeCount": 11,
-      "winRate": 0.8181818181818182,
-      "profitFactor": 3.8352425516971222,
-      "avgTradeReturn": 0.11877531367805175,
-      "medianHoldingTradingDays": 35,
-      "exposure": 0.9979381443298969,
-      "takeProfitCount": 8,
-      "stopLossCount": 2,
-      "leaderChangeCount": 0
+      "winRate": 0.7272727272727273,
+      "profitFactor": 2.4348166548027153,
+      "avgTradeReturn": 0.0872609990778566,
+      "medianHoldingTradingDays": 37,
+      "exposure": 0.9855670103092784,
+      "takeProfitCount": 7,
+      "stopLossCount": 3,
+      "leaderChangeCount": 0,
+      "momentumGateExitCount": 0
     },
     {
       "lookback": 20,
@@ -2034,12 +2270,13 @@
       "exposure": 0.9979381443298969,
       "takeProfitCount": 8,
       "stopLossCount": 0,
-      "leaderChangeCount": 0
+      "leaderChangeCount": 0,
+      "momentumGateExitCount": 0
     }
   ],
   "robustness": {
     "total": 9,
     "positiveCount": 9,
-    "beatTaiexCount": 7
+    "beatTaiexCount": 6
   }
 }
