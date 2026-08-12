@@ -2,14 +2,6 @@ name: Momentum Rotation v0.5.1 Backtest
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - feature/momentum-rotation-v051
-    paths:
-      - 'momentumV051Backtest.py'
-      - 'scripts/runMomentumV051Backtest.py'
-      - 'scripts/selfTestMomentumV051.py'
-      - '.github/workflows/momentum-v051-backtest.yml'
 
 permissions:
   contents: write
@@ -35,12 +27,12 @@ jobs:
         run: python scripts/selfTestMomentumV051.py
       - name: Run 5Y calibration / trend ablation
         run: python scripts/runMomentumV051Backtest.py
-      - name: Commit v0.5.1 report
+      - name: Commit compact v0.5.1 report
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/backtests/momentum_rotation_v0.5.1.json docs/MOMENTUM_ROTATION_V051.md
+          git add data/backtests/momentum_rotation_v0.5.1_summary.json docs/MOMENTUM_ROTATION_V051.md
           if git diff --cached --quiet; then
             echo "No v0.5.1 report changes."
             exit 0
