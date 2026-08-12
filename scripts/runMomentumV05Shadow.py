@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import math
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -35,10 +36,23 @@ def read_jsonl(path):
     return out
 
 
+def json_safe(value):
+    """Recursively convert non-finite floats to null without weakening strict JSON."""
+    if isinstance(value, float):
+        return value if math.isfinite(value) else None
+    if isinstance(value, dict):
+        return {k: json_safe(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [json_safe(v) for v in value]
+    if isinstance(value, tuple):
+        return [json_safe(v) for v in value]
+    return value
+
+
 def append_jsonl(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as f:
-        f.write(json.dumps(value, ensure_ascii=False, allow_nan=False) + "\n")
+        f.write(json.dumps(json_safe(value), ensure_ascii=False, allow_nan=False) + "\n")
 
 
 def week_key(date):
@@ -142,18 +156,19 @@ def main():
             "rows": ledger_rows,
         }
         append_jsonl(PRED, snapshot)
-        predictions.append(snapshot)
+        predictions.append(json_safe(snapshot))
 
-    latest = {
+    latest = json_safe({
         "version": "v0.5",
         "updatedAt": datetime.now(timezone.utc).isoformat(),
         "latestPrediction": predictions[-1] if predictions else None,
         "latestScore": scores[-1] if scores else None,
         "summary": summarize_shadow_scores(scores),
-    }
+    })
     SHADOW.mkdir(parents=True, exist_ok=True)
-    LATEST.write_text(json.dumps(latest, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
-    print(json.dumps(latest, ensure_ascii=False, indent=2, allow_nan=False))
+    payload = json.dumps(latest, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
+    LATEST.write_text(payload, encoding="utf-8")
+    print(payload)
 
 
 if __name__ == "__main__":
