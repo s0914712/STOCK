@@ -23,6 +23,18 @@ function makeRows(dates, dailyReturn, start = 100) {
   });
 }
 
+function makeRiseFallRows(dates, start = 100) {
+  let prevClose = start;
+  return dates.map((date, i) => {
+    const dailyReturn = i < 18 ? 0.018 : -0.018;
+    const open = prevClose;
+    const close = prevClose * (1 + dailyReturn);
+    const row = { date, open, high: Math.max(open, close), low: Math.min(open, close), close, volume: 1000 + i };
+    prevClose = close;
+    return row;
+  });
+}
+
 function main() {
   const dates = makeDates(60);
   const histories = new Map([
@@ -73,6 +85,17 @@ function main() {
     takeProfit: 0.20, stopLoss: -0.20, minMomentum: 0,
   });
   assert.strictEqual(gated.trades.length, 0, 'positive momentum gate should stay in cash when every sector is falling');
+
+  const riseFall = new Map([
+    ['A1', makeRiseFallRows(dates, 100)], ['A2', makeRiseFallRows(dates, 101)], ['A3', makeRiseFallRows(dates, 102)],
+    ['B1', makeRows(dates, 0.0002)], ['B2', makeRows(dates, 0.0002)], ['B3', makeRows(dates, 0.0002)],
+  ]);
+  const trailed = backtestRotation({
+    stockHistoryBySymbol: riseFall, taiexRows, sectors,
+    startDate: dates[10], endDate: dates.at(-1), lookback: 10,
+    takeProfit: 0.50, stopLoss: -0.50, trailingStop: 0.05, minMomentum: 0,
+  });
+  assert(trailed.metrics.trailingStopCount >= 1, 'rise-then-fall path should trigger the trailing stop');
 
   console.log('rotationBacktest tests passed');
 }
