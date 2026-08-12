@@ -1,0 +1,50 @@
+{
+  "version": "v0.5.1",
+  "period": {"start": "2021-08-11", "end": "2026-08-12"},
+  "candidate": {
+    "mode": "full_v051",
+    "rules": {
+      "entryRank": 5,
+      "exitRank": 10,
+      "softTrendMin": 2,
+      "ensembleEntryPercentile": 0.70,
+      "ensembleExitPercentile": 0.40,
+      "minimumHoldTradingDays": 10,
+      "rebalanceBand": 0.05,
+      "takeProfit": 0.20,
+      "stopLoss": -0.20
+    }
+  },
+  "strategies": [
+    {"mode":"momentum_only","netReturn":1.8183,"cagr":0.2397,"maxDrawdown":-0.5386,"sharpe":0.76,"turnover":182.23,"precisionAtK":0.3824,"buys":486,"excessVsTAIEX":0.1761,"excessVs0050":-0.2487},
+    {"mode":"trend_ma","netReturn":0.9533,"cagr":0.1490,"maxDrawdown":-0.5567,"sharpe":0.57,"turnover":216.71,"precisionAtK":0.3961,"buys":433,"excessVsTAIEX":-0.6889,"excessVs0050":-1.1137},
+    {"mode":"trend_ma_slope","netReturn":1.3886,"cagr":0.1979,"maxDrawdown":-0.5259,"sharpe":0.68,"turnover":207.74,"precisionAtK":0.3988,"buys":392,"excessVsTAIEX":-0.2536,"excessVs0050":-0.6784},
+    {"mode":"trend_ma_slope_volume","netReturn":1.2180,"cagr":0.1797,"maxDrawdown":-0.5729,"sharpe":0.62,"turnover":250.02,"precisionAtK":0.3878,"buys":396,"excessVsTAIEX":-0.4242,"excessVs0050":-0.8490},
+    {"mode":"trend_full","netReturn":0.5224,"cagr":0.0911,"maxDrawdown":-0.6203,"sharpe":0.42,"turnover":261.50,"precisionAtK":0.3888,"buys":398,"excessVsTAIEX":-1.1199,"excessVs0050":-1.5447},
+    {"mode":"baseline_pct30","netReturn":-0.0127,"cagr":-0.0026,"maxDrawdown":-0.7091,"sharpe":0.19,"turnover":288.39,"precisionAtK":0.3690,"buys":474},
+    {"mode":"lightgbm_pct30","netReturn":0.5582,"cagr":0.0964,"maxDrawdown":-0.7820,"sharpe":0.46,"turnover":293.96,"precisionAtK":0.3525,"buys":297},
+    {"mode":"xgboost_pct30","netReturn":0.0010,"cagr":0.0002,"maxDrawdown":-0.6469,"sharpe":0.23,"turnover":285.76,"precisionAtK":0.3698,"buys":283},
+    {"mode":"ensemble_pct30","netReturn":-0.0520,"cagr":-0.0110,"maxDrawdown":-0.8167,"sharpe":0.21,"turnover":313.85,"precisionAtK":0.3830,"buys":449},
+    {"mode":"ensemble_abs_40","netReturn":-0.4838,"cagr":-0.1281,"maxDrawdown":-0.6390,"sharpe":-0.17,"turnover":152.89,"precisionAtK":0.3034,"buys":182},
+    {"mode":"ensemble_abs_45","netReturn":-0.2925,"cagr":-0.0693,"maxDrawdown":-0.4200,"sharpe":-0.32,"turnover":33.51,"precisionAtK":0.20,"buys":22},
+    {"mode":"ensemble_abs_50","netReturn":-0.0157,"cagr":-0.0033,"maxDrawdown":-0.0496,"sharpe":-0.06,"turnover":2.02,"precisionAtK":0.0,"buys":1},
+    {"mode":"ensemble_abs_55","netReturn":0.0,"cagr":0.0,"maxDrawdown":0.0,"sharpe":null,"turnover":0.0,"precisionAtK":null,"buys":0},
+    {"mode":"ensemble_abs_60","netReturn":0.0,"cagr":0.0,"maxDrawdown":0.0,"sharpe":null,"turnover":0.0,"precisionAtK":null,"buys":0},
+    {"mode":"ensemble_pct_40","netReturn":0.3841,"cagr":0.0697,"maxDrawdown":-0.7413,"sharpe":0.37,"turnover":303.50,"precisionAtK":0.3796,"buys":497},
+    {"mode":"ensemble_pct_30","netReturn":-0.0520,"cagr":-0.0110,"maxDrawdown":-0.8167,"sharpe":0.21,"turnover":313.85,"precisionAtK":0.3830,"buys":449},
+    {"mode":"ensemble_pct_19","netReturn":-0.4923,"cagr":-0.1312,"maxDrawdown":-0.8980,"sharpe":0.06,"turnover":316.62,"precisionAtK":0.3678,"buys":358},
+    {"mode":"full_v051","netReturn":0.8956,"cagr":0.1418,"maxDrawdown":-0.5943,"sharpe":0.53,"turnover":178.46,"precisionAtK":0.3910,"buys":428,"excessVsTAIEX":-0.7467,"excessVs0050":-1.1715}
+  ],
+  "benchmarks": {
+    "TAIEXPriceReturn": 1.6422,
+    "0050SplitAdjustedPriceReturn": 2.0671,
+    "0050DividendsReinvested": false
+  },
+  "promotionGate": {
+    "beatsMomentumReturn": false,
+    "improvesSharpe": false,
+    "improvesDrawdown": false,
+    "reducesTurnover": true,
+    "promotionPassed": false
+  }
+}
