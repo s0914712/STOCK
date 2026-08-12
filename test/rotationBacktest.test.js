@@ -45,6 +45,7 @@ function main() {
     lookback: 10,
     takeProfit: 0.20,
     stopLoss: -0.20,
+    minMomentum: 0,
   });
   assert(result.trades.length >= 1, 'should create at least one trade');
   assert.strictEqual(result.trades[0].sector, 'Strong');
@@ -57,10 +58,21 @@ function main() {
     taiexRows,
     sectors,
     startDate: dates[10], endDate: dates.at(-1), lookback: 10,
-    takeProfit: 0.20, stopLoss: -0.20,
+    takeProfit: 0.20, stopLoss: -0.20, minMomentum: 0,
     costs: { buyCommission: 0, sellCommission: 0, sellTax: 0 },
   });
   assert(noCost.metrics.totalReturn > result.metrics.totalReturn, 'costs should reduce return');
+
+  const falling = new Map([
+    ['A1', makeRows(dates, -0.005)], ['A2', makeRows(dates, -0.004)], ['A3', makeRows(dates, -0.006)],
+    ['B1', makeRows(dates, -0.010)], ['B2', makeRows(dates, -0.009)], ['B3', makeRows(dates, -0.011)],
+  ]);
+  const gated = backtestRotation({
+    stockHistoryBySymbol: falling, taiexRows, sectors,
+    startDate: dates[10], endDate: dates.at(-1), lookback: 10,
+    takeProfit: 0.20, stopLoss: -0.20, minMomentum: 0,
+  });
+  assert.strictEqual(gated.trades.length, 0, 'positive momentum gate should stay in cash when every sector is falling');
 
   console.log('rotationBacktest tests passed');
 }
