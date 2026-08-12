@@ -2,6 +2,11 @@ name: Sector Shadow Prediction
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - feature/sector-radar-mvp
+    paths:
+      - '.github/workflows/sector-shadow.yml'
   schedule:
     # 15:30 Asia/Taipei, Monday-Friday. Runner is idempotent on holidays/weekends.
     - cron: '30 7 * * 1-5'
