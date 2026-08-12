@@ -57,3 +57,5 @@ jobs:
           git commit -m "data: update baseline and ML shadow ledgers"
           git pull --rebase origin "$GITHUB_REF_NAME"
           git push origin HEAD:"$GITHUB_REF_NAME"
+
+# Seed strict-JSON challenger summary once on the feature branch.
