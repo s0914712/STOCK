@@ -39,7 +39,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/shadow/momentum_v05_predictions.jsonl data/shadow/momentum_v05_scores.jsonl data/shadow/momentum_v05_latest.json
+          git add -A data/shadow/
           if git diff --cached --quiet; then
             echo "No v0.5 shadow changes."
             exit 0
