@@ -2,11 +2,6 @@ name: Rotation Validation v0.4
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - feature/sector-radar-v031-v04
-    paths:
-      - '.github/workflows/rotation-v04.yml'
 
 permissions:
   contents: write
