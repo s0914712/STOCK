@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: stock-data-writer-${{ github.ref }}
+  group: rotation-v04-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
