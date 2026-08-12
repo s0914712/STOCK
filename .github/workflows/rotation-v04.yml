@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: rotation-v04-${{ github.ref }}
+  group: stock-data-writer-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -41,4 +41,5 @@ jobs:
             exit 0
           fi
           git commit -m "data: add sector rotation v0.4 validation"
-          git push
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin HEAD:"$GITHUB_REF_NAME"
