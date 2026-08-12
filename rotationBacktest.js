@@ -103,6 +103,7 @@ function backtestRotation({
   lookback = 10,
   takeProfit = 0.20,
   stopLoss = -0.20,
+  trailingStop = null,
   minMomentum = -Infinity,
   costs = DEFAULT_COSTS,
   switchOnLeaderChange = false,
@@ -135,6 +136,7 @@ function backtestRotation({
     position = {
       sector, symbols, entryDate: date, signalDate, signalMomentum,
       entryPrices: prices, startingCapital: capital, notional,
+      peakCloseGross: 1,
     };
     return true;
   }
@@ -152,6 +154,7 @@ function backtestRotation({
       exitDate: date,
       exitReason: reason,
       signalMomentum10d: position.signalMomentum,
+      peakGrossReturn: position.peakCloseGross - 1,
       grossReturn: grossRelative - 1,
       netReturn,
       holdingTradingDays: Math.max(1, dates.indexOf(date) - dates.indexOf(position.entryDate)),
@@ -184,7 +187,10 @@ function backtestRotation({
     if (position) {
       exposedDays += 1;
       closeGross = basketRelative(position.symbols, stockMaps, date, position.entryPrices, 'close');
-      if (Number.isFinite(closeGross)) liquidationEquity = position.notional * closeGross * (1 - sellRate);
+      if (Number.isFinite(closeGross)) {
+        position.peakCloseGross = Math.max(position.peakCloseGross || 1, closeGross);
+        liquidationEquity = position.notional * closeGross * (1 - sellRate);
+      }
     }
     equityCurve.push({ date, equity: liquidationEquity, sector: position ? position.sector : null });
 
@@ -199,9 +205,13 @@ function backtestRotation({
     }
 
     const grossReturnAtClose = Number.isFinite(closeGross) ? closeGross - 1 : null;
+    const trailingFloor = Number.isFinite(trailingStop) && trailingStop > 0 && position.peakCloseGross > 1
+      ? position.peakCloseGross * (1 - trailingStop)
+      : null;
     let reason = null;
     if (Number.isFinite(grossReturnAtClose) && grossReturnAtClose >= takeProfit) reason = 'take_profit';
     else if (Number.isFinite(grossReturnAtClose) && grossReturnAtClose <= stopLoss) reason = 'stop_loss';
+    else if (Number.isFinite(trailingFloor) && Number.isFinite(closeGross) && closeGross <= trailingFloor) reason = 'trailing_stop';
     else if (switchOnLeaderChange && (!leader || leader.sector !== position.sector)) reason = leader ? 'leader_change' : 'momentum_gate';
 
     if (reason) {
@@ -226,6 +236,7 @@ function backtestRotation({
         exitDate: date,
         exitReason: 'end_of_test',
         signalMomentum10d: position.signalMomentum,
+        peakGrossReturn: position.peakCloseGross - 1,
         grossReturn: grossRelative - 1,
         netReturn: exitCapital / position.startingCapital - 1,
         holdingTradingDays: Math.max(1, dates.length - 1 - dates.indexOf(position.entryDate)),
@@ -246,15 +257,17 @@ function backtestRotation({
   const benchmarkReturn = startTaiex && endTaiex ? pctChange(endTaiex.index, startTaiex.index) : null;
   const totalReturn = capital / initialCapital - 1;
   const positiveGate = Number.isFinite(minMomentum) && minMomentum >= 0;
+  const trailLabel = Number.isFinite(trailingStop) && trailingStop > 0 ? `-trail${Math.round(trailingStop * 100)}` : '';
 
   return {
-    strategy: `${positiveGate ? 'positive-' : ''}${lookback}d-leader-${switchOnLeaderChange ? 'rotation' : 'entry-hold'}-tp${Math.round(takeProfit * 100)}-sl${Math.round(Math.abs(stopLoss) * 100)}`,
+    strategy: `${positiveGate ? 'positive-' : ''}${lookback}d-leader-${switchOnLeaderChange ? 'rotation' : 'entry-hold'}-tp${Math.round(takeProfit * 100)}-sl${Math.round(Math.abs(stopLoss) * 100)}${trailLabel}`,
     assumptions: {
       signal: `rank sector by trailing ${lookback} trading-day equal-weight constituent close return`,
       execution: 'signal after close; trade at next session open',
       basket: 'equal capital weight in sector representative stocks at entry',
       takeProfit,
       stopLoss,
+      trailingStop: Number.isFinite(trailingStop) ? trailingStop : null,
       minMomentum: Number.isFinite(minMomentum) ? minMomentum : null,
       switchOnLeaderChange,
       costs,
@@ -276,6 +289,7 @@ function backtestRotation({
       exposure: dates.length ? exposedDays / dates.length : null,
       takeProfitCount: trades.filter(t => t.exitReason === 'take_profit').length,
       stopLossCount: trades.filter(t => t.exitReason === 'stop_loss').length,
+      trailingStopCount: trades.filter(t => t.exitReason === 'trailing_stop').length,
       leaderChangeCount: trades.filter(t => t.exitReason === 'leader_change').length,
       momentumGateExitCount: trades.filter(t => t.exitReason === 'momentum_gate').length,
     },
