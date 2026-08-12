@@ -15,7 +15,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: stock-data-writer-${{ github.ref }}
+  group: ml-challenger-train-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
