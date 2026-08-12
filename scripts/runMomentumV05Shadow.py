@@ -22,6 +22,7 @@ SHADOW = ROOT / "data/shadow"
 PRED = SHADOW / "momentum_v05_predictions.jsonl"
 SCORES = SHADOW / "momentum_v05_scores.jsonl"
 LATEST = SHADOW / "momentum_v05_latest.json"
+MODEL_DIR = ROOT / "data/models/v05"
 
 
 def read_jsonl(path):
@@ -46,11 +47,15 @@ def week_key(date):
 
 
 def main():
+    if not (MODEL_DIR / "bundle.joblib").exists():
+        print("v0.5 model bundle not present yet; shadow run skipped.")
+        return
+
     histories, taiex = fetch_universe(month_count=6, workers=5)
     features = build_feature_rows(histories, taiex, include_unmatured=True)
     as_of = max(r["date"] for r in features)
     current = [r for r in features if r["date"] == as_of]
-    bundle = load_bundle(ROOT / "data/models/v05")
+    bundle = load_bundle(MODEL_DIR)
     rows = predict_rows(current, bundle)
 
     predictions = read_jsonl(PRED)
