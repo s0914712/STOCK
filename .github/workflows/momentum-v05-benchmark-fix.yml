@@ -6,6 +6,7 @@ on:
     branches:
       - feature/momentum-rotation-v05
     paths:
+      - 'scripts/patchMomentumV05Benchmark.py'
       - '.github/workflows/momentum-v05-benchmark-fix.yml'
 
 permissions:
