@@ -131,6 +131,58 @@ function pct(value) {
 
 function finite(value) { return Number.isFinite(value) ? value : null; }
 
+function maxDrawdown(values) {
+  let peak = -Infinity;
+  let out = 0;
+  for (const value of values) {
+    if (!Number.isFinite(value)) continue;
+    peak = Math.max(peak, value);
+    if (peak > 0) out = Math.min(out, value / peak - 1);
+  }
+  return out;
+}
+
+function annualizedReturn(totalReturn, tradingDays) {
+  if (!Number.isFinite(totalReturn) || tradingDays <= 0 || 1 + totalReturn <= 0) return null;
+  return (1 + totalReturn) ** (252 / tradingDays) - 1;
+}
+
+function buyHoldUniverse({ symbols, stockHistoryBySymbol, taiexRows, startDate, endDate, costs = DEFAULT_COSTS }) {
+  const dates = taiexRows.map(r => r.date).filter(d => d >= startDate && d <= endDate);
+  const entryDate = dates[1] || dates[0];
+  const exitDate = dates.at(-1);
+  const maps = new Map([...stockHistoryBySymbol].map(([symbol, rows]) => [symbol, new Map(rows.map(r => [r.date, r]))]));
+  const entry = {};
+  for (const symbol of symbols) {
+    const row = maps.get(symbol) && maps.get(symbol).get(entryDate);
+    if (!row || !Number.isFinite(row.open)) throw new Error(`missing buy-hold entry ${symbol} ${entryDate}`);
+    entry[symbol] = row.open;
+  }
+  const buyRate = costs.buyCommission || 0;
+  const sellRate = (costs.sellCommission || 0) + (costs.sellTax || 0);
+  const curve = [];
+  for (const date of dates.filter(d => d >= entryDate)) {
+    const relatives = symbols.map(symbol => {
+      const row = maps.get(symbol) && maps.get(symbol).get(date);
+      return row && Number.isFinite(row.close) ? row.close / entry[symbol] : null;
+    }).filter(Number.isFinite);
+    if (relatives.length !== symbols.length) continue;
+    const gross = relatives.reduce((a, b) => a + b, 0) / relatives.length;
+    curve.push({ date, equity: gross * (1 - sellRate) / (1 + buyRate) });
+  }
+  const totalReturn = curve.at(-1).equity - 1;
+  return {
+    name: 'equal-weight-18-stock-buy-hold',
+    entryDate,
+    exitDate,
+    metrics: {
+      totalReturn,
+      annualizedReturn: annualizedReturn(totalReturn, curve.length),
+      maxDrawdown: maxDrawdown(curve.map(r => r.equity)),
+    },
+  };
+}
+
 function compact(result) {
   return {
     strategy: result.strategy,
@@ -143,10 +195,12 @@ function compact(result) {
 
 function buildMarkdown(report) {
   const p = report.primary.metrics;
+  const u = report.ungated.metrics;
   const r = report.activeRotation.metrics;
+  const bh = report.universeBuyHold.metrics;
   const rows = report.sensitivity.map(s => `| ${s.lookback} | ${(s.threshold * 100).toFixed(0)}% | ${pct(s.totalReturn)} | ${pct(s.excessVsTaiex)} | ${pct(s.maxDrawdown)} | ${s.tradeCount} |`).join('\n');
   const trades = report.primary.trades.map(t => `| ${t.entryDate} | ${t.sector} | ${pct(t.signalMomentum10d)} | ${t.exitDate} | ${t.exitReason} | ${pct(t.netReturn)} | ${t.holdingTradingDays} |`).join('\n');
-  return `# Sector Rotation Challenger v0.3\n\nGenerated: ${report.generatedAt}\n\n## Test definition\n\n- Period: ${report.period.start} to ${report.period.end} (${report.period.tradingDays} TAIEX trading days)\n- Universe: ${Object.keys(DEFAULT_SECTORS).join(', ')}\n- Signal: trailing 10-trading-day equal-weight return of the three representative stocks in each sector\n- Exact strategy: when flat, select the strongest sector after the close; enter at the next session open; hold until +20% take-profit or -20% stop-loss is observed at a close; exit/reselect at the next session open\n- Costs: buy commission ${(DEFAULT_COSTS.buyCommission * 100).toFixed(4)}%, sell commission ${(DEFAULT_COSTS.sellCommission * 100).toFixed(4)}%, stock transaction tax ${(DEFAULT_COSTS.sellTax * 100).toFixed(3)}%\n- Price-return test only; dividends are not included\n\n## Primary: 10d leader, hold to +20% / -20%\n\n| Metric | Result |\n|---|---:|\n| Net total return | ${pct(p.totalReturn)} |\n| Annualized return | ${pct(p.annualizedReturn)} |\n| TAIEX price return | ${pct(p.taiexReturn)} |\n| Excess vs TAIEX | ${pct(p.excessVsTaiex)} |\n| Max drawdown | ${pct(p.maxDrawdown)} |\n| Trades | ${p.tradeCount} |\n| Win rate | ${pct(p.winRate)} |\n| Avg trade | ${pct(p.avgTradeReturn)} |\n| Median holding days | ${p.medianHoldingTradingDays ?? 'N/A'} |\n| Exposure | ${pct(p.exposure)} |\n| Take-profit exits | ${p.takeProfitCount} |\n| Stop-loss exits | ${p.stopLossCount} |\n\n## Active comparison: switch whenever the 10d leader changes\n\n| Metric | Hold-to-20/20 | Active leader rotation |\n|---|---:|---:|\n| Net total return | ${pct(p.totalReturn)} | ${pct(r.totalReturn)} |\n| Excess vs TAIEX | ${pct(p.excessVsTaiex)} | ${pct(r.excessVsTaiex)} |\n| Max drawdown | ${pct(p.maxDrawdown)} | ${pct(r.maxDrawdown)} |\n| Trades | ${p.tradeCount} | ${r.tradeCount} |\n| Win rate | ${pct(p.winRate)} | ${pct(r.winRate)} |\n\n## Robustness grid\n\n| Lookback | TP/SL | Net return | Excess vs TAIEX | Max DD | Trades |\n|---:|---:|---:|---:|---:|---:|\n${rows}\n\nRobustness: ${report.robustness.beatTaiexCount}/${report.robustness.total} parameter combinations beat TAIEX; ${report.robustness.positiveCount}/${report.robustness.total} were net positive.\n\n## Primary trades\n\n| Entry | Sector | 10d momentum | Exit | Reason | Net return | Hold days |\n|---|---|---:|---|---|---:|---:|\n${trades || '| - | - | - | - | - | - | - |'}\n\n## Interpretation guardrails\n\nThis is a historical simulation over a small six-sector proxy universe. It is not a calibrated forecast and does not include dividends, market impact, slippage beyond next-open execution, constituent changes, or TPEx names. A strategy that works only at one parameter choice should be treated as fragile rather than validated.\n`;
+  return `# Sector Rotation Challenger v0.3\n\nGenerated: ${report.generatedAt}\n\n## Test definition\n\n- Period: ${report.period.start} to ${report.period.end} (${report.period.tradingDays} TAIEX trading days)\n- Universe: ${Object.keys(DEFAULT_SECTORS).join(', ')}\n- Signal: trailing 10-trading-day equal-weight return of the three representative stocks in each sector\n- Primary strategy: only enter when the strongest sector has a **positive** 10-day return; signal after close, enter next session open; hold until +20% take-profit or -20% stop-loss is observed at a close; exit/reselect at the next session open\n- Costs: buy commission ${(DEFAULT_COSTS.buyCommission * 100).toFixed(4)}%, sell commission ${(DEFAULT_COSTS.sellCommission * 100).toFixed(4)}%, stock transaction tax ${(DEFAULT_COSTS.sellTax * 100).toFixed(3)}%\n- Price-return test only; dividends are not included\n\n## Primary: positive 10d leader, hold to +20% / -20%\n\n| Metric | Result |\n|---|---:|\n| Net total return | ${pct(p.totalReturn)} |\n| Annualized return | ${pct(p.annualizedReturn)} |\n| TAIEX price return | ${pct(p.taiexReturn)} |\n| Excess vs TAIEX | ${pct(p.excessVsTaiex)} |\n| Max drawdown | ${pct(p.maxDrawdown)} |\n| Trades | ${p.tradeCount} |\n| Win rate | ${pct(p.winRate)} |\n| Avg trade | ${pct(p.avgTradeReturn)} |\n| Median holding days | ${p.medianHoldingTradingDays ?? 'N/A'} |\n| Exposure | ${pct(p.exposure)} |\n| Take-profit exits | ${p.takeProfitCount} |\n| Stop-loss exits | ${p.stopLossCount} |\n\n## Critical baselines\n\n| Strategy | Net return | Excess vs TAIEX | Max DD | Trades |\n|---|---:|---:|---:|---:|\n| Primary positive-gate 10d / 20-20 | ${pct(p.totalReturn)} | ${pct(p.excessVsTaiex)} | ${pct(p.maxDrawdown)} | ${p.tradeCount} |\n| Ungated (buy least-bad even if all negative) | ${pct(u.totalReturn)} | ${pct(u.excessVsTaiex)} | ${pct(u.maxDrawdown)} | ${u.tradeCount} |\n| Active 10d leader switching | ${pct(r.totalReturn)} | ${pct(r.excessVsTaiex)} | ${pct(r.maxDrawdown)} | ${r.tradeCount} |\n| Same 18 stocks equal-weight buy & hold | ${pct(bh.totalReturn)} | N/A | ${pct(bh.maxDrawdown)} | 1 |\n| TAIEX price index | ${pct(p.taiexReturn)} | 0.00% | N/A | 1 |\n\nRotation alpha vs the curated 18-stock buy-and-hold proxy: **${pct(report.rotationAlphaVsUniverse)}**.\n\n## Robustness grid (positive-momentum gate)\n\n| Lookback | TP/SL | Net return | Excess vs TAIEX | Max DD | Trades |\n|---:|---:|---:|---:|---:|---:|\n${rows}\n\nRobustness: ${report.robustness.beatTaiexCount}/${report.robustness.total} parameter combinations beat TAIEX; ${report.robustness.positiveCount}/${report.robustness.total} were net positive.\n\n## Primary trades\n\n| Entry | Sector | Signal momentum | Exit | Reason | Net return | Hold days |\n|---|---|---:|---|---|---:|---:|\n${trades || '| - | - | - | - | - | - | - |'}\n\n## Interpretation guardrails\n\nThis is still a **curated proxy-universe** backtest: today's six sector definitions and representative stocks are applied backward for two years. That can create survivorship / hindsight selection bias, especially for thematic groups such as AI servers and PCB. The equal-weight 18-stock buy-and-hold comparison helps reveal whether returns come from rotation or simply from having selected strong stocks, but it does not eliminate the bias. Before treating this as investable evidence, v0.4 should repeat the test on point-in-time industry membership or official investable sector/index series.\n`;
 }
 
 async function main() {
@@ -169,13 +223,19 @@ async function main() {
   const insufficient = histories.filter(([, rows]) => rows.length < 400).map(([symbol, rows]) => `${symbol}:${rows.length}`);
   if (insufficient.length) throw new Error(`insufficient stock history: ${insufficient.join(', ')}`);
 
-  const primary = backtestRotation({ stockHistoryBySymbol, taiexRows, startDate, endDate, lookback: 10, takeProfit: 0.20, stopLoss: -0.20 });
-  const activeRotation = backtestRotation({ stockHistoryBySymbol, taiexRows, startDate, endDate, lookback: 10, takeProfit: 0.20, stopLoss: -0.20, switchOnLeaderChange: true });
+  const baseArgs = { stockHistoryBySymbol, taiexRows, startDate, endDate, lookback: 10, takeProfit: 0.20, stopLoss: -0.20 };
+  const primary = backtestRotation({ ...baseArgs, minMomentum: 0 });
+  const ungated = backtestRotation(baseArgs);
+  const activeRotation = backtestRotation({ ...baseArgs, minMomentum: 0, switchOnLeaderChange: true });
+  const universeBuyHold = buyHoldUniverse({ symbols, stockHistoryBySymbol, taiexRows, startDate, endDate });
 
   const sensitivity = [];
   for (const lookback of [5, 10, 20]) {
     for (const threshold of [0.15, 0.20, 0.25]) {
-      const result = backtestRotation({ stockHistoryBySymbol, taiexRows, startDate, endDate, lookback, takeProfit: threshold, stopLoss: -threshold });
+      const result = backtestRotation({
+        stockHistoryBySymbol, taiexRows, startDate, endDate,
+        lookback, takeProfit: threshold, stopLoss: -threshold, minMomentum: 0,
+      });
       sensitivity.push({ lookback, threshold, ...result.metrics });
     }
   }
@@ -187,22 +247,26 @@ async function main() {
 
   const report = {
     version: 'v0.3',
+    revision: 'positive-momentum-gate-and-universe-baseline',
     generatedAt: new Date().toISOString(),
     dataSource: 'TWSE STOCK_DAY + FMTQIK',
     universe: DEFAULT_SECTORS,
     period: primary.period,
     transactionCosts: DEFAULT_COSTS,
     primary: compact(primary),
+    ungated: compact(ungated),
     activeRotation: compact(activeRotation),
+    universeBuyHold,
+    rotationAlphaVsUniverse: primary.metrics.totalReturn - universeBuyHold.metrics.totalReturn,
     sensitivity: sensitivity.map(x => Object.fromEntries(Object.entries(x).map(([k, v]) => [k, typeof v === 'number' ? finite(v) : v]))),
     robustness,
   };
 
   fs.writeFileSync(JSON_PATH, `${JSON.stringify(report, null, 2)}\n`);
   fs.writeFileSync(MD_PATH, buildMarkdown(report));
-  console.log(`Primary total=${pct(primary.metrics.totalReturn)} TAIEX=${pct(primary.metrics.taiexReturn)} excess=${pct(primary.metrics.excessVsTaiex)} maxDD=${pct(primary.metrics.maxDrawdown)} trades=${primary.metrics.tradeCount}`);
-  console.log(`Active total=${pct(activeRotation.metrics.totalReturn)} trades=${activeRotation.metrics.tradeCount}`);
-  console.log(`Robustness beat TAIEX ${robustness.beatTaiexCount}/${robustness.total}`);
+  console.log(`Primary positive-gate total=${pct(primary.metrics.totalReturn)} TAIEX=${pct(primary.metrics.taiexReturn)} excess=${pct(primary.metrics.excessVsTaiex)} maxDD=${pct(primary.metrics.maxDrawdown)} trades=${primary.metrics.tradeCount}`);
+  console.log(`Ungated total=${pct(ungated.metrics.totalReturn)}; active=${pct(activeRotation.metrics.totalReturn)}; universe buy-hold=${pct(universeBuyHold.metrics.totalReturn)}`);
+  console.log(`Rotation alpha vs universe=${pct(report.rotationAlphaVsUniverse)}; robustness beat TAIEX ${robustness.beatTaiexCount}/${robustness.total}`);
 }
 
 main().catch(error => {
