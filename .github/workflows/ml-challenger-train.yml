@@ -47,3 +47,5 @@ jobs:
           fi
           git commit -m "model: retrain sector challenger v0.3.1"
           git push
+
+# Seed retry after import-path fix; remove push trigger after branch validation.
