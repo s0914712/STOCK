@@ -1,7 +1,7 @@
 {
   "name": "taiwan-stock-dashboard",
   "version": "1.0.0",
-  "description": "台灣股票即時看板 - Taiwan Stock Dashboard with Multi-Agent AI, Sector Radar and Shadow Backtests",
+  "description": "台灣股票即時看板 - Taiwan Stock Dashboard with Sector Radar, ML Challengers and Momentum Rotation Shadow Backtests",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -12,6 +12,10 @@
     "ml:self-test": "python mlChallenger.py",
     "ml:train": "python scripts/trainMlChallenger.py",
     "ml:shadow": "python scripts/runMlShadow.py",
+    "v05:self-test": "python scripts/selfTestMomentumV05.py",
+    "v05:train": "python scripts/trainMomentumV05.py",
+    "v05:backtest": "python scripts/runMomentumV05Backtest.py",
+    "v05:shadow": "python scripts/runMomentumV05Shadow.py",
     "test": "node test/sectorRadar.test.js && node test/shadowPrediction.test.js && node test/rotationBacktest.test.js"
   },
   "dependencies": {
