@@ -32,6 +32,8 @@ jobs:
           cache: pip
           cache-dependency-path: requirements-ml.txt
       - run: pip install -r requirements-ml.txt
+      # This runner is model-read-only. The weekly trainer owns model artifacts;
+      # daily shadow owns only append-only prediction/score ledgers.
       - name: Run v0.5 daily portfolio shadow
         run: python scripts/runMomentumV05Shadow.py
       - name: Commit v0.5 shadow ledgers
