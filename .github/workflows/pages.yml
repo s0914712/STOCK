@@ -1,0 +1,61 @@
+name: Deploy Research Dashboard
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'public/research-dashboard.html'
+      - 'public/research-dashboard.css'
+      - 'public/research-dashboard.js'
+      - 'data/shadow/**'
+      - 'data/backtests/ml_challenger_v031.json'
+      - 'data/backtests/rotation_v0.4.json'
+      - '.github/workflows/pages.yml'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble static dashboard
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site/data/shadow _site/data/backtests
+          cp public/research-dashboard.html _site/index.html
+          cp public/research-dashboard.css _site/research-dashboard.css
+          cp public/research-dashboard.js _site/research-dashboard.js
+          cp data/shadow/challenger_latest.json _site/data/shadow/challenger_latest.json
+          cp data/backtests/ml_challenger_v031.json _site/data/backtests/ml_challenger_v031.json
+          cp data/backtests/rotation_v0.4.json _site/data/backtests/rotation_v0.4.json
+          if [ -f data/shadow/latest.json ]; then
+            cp data/shadow/latest.json _site/data/shadow/latest.json
+          fi
+          touch _site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
