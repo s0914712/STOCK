@@ -1,13 +1,14 @@
 {
   "name": "taiwan-stock-dashboard",
   "version": "1.0.0",
-  "description": "台灣股票即時看板 - Taiwan Stock Dashboard with Multi-Agent AI and Sector Radar",
+  "description": "台灣股票即時看板 - Taiwan Stock Dashboard with Multi-Agent AI, Sector Radar and Shadow Backtests",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
     "shadow": "node scripts/shadowRunner.js",
-    "test": "node test/sectorRadar.test.js && node test/shadowPrediction.test.js"
+    "backtest:rotation": "node scripts/runRotationBacktest.js",
+    "test": "node test/sectorRadar.test.js && node test/shadowPrediction.test.js && node test/rotationBacktest.test.js"
   },
   "dependencies": {
     "express": "^4.21.0",
