@@ -1,0 +1,48 @@
+name: Rotation Backtest v0.3
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/sector-radar-mvp
+    paths:
+      - 'rotationBacktest.js'
+      - 'scripts/runRotationBacktest.js'
+      - 'test/rotationBacktest.test.js'
+      - '.github/workflows/rotation-backtest.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rotation-backtest-v03
+  cancel-in-progress: true
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Run two-year TWSE rotation backtest
+        run: npm run backtest:rotation
+      - name: Commit backtest report
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/backtests/rotation_v0.3.json data/backtests/rotation_v0.3.md
+          if git diff --cached --quiet; then
+            echo "Backtest report unchanged."
+            exit 0
+          fi
+          git commit -m "data: update v0.3 rotation backtest"
+          git push

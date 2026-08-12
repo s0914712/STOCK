@@ -1,11 +1,18 @@
 {
   "name": "taiwan-stock-dashboard",
   "version": "1.0.0",
-  "description": "台灣股票即時看板 - Taiwan Stock Dashboard with Multi-Agent AI Trading Suggestions",
+  "description": "台灣股票即時看板 - Taiwan Stock Dashboard with Multi-Agent AI, Sector Radar and Shadow Backtests",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "shadow": "node scripts/shadowRunner.js",
+    "backtest:rotation": "node scripts/runRotationBacktest.js",
+    "backtest:v04": "node scripts/runRotationV04.js",
+    "ml:self-test": "python mlChallenger.py",
+    "ml:train": "python scripts/trainMlChallenger.py",
+    "ml:shadow": "python scripts/runMlShadow.py",
+    "test": "node test/sectorRadar.test.js && node test/shadowPrediction.test.js && node test/rotationBacktest.test.js"
   },
   "dependencies": {
     "express": "^4.21.0",
