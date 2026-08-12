@@ -103,6 +103,7 @@ function backtestRotation({
   lookback = 10,
   takeProfit = 0.20,
   stopLoss = -0.20,
+  minMomentum = -Infinity,
   costs = DEFAULT_COSTS,
   switchOnLeaderChange = false,
   initialCapital = 1,
@@ -113,7 +114,6 @@ function backtestRotation({
   const dates = (taiexRows || []).map(row => row.date).filter(date => (!startDate || date >= startDate) && (!endDate || date <= endDate));
   if (dates.length < lookback + 2) throw new Error('insufficient backtest dates');
 
-  // Warmup comes from the full TAIEX calendar, so signals on the first test day only use prior observations.
   const allDates = (taiexRows || []).map(row => row.date).filter(date => !endDate || date <= endDate);
   const allIndex = new Map(allDates.map((date, i) => [date, i]));
 
@@ -177,7 +177,7 @@ function backtestRotation({
 
     const globalIndex = allIndex.get(date);
     const ranking = rankSectorMomentum({ sectors, stockMaps, dates: allDates, dateIndex: globalIndex, lookback });
-    const leader = ranking[0] || null;
+    const leader = ranking.find(row => row.momentum > minMomentum) || null;
 
     let liquidationEquity = capital;
     let closeGross = null;
@@ -189,10 +189,12 @@ function backtestRotation({
     equityCurve.push({ date, equity: liquidationEquity, sector: position ? position.sector : null });
 
     const nextDate = dates[localIndex + 1];
-    if (!nextDate || !leader) continue;
+    if (!nextDate) continue;
 
     if (!position) {
-      pending = { type: 'entry', date: nextDate, sector: leader.sector, signalDate: date, signalMomentum: leader.momentum };
+      if (leader) {
+        pending = { type: 'entry', date: nextDate, sector: leader.sector, signalDate: date, signalMomentum: leader.momentum };
+      }
       continue;
     }
 
@@ -200,17 +202,18 @@ function backtestRotation({
     let reason = null;
     if (Number.isFinite(grossReturnAtClose) && grossReturnAtClose >= takeProfit) reason = 'take_profit';
     else if (Number.isFinite(grossReturnAtClose) && grossReturnAtClose <= stopLoss) reason = 'stop_loss';
-    else if (switchOnLeaderChange && leader.sector !== position.sector) reason = 'leader_change';
+    else if (switchOnLeaderChange && (!leader || leader.sector !== position.sector)) reason = leader ? 'leader_change' : 'momentum_gate';
 
     if (reason) {
       pending = {
         type: 'exit', date: nextDate, reason,
-        nextSector: leader.sector, signalDate: date, signalMomentum: leader.momentum,
+        nextSector: leader ? leader.sector : null,
+        signalDate: date,
+        signalMomentum: leader ? leader.momentum : null,
       };
     }
   }
 
-  // Liquidate remaining position at the final close for a finite-window NAV.
   if (position) {
     const date = dates.at(-1);
     const grossRelative = basketRelative(position.symbols, stockMaps, date, position.entryPrices, 'close');
@@ -242,15 +245,17 @@ function backtestRotation({
   const endTaiex = taiexMap.get(dates.at(-1));
   const benchmarkReturn = startTaiex && endTaiex ? pctChange(endTaiex.index, startTaiex.index) : null;
   const totalReturn = capital / initialCapital - 1;
+  const positiveGate = Number.isFinite(minMomentum) && minMomentum >= 0;
 
   return {
-    strategy: switchOnLeaderChange ? '10d-leader-rotation-tp20-sl20' : '10d-leader-entry-hold-tp20-sl20',
+    strategy: `${positiveGate ? 'positive-' : ''}${lookback}d-leader-${switchOnLeaderChange ? 'rotation' : 'entry-hold'}-tp${Math.round(takeProfit * 100)}-sl${Math.round(Math.abs(stopLoss) * 100)}`,
     assumptions: {
-      signal: 'rank sector by trailing 10 trading-day equal-weight constituent close return',
+      signal: `rank sector by trailing ${lookback} trading-day equal-weight constituent close return`,
       execution: 'signal after close; trade at next session open',
       basket: 'equal capital weight in sector representative stocks at entry',
       takeProfit,
       stopLoss,
+      minMomentum: Number.isFinite(minMomentum) ? minMomentum : null,
       switchOnLeaderChange,
       costs,
     },
@@ -272,6 +277,7 @@ function backtestRotation({
       takeProfitCount: trades.filter(t => t.exitReason === 'take_profit').length,
       stopLossCount: trades.filter(t => t.exitReason === 'stop_loss').length,
       leaderChangeCount: trades.filter(t => t.exitReason === 'leader_change').length,
+      momentumGateExitCount: trades.filter(t => t.exitReason === 'momentum_gate').length,
     },
     trades,
     equityCurve,
