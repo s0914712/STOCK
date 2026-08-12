@@ -1,0 +1,44 @@
+name: Rotation Validation v0.4
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/sector-radar-v031-v04
+    paths:
+      - '.github/workflows/rotation-v04.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rotation-v04-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Run five-year trailing-stop and official-index validation
+        run: node scripts/runRotationV04.js
+      - name: Commit v0.4 report
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/backtests/rotation_v0.4.json data/backtests/rotation_v0.4.md
+          if git diff --cached --quiet; then
+            echo "No v0.4 report changes."
+            exit 0
+          fi
+          git commit -m "data: add sector rotation v0.4 validation"
+          git push
