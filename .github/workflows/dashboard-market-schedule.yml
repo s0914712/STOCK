@@ -1,0 +1,49 @@
+name: Daily Market Dashboard Refresh
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 8 * * 1-5' # 16:20 Asia/Taipei
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-market-dashboard
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/leverage-5050-challenger
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build latest market snapshot
+        run: |
+          node --check scripts/runDashboardMarketSnapshot.js
+          node scripts/runDashboardMarketSnapshot.js
+      - name: Publish snapshot to challenger branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/dashboard/market_latest.json
+          if git diff --cached --quiet; then
+            echo "No market snapshot changes."
+            exit 0
+          fi
+          git commit -m "data: update daily market dashboard"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin feature/leverage-5050-challenger
+            if git push origin HEAD:feature/leverage-5050-challenger; then
+              exit 0
+            fi
+            sleep $((attempt * 2))
+          done
+          exit 1
