@@ -1,6 +1,6 @@
 {
   "version": "dashboard-market-v1",
-  "generatedAt": "2026-08-13T22:32:15.609Z",
+  "generatedAt": "2026-08-13T22:39:19.038Z",
   "dataSource": "TWSE FMTQIK + STOCK_DAY; sector score from sector-radar-baseline-v0.1",
   "market": {
     "asOf": "2026-08-13",
