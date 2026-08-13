@@ -212,6 +212,10 @@ Generated: ${report.generatedAt}
 Data snapshot: ${report.dataFetchedAt}
 Window: ${report.period.start} → ${report.period.end} (${report.tradingDays} trading days)
 
+${report.corporateActions.length
+  ? `已還原 ${report.corporateActions.length} 筆公司行為（TWSE STOCK_DAY 提供的是未還原價）：\n\n| 代號 | 日期 | 還原前 | 還原後 | 推定分割 |\n|---|---|---:|---:|---|\n${report.corporateActions.map(e => `| ${e.symbol} | ${e.date} | ${e.previousClose} | ${e.close} | ${e.impliedSplit} |`).join('\n')}`
+  : '未偵測到需要還原的公司行為。'}
+
 ## 結論
 
 ${report.conclusion}
@@ -285,7 +289,7 @@ async function main() {
 
   const sectorSymbols = [...new Set(Object.values(DEFAULT_SECTORS).flat())];
   const symbols = [...new Set([...sectorSymbols, BENCHMARK])];
-  const { taiexRows, histories, fetchedAt } = await loadMarketData({
+  const { taiexRows, histories, fetchedAt, corporateActions } = await loadMarketData({
     symbols,
     months: monthKeys(64),
     refresh: args.has('--refresh'),
@@ -299,6 +303,24 @@ async function main() {
 
   const endDate = taiexRows.at(-1).date;
   const startDate = subtractYears(endDate, 5);
+
+  // Independent sanity gate. 0050 tracks the Taiwan 50, so over five years it
+  // cannot diverge wildly from TAIEX. An unadjusted 1:4 split once made this
+  // benchmark print -23.77% against a +161.92% index, and the whole report was
+  // wrong but looked plausible. Fail loudly instead of publishing that again.
+  const benchmarkWindow = histories.get(BENCHMARK).filter(r => r.date >= startDate && r.date <= endDate);
+  const taiexWindow = taiexRows.filter(r => r.date >= startDate && r.date <= endDate);
+  const benchmarkReturn = benchmarkWindow.at(-1).close / benchmarkWindow[0].close - 1;
+  const taiexReturn = taiexWindow.at(-1).index / taiexWindow[0].index - 1;
+  const divergence = Math.abs(benchmarkReturn - taiexReturn);
+  console.log(`[sanity] ${BENCHMARK} ${(benchmarkReturn * 100).toFixed(2)}% vs TAIEX ${(taiexReturn * 100).toFixed(2)}% over the window`);
+  if (divergence > 0.80) {
+    throw new Error(
+      `${BENCHMARK} returned ${(benchmarkReturn * 100).toFixed(2)}% while TAIEX returned ${(taiexReturn * 100).toFixed(2)}% `
+      + `(${(divergence * 100).toFixed(0)}pp apart). A Taiwan-50 tracker cannot diverge that far from the index; `
+      + 'the price series is almost certainly still carrying an unadjusted corporate action.',
+    );
+  }
   const shared = {
     stockHistoryBySymbol: histories,
     benchmarkSymbol: BENCHMARK,
@@ -406,6 +428,7 @@ async function main() {
     generatedAt: new Date().toISOString(),
     dataFetchedAt: fetchedAt,
     benchmarkSymbol: BENCHMARK,
+    corporateActions,
     period: { start: startDate, end: endDate },
     tradingDays: benchmarkDates.length,
     transactionCosts: DEFAULT_COSTS,

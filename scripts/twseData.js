@@ -147,6 +147,114 @@ async function mapLimit(items, limit, worker) {
   return results;
 }
 
+// Taiwan enforces a +/-10% daily price limit, so any close-to-close move beyond
+// it is arithmetically impossible from trading alone and must be a corporate
+// action. That makes split detection unusually reliable in this market.
+const TW_DAILY_LIMIT = 0.10;
+const CORPORATE_ACTION_TOLERANCE = 0.11;
+
+/**
+ * STOCK_DAY serves raw, unadjusted prices. 0050 split 1:4 in 2025, which shows
+ * up as a -75% single-day "loss" and silently destroyed a whole benchmark
+ * comparison before this was added. Back-adjust every price prior to an event
+ * so the series is continuous in latest-price terms.
+ *
+ * @returns {{rows: object[], events: object[]}}
+ */
+/**
+ * A detected gap mixes the corporate action with that session's real price
+ * move. Splits use clean ratios, so snapping to the nearest one — and only
+ * when the leftover move is a legal trading day — keeps that day's genuine
+ * return instead of swallowing it into the adjustment factor.
+ *
+ * Capital reductions can use arbitrary ratios; those will not snap, and the
+ * raw ratio is used, which costs one session's return at that event.
+ */
+function snapToSplitRatio(ratio, tolerance = CORPORATE_ACTION_TOLERANCE) {
+  let best = null;
+  for (let n = 2; n <= 20; n += 1) {
+    for (const candidate of [1 / n, n]) {
+      const residual = Math.abs(ratio / candidate - 1);
+      if (residual <= tolerance && (best === null || residual < best.residual)) {
+        best = { value: candidate, residual };
+      }
+    }
+  }
+  return best ? best.value : ratio;
+}
+
+function adjustForCorporateActions(rows, { symbol = '?', tolerance = CORPORATE_ACTION_TOLERANCE } = {}) {
+  const sorted = (rows || []).slice().sort((a, b) => a.date.localeCompare(b.date));
+  const eventByIndex = new Map();
+  const events = [];
+
+  for (let i = 1; i < sorted.length; i += 1) {
+    const prev = sorted[i - 1].close;
+    const current = sorted[i].close;
+    if (!(prev > 0) || !(current > 0)) continue;
+    const observedRatio = current / prev;
+    if (Math.abs(observedRatio - 1) > tolerance) {
+      const ratio = snapToSplitRatio(observedRatio, tolerance);
+      eventByIndex.set(i, ratio);
+      events.push({
+        symbol,
+        date: sorted[i].date,
+        previousClose: prev,
+        close: current,
+        observedRatio,
+        ratio,
+        snapped: ratio !== observedRatio,
+        // 0.25 reads as "1 share became 4"; 4 reads as a 4:1 reverse split.
+        impliedSplit: ratio < 1 ? `1:${(1 / ratio).toFixed(2)}` : `${ratio.toFixed(2)}:1`,
+      });
+    }
+  }
+
+  if (!events.length) return { rows: sorted, events };
+
+  const factors = new Array(sorted.length).fill(1);
+  let cumulative = 1;
+  for (let i = sorted.length - 1; i >= 0; i -= 1) {
+    factors[i] = cumulative;
+    if (eventByIndex.has(i)) cumulative *= eventByIndex.get(i);
+  }
+
+  const adjusted = sorted.map((row, i) => {
+    const f = factors[i];
+    if (f === 1) return row;
+    return {
+      ...row,
+      open: Number.isFinite(row.open) ? row.open * f : row.open,
+      high: Number.isFinite(row.high) ? row.high * f : row.high,
+      low: Number.isFinite(row.low) ? row.low * f : row.low,
+      close: Number.isFinite(row.close) ? row.close * f : row.close,
+      volume: Number.isFinite(row.volume) && f > 0 ? row.volume / f : row.volume,
+    };
+  });
+
+  return { rows: adjusted, events };
+}
+
+/**
+ * Tripwire for anything the adjuster missed. A surviving move past the daily
+ * limit means the series is still wrong, and a wrong series must stop the run
+ * rather than quietly produce a report.
+ */
+function assertNoUnadjustedGaps(rows, { symbol = '?', tolerance = CORPORATE_ACTION_TOLERANCE } = {}) {
+  for (let i = 1; i < rows.length; i += 1) {
+    const prev = rows[i - 1].close;
+    const current = rows[i].close;
+    if (!(prev > 0) || !(current > 0)) continue;
+    const move = current / prev - 1;
+    if (Math.abs(move) > tolerance) {
+      throw new Error(
+        `${symbol}: ${rows[i].date} moved ${(move * 100).toFixed(2)}% close-to-close, `
+        + `beyond Taiwan's +/-${TW_DAILY_LIMIT * 100}% limit. The series still holds an unadjusted corporate action.`,
+      );
+    }
+  }
+}
+
 function readCache() {
   if (!fs.existsSync(CACHE_PATH)) return null;
   try {
@@ -189,7 +297,7 @@ async function loadMarketData({ symbols, months = monthKeys(64), refresh = false
   const cache = refresh ? null : readCache();
   if (cacheCovers(cache, symbols)) {
     console.log(`[cache] reusing TWSE snapshot fetched at ${cache.fetchedAt}`);
-    return hydrate(cache);
+    return finalize(hydrate(cache));
   }
   if (offline) {
     throw new Error(`no usable cache at ${CACHE_PATH}; run once with network access to populate it`);
@@ -210,11 +318,43 @@ async function loadMarketData({ symbols, months = monthKeys(64), refresh = false
     official: Object.fromEntries(Object.entries(official).map(([k, v]) => [k, [...v]])),
   });
 
-  return { source: 'network', fetchedAt: new Date().toISOString(), taiexRows, histories, official };
+  return finalize({ source: 'network', fetchedAt: new Date().toISOString(), taiexRows, histories, official });
+}
+
+/**
+ * The cache deliberately stores raw TWSE prices — raw is the source of truth —
+ * so adjustment happens on every read instead, keeping it deterministic and
+ * making a re-fetch unnecessary when the adjustment logic changes.
+ */
+function finalize(loaded) {
+  const adjustedHistories = new Map();
+  const corporateActions = [];
+
+  for (const [symbol, rows] of loaded.histories.entries()) {
+    const { rows: adjusted, events } = adjustForCorporateActions(rows, { symbol });
+    corporateActions.push(...events);
+    assertNoUnadjustedGaps(adjusted, { symbol });
+    adjustedHistories.set(symbol, adjusted);
+  }
+
+  if (corporateActions.length) {
+    console.log(`[adjust] back-adjusted ${corporateActions.length} corporate action(s):`);
+    for (const e of corporateActions) {
+      console.log(`  ${e.symbol} ${e.date}: ${e.previousClose} -> ${e.close} (${e.impliedSplit})`);
+    }
+  } else {
+    console.log('[adjust] no corporate actions detected');
+  }
+
+  return { ...loaded, histories: adjustedHistories, corporateActions };
 }
 
 module.exports = {
   CACHE_PATH,
+  TW_DAILY_LIMIT,
+  CORPORATE_ACTION_TOLERANCE,
+  adjustForCorporateActions,
+  assertNoUnadjustedGaps,
   fetchJSON,
   parseRocDate,
   monthKeys,
