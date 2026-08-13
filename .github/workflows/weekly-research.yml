@@ -1,0 +1,68 @@
+name: Weekly Research Refresh
+
+# Fetches TWSE data once a week and regenerates both comparison reports from
+# that single snapshot, so the v0.5 sweep and the 0050 battle can never
+# disagree because they were run against different downloads.
+#
+# Order matters: the 0050 battle runs first because it fetches the widest
+# symbol set (18 sector constituents plus 0050) and writes the cache. The v0.5
+# sweep then needs only the 18 sector symbols, so it reuses that cache instead
+# of hitting TWSE a second time.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Saturday 09:00 Asia/Taipei. The market is closed and Friday's data has
+    # settled, so a weekend run sees a complete trading week.
+    - cron: '0 1 * * 6'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-research-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+
+      - name: Fetch TWSE data and run 0050 head-to-head
+        run: node scripts/runBenchmarkBattle.js --refresh
+
+      - name: Run v0.5 robustness sweep on the same snapshot
+        run: node scripts/runRotationV05.js --offline
+
+      - name: Commit refreshed reports
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/backtests/benchmark_battle_0050.json \
+                  data/backtests/benchmark_battle_0050.md \
+                  data/backtests/rotation_v0.5.json \
+                  data/backtests/rotation_v0.5.md
+          if git diff --cached --quiet; then
+            echo "No report changes."
+            exit 0
+          fi
+          git commit -m "data: weekly refresh of 0050 battle and v0.5 robustness sweep"
+          for attempt in 1 2 3 4; do
+            if git pull --rebase origin "$GITHUB_REF_NAME" && git push origin HEAD:"$GITHUB_REF_NAME"; then
+              exit 0
+            fi
+            sleep $((2 ** attempt))
+          done
+          echo "push failed after retries" >&2
+          exit 1

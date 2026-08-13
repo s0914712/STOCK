@@ -2,146 +2,14 @@
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 const { DEFAULT_SECTORS } = require('../sectorRadar');
 const { DEFAULT_COSTS, backtestRotation } = require('../rotationBacktest');
+const { loadMarketData, monthKeys } = require('./twseData');
 
 const ROOT = path.join(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'data', 'backtests');
 const JSON_PATH = path.join(OUT_DIR, 'rotation_v0.4.json');
 const MD_PATH = path.join(OUT_DIR, 'rotation_v0.4.md');
-
-function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
-function fetchJSON(url, attempts = 3) {
-  return new Promise((resolve, reject) => {
-    const req = https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0 STOCK-v0.4', Accept: 'application/json' } }, res => {
-      let body = '';
-      res.on('data', chunk => { body += chunk; });
-      res.on('end', async () => {
-        try {
-          if (res.statusCode < 200 || res.statusCode >= 300) throw new Error(`HTTP ${res.statusCode}`);
-          resolve(JSON.parse(body));
-        } catch (error) {
-          if (attempts > 1) {
-            await sleep(700);
-            try { resolve(await fetchJSON(url, attempts - 1)); } catch (retry) { reject(retry); }
-          } else reject(error);
-        }
-      });
-    });
-    req.on('error', async error => {
-      if (attempts > 1) {
-        await sleep(700);
-        try { resolve(await fetchJSON(url, attempts - 1)); } catch (retry) { reject(retry); }
-      } else reject(error);
-    });
-    req.setTimeout(20000, () => req.destroy(new Error('request timeout')));
-  });
-}
-
-function parseRocDate(value) {
-  const [y, m, d] = String(value).split('/');
-  return y && m && d ? `${Number(y) + 1911}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}` : null;
-}
-
-function monthKeys(count = 64) {
-  const now = new Date();
-  return Array.from({ length: count }, (_, i) => {
-    const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1));
-    return `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, '0')}01`;
-  }).reverse();
-}
-
-async function fetchStockHistory(symbol, months) {
-  const rows = [];
-  for (const key of months) {
-    try {
-      const data = await fetchJSON(`https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&date=${key}&stockNo=${symbol}`);
-      if (data.stat === 'OK' && Array.isArray(data.data)) {
-        for (const r of data.data) {
-          const date = parseRocDate(r[0]);
-          if (!date) continue;
-          rows.push({
-            date,
-            volume: Number(String(r[1]).replace(/,/g, '')),
-            open: Number(String(r[3]).replace(/,/g, '')),
-            high: Number(String(r[4]).replace(/,/g, '')),
-            low: Number(String(r[5]).replace(/,/g, '')),
-            close: Number(String(r[6]).replace(/,/g, '')),
-          });
-        }
-      }
-    } catch (error) { console.warn(`[${symbol}] ${key}: ${error.message}`); }
-    await sleep(65);
-  }
-  const unique = new Map(rows.filter(r => Number.isFinite(r.open) && Number.isFinite(r.close)).map(r => [r.date, r]));
-  return [...unique.values()].sort((a, b) => a.date.localeCompare(b.date));
-}
-
-async function fetchTaiexHistory(months) {
-  const rows = [];
-  for (const key of months) {
-    try {
-      const data = await fetchJSON(`https://www.twse.com.tw/exchangeReport/FMTQIK?response=json&date=${key}`);
-      if (data.stat === 'OK' && Array.isArray(data.data)) {
-        for (const r of data.data) {
-          const date = parseRocDate(r[0]);
-          const index = Number(String(r[4]).replace(/,/g, ''));
-          if (date && Number.isFinite(index)) rows.push({ date, index });
-        }
-      }
-    } catch (error) { console.warn(`[TAIEX] ${key}: ${error.message}`); }
-    await sleep(65);
-  }
-  const unique = new Map(rows.map(r => [r.date, r]));
-  return [...unique.values()].sort((a, b) => a.date.localeCompare(b.date));
-}
-
-async function fetchOfficialElectronicFinance(months) {
-  const wanted = {
-    '半導體': '半導體類指數',
-    '電子零組件': '電子零組件類指數',
-    '金融': '金融保險類指數',
-  };
-  const series = Object.fromEntries(Object.keys(wanted).map(k => [k, new Map()]));
-  for (const key of months) {
-    try {
-      const data = await fetchJSON(`https://www.twse.com.tw/indicesReport/EFTRI_HIST?response=json&date=${key}`);
-      const fields = data.fields || data.fields1 || [];
-      const rows = data.data || data.data1 || [];
-      const indexes = {};
-      for (const [sector, label] of Object.entries(wanted)) {
-        indexes[sector] = fields.findIndex(f => String(f).includes(label.replace('類指數', '')));
-      }
-      for (const r of rows) {
-        const date = parseRocDate(r[0]);
-        if (!date) continue;
-        for (const sector of Object.keys(wanted)) {
-          const idx = indexes[sector];
-          if (idx <= 0) continue;
-          const value = Number(String(r[idx]).replace(/,/g, ''));
-          if (Number.isFinite(value)) series[sector].set(date, value);
-        }
-      }
-    } catch (error) { console.warn(`[EFTRI_HIST] ${key}: ${error.message}`); }
-    await sleep(65);
-  }
-  return Object.fromEntries(Object.entries(series).map(([k, v]) => [k, v]));
-}
-
-async function mapLimit(items, limit, worker) {
-  const results = new Array(items.length);
-  let cursor = 0;
-  async function run() {
-    while (cursor < items.length) {
-      const i = cursor++;
-      results[i] = await worker(items[i], i);
-    }
-  }
-  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, run));
-  return results;
-}
 
 function subtractYears(isoDate, years) {
   const d = new Date(`${isoDate}T00:00:00Z`);
@@ -195,17 +63,21 @@ function buildMarkdown(report) {
 }
 
 async function main() {
+  const args = new Set(process.argv.slice(2));
   fs.mkdirSync(OUT_DIR, { recursive: true });
-  const months = monthKeys(64);
-  const taiexRows = await fetchTaiexHistory(months);
+
+  const symbols = [...new Set(Object.values(DEFAULT_SECTORS).flat())];
+  const { taiexRows, histories, official } = await loadMarketData({
+    symbols,
+    months: monthKeys(64),
+    refresh: args.has('--refresh'),
+    offline: args.has('--offline'),
+  });
+
   if (taiexRows.length < 1000) throw new Error(`insufficient TAIEX history: ${taiexRows.length}`);
   const endDate = taiexRows.at(-1).date;
   const startDate = subtractYears(endDate, 5);
-
-  const symbols = [...new Set(Object.values(DEFAULT_SECTORS).flat())];
-  const fetched = await mapLimit(symbols, 5, async symbol => [symbol, await fetchStockHistory(symbol, months)]);
-  const histories = new Map(fetched);
-  const insufficient = fetched.filter(([, rows]) => rows.filter(r => r.date >= startDate).length < 900);
+  const insufficient = [...histories].filter(([, rows]) => rows.filter(r => r.date >= startDate).length < 900);
   if (insufficient.length) throw new Error(`insufficient stock history: ${insufficient.map(([s, r]) => `${s}:${r.length}`).join(', ')}`);
 
   const configs = [
@@ -235,7 +107,6 @@ async function main() {
     yearly.push({ year, ...r.metrics });
   }
 
-  const official = await fetchOfficialElectronicFinance(months);
   const officialProxyChecks = {};
   for (const sector of ['半導體', '電子零組件', '金融']) {
     officialProxyChecks[sector] = proxyOfficialCorrelation(sector, histories, official[sector], startDate, endDate);

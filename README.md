@@ -4,7 +4,7 @@
 
 > **Momentum ranking → Trend confirmation → ML continuation probability → Portfolio rotation**
 
-目前主線版本為 **v0.3.1 Challenger + v0.4 Rotation Validation**。核心原則是：**Baseline 先當 Champion，LightGBM / XGBoost 只當 Challenger；任何模型或策略都不能因為單次回測較漂亮就直接升級。**
+目前主線版本為 **v0.3.1 Challenger + v0.4 Rotation Validation + v0.5 Robustness Sweep**。核心原則是：**Baseline 先當 Champion，LightGBM / XGBoost 只當 Challenger；任何模型或策略都不能因為單次回測較漂亮就直接升級。**
 
 ## 1. 系統架構
 
@@ -123,6 +123,70 @@ flowchart LR
 
 > **Sector momentum / trend holding 可能有訊號，但高度 regime-dependent。**
 
+## 3.5 v0.5 — 策略改善與參數穩健度
+
+v0.4 的參數敏感度本身就是警訊：trailing stop 從 8% 移到 12%，五年結果從 +683.64% 變成 -27.96%。v0.5 針對這點與「只 gate 進場、不 gate 出場」做了三個引擎改動，並把「怎麼選設定」整個換掉。
+
+### 引擎改動（`rotationBacktest.js`）
+
+| 選項 | 作用 | 針對的問題 |
+|---|---|---|
+| `regimeFilter: { lookback, mode }` | TAIEX 對自身 MA 的 regime gate，可只擋進場或連同強制出場 | 部位可一路抱到 -20%（v0.4 首筆抱 210 個交易日，peak +14.7% → -24.0%） |
+| `trailingStopVolMultiple` | 停損距離 = k × 籃子自身 20 日已實現波動，夾在 3%–30% | 固定百分比對航運與金融代表完全不同的意義 |
+| `topK` | 同時持有動能前 K 名類股，資金平均分配 | 全押單一三檔籃子 |
+
+`topK: 1` 且未設 regime filter 時，新引擎與 v0.4 引擎在 240 個合成情境下**逐筆交易與逐日淨值完全相同**，v0.3 / v0.4 已發佈數字仍可重現。
+
+### 選設定的方式（`rotationRobustness.js`）
+
+56 個設定（4 regime × 2 topK × 7 trailing），每個都跑完整視窗 + 前後半段 + 逐年。只差一個 trailing 參數的設定歸為同一個 **family**，用鄰域行為評分而不是單一最佳成員：
+
+- `cagrSpread`（family 內 CAGR 極差）是脆弱度指標
+- Promotion gate 要求 spread ≤ 35pp、`worstCalmar` ≥ 0.5、`medianCalmar` ≥ 0.8、沒有成員在後半段為負
+- 通過後選的是 family 的**中位數參數**，不是表現最好的那個
+- 沒有 family 通過時輸出 `no-promotion`
+
+### 目前狀態
+
+**v0.5 的真實五年數字尚未產生。** 開發環境不允許連線 TWSE，本次只用合成資料驗證程式路徑跑通，合成結果刻意沒有 commit。真實報告要等 `Rotation Robustness v0.5` workflow 在 Actions 上執行後才會出現在 `data/backtests/rotation_v0.5.{json,md}`。
+
+細節見 `docs/ROTATION_V05.md`。
+
+## 3.6 0050 對決 — 目前 0050 比較強
+
+前面所有版本都拿 TAIEX 當基準，但 TAIEX 是價格指數，沒有人買得到。真正的對照組是 **0050**：可以買、會配息、而且是不跑這整套系統的人的預設選擇。
+
+換成這個基準之後，用 repo 內既有的真實回測資料就能判定：
+
+| | 五年總報酬 | MaxDD | 贏過大盤年數 |
+|---|---:|---:|---:|
+| v0.4 rotation（fixed 20/20） | +185.48% | **-59.09%** | 2 / 6 |
+| TAIEX 價格指數 | +161.92% | — | — |
+| TAIEX + 3.5%/年股息（0050 近似） | **+211.07%** | 約 -30% | — |
+
+**含息之後策略是輸的**，而且回撤是兩倍，超額幾乎全部來自 2026 單一年份（2022–2025 連四年落後）。
+
+### 為什麼會輸：成本
+
+台股一趟買賣 0.1425% + 0.1425% + 0.3% = **0.585%**。五年做 150 次交易 ≈ 先賠掉 **60%** 的投入資金。10 日動能在六個類股間的排名幾乎每天洗牌，任何「排名變了就換股」的規則都會踩進去 —— 本次開發第一版 core-satellite 實測就做了 466 筆交易、其中 465 筆持有一天。
+
+### Core-satellite：為了贏 0050 而設計
+
+`coreSatellite.js` 的預設持倉就是 0050，只有真的有訊號時才偏離：
+
+- 帳戶分 K 個 slot，有合格類股就持有類股籃子，否則持有 0050 —— 永遠不會在多頭裡空手
+- **完全沒有訊號時，數學上等於 0050 買進持有**（測試驗證：報酬差 < 1e-9、beta = 1、tracking error = 0）
+- `exitRankBuffer` / `minHoldingDays` / `rebalanceEvery` / `cooldownDays` 四道機制壓 turnover
+- `maxSatelliteSlots` 控制 tracking error 上限
+- 股息同時計入 benchmark 與策略 core 部位，兩邊都不能靠股息假設佔便宜
+- 衡量指標含 IR、beta、up/down capture、**滾動一年勝率**、實付手續費
+
+### 目前狀態
+
+**真實數字尚未產生。** 開發環境只允許連 GitHub，TWSE / Yahoo / FinMind 全部被擋，拿不到 0050 真實價格。本次只用合成資料驗證程式路徑，合成資料在建構上就沒有橫斷面動能 edge，因此不能用來判斷策略好壞，產出也刻意沒有 commit。
+
+執行 `Benchmark Battle vs 0050` workflow（或 `npm run battle:0050`）產生真實報告。判讀順序見 `docs/BENCHMARK_0050.md`。
+
 ## 4. TWSE 官方類股 proxy cross-check
 
 使用 TWSE `EFTRI_HIST` 可直接對照的產業類股：
@@ -144,18 +208,36 @@ flowchart LR
 3. Challenger 至少要在 calibration（Brier）、ranking（Top-k / ROC-AUC）上持續勝出。
 4. 必須跨不同 market regimes，而不是只靠單一強勢年份。
 5. 策略層還要同時考慮 drawdown、turnover、交易成本與參數穩定性。
+6. 策略設定必須通過 v0.5 robustness gate：鄰近參數也要能用，且採用的是 family 的中位數參數而非最佳參數。
+7. 策略必須在**含息**的基礎上贏過 0050，而不只是贏過 TAIEX 價格指數。
 
 ## 6. 自動化排程
 
-- **週日 10:00 Asia/Taipei**：重新訓練 Baseline calibrator、LightGBM、XGBoost
-- **週一至週五 15:30 Asia/Taipei**：Daily Shadow inference + mature scoring
-- v0.4 5Y validation：research/manual workflow，需要時重新執行
+| 排程 | Cron (UTC) | 台北時間 | 內容 |
+|---|---|---|---|
+| `sector-shadow.yml` | `30 7 * * 1-5` | 平日 15:30 | Daily Shadow inference + mature scoring |
+| `ml-challenger-train.yml` | `0 2 * * 0` | 週日 10:00 | 重新訓練 Baseline calibrator、LightGBM、XGBoost |
+| `weekly-research.yml` | `0 1 * * 6` | **週六 09:00** | 抓一次 TWSE 資料，跑 0050 對決 + v0.5 robustness sweep |
+
+`weekly-research.yml` 是唯一會自動抓資料做策略比較的排程。它刻意**只抓一次**：
+
+1. 先跑 `runBenchmarkBattle.js --refresh` —— 這支需要的 symbol 最多（18 檔類股成分 + 0050），下載後寫入快取
+2. 再跑 `runRotationV05.js --offline` —— 只需要那 18 檔，直接重用同一份快取
+
+用 `--offline` 而不是讓它自己重抓，是為了保證兩份報告一定出自同一個 snapshot；快取不在就直接失敗，而不是默默抓到不同的資料。
+
+以下維持手動 (`workflow_dispatch`)，供臨時單獨執行：`rotation-v04.yml`、`rotation-v05.yml`、`benchmark-battle-0050.yml`。
+
+> **注意：** GitHub 的 scheduled workflow 只會從 **default branch** 執行。這些檔案還在 `claude/improvement-strategy-9t1zar` 上，**合併進 `main` 之前 cron 不會啟動**。
 
 GitHub Actions：
 
 - `.github/workflows/ml-challenger-train.yml`
 - `.github/workflows/sector-shadow.yml`
 - `.github/workflows/rotation-v04.yml`
+- `.github/workflows/rotation-v05.yml`
+- `.github/workflows/benchmark-battle-0050.yml`
+- `.github/workflows/weekly-research.yml`
 - `.github/workflows/pages.yml`
 
 ## 7. Research Dashboard
@@ -194,15 +276,21 @@ GitHub App 可以建立與執行 Pages workflow，但無法替 repository 第一
 STOCK/
 ├─ sectorRadar.js                 # sector feature/ranking baseline
 ├─ mlChallenger.py                # ML feature/model/scoring core
-├─ rotationBacktest.js            # rotation backtest engine
+├─ rotationBacktest.js            # rotation backtest engine (regime gate, vol stop, topK)
+├─ rotationRobustness.js          # parameter sweep, family scoring, promotion gate
+├─ coreSatellite.js               # 0050-core + sector-satellite engine and benchmark stats
 ├─ scripts/
 │  ├─ shadowRunner.js
 │  ├─ trainMlChallenger.py
 │  ├─ runMlShadow.py
-│  └─ runRotationV04.js
+│  ├─ twseData.js                 # shared TWSE fetch + on-disk cache
+│  ├─ runRotationV04.js
+│  ├─ runRotationV05.js
+│  └─ runBenchmarkBattle.js
 ├─ data/
 │  ├─ shadow/                     # append-only OOS ledgers + latest snapshot
 │  ├─ models/                     # trained challenger artifacts
+│  ├─ cache/                      # TWSE price snapshot (gitignored)
 │  └─ backtests/                  # ML validation + rotation reports
 ├─ public/
 │  ├─ research-dashboard.html
@@ -210,7 +298,9 @@ STOCK/
 │  └─ research-dashboard.js
 ├─ docs/
 │  ├─ SECTOR_RADAR.md
-│  └─ CHALLENGER_V031_V04.md
+│  ├─ CHALLENGER_V031_V04.md
+│  ├─ ROTATION_V05.md
+│  └─ BENCHMARK_0050.md
 └─ .github/workflows/
 ```
 

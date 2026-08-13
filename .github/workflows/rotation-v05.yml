@@ -1,0 +1,40 @@
+name: Rotation Robustness v0.5
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rotation-v05-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Run parameter robustness sweep
+        run: node scripts/runRotationV05.js --refresh
+      - name: Commit v0.5 report
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/backtests/rotation_v0.5.json data/backtests/rotation_v0.5.md
+          if git diff --cached --quiet; then
+            echo "No v0.5 report changes."
+            exit 0
+          fi
+          git commit -m "data: refresh sector rotation v0.5 robustness sweep"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin HEAD:"$GITHUB_REF_NAME"
