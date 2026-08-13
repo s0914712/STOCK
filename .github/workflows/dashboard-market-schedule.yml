@@ -4,6 +4,11 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '20 8 * * 1-5' # 16:20 Asia/Taipei
+  push:
+    branches:
+      - claude/taiwan-stock-dashboard-AsiJO
+    paths:
+      - '.github/workflows/dashboard-market-schedule.yml'
 
 permissions:
   contents: write
