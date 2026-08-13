@@ -36,6 +36,7 @@ jobs:
       - name: Commit shadow ledger
         shell: bash
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/shadow/leverage_5050_latest.json data/shadow/leverage_5050_predictions.jsonl
@@ -44,5 +45,13 @@ jobs:
             exit 0
           fi
           git commit -m "shadow: update leverage 50-50 state"
-          git pull --rebase origin "$GITHUB_REF_NAME"
-          git push origin HEAD:"$GITHUB_REF_NAME"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin "$GITHUB_REF_NAME"
+            if git push origin HEAD:"$GITHUB_REF_NAME"; then
+              exit 0
+            fi
+            echo "Concurrent branch update detected; retrying push ($attempt/4)."
+            sleep $((attempt * 2))
+          done
+          echo "Unable to publish shadow ledger after retries."
+          exit 1
