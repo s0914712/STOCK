@@ -1,0 +1,48 @@
+name: Leverage 50-50 v6 Rolling Confirmation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/leverage-5050-challenger
+    paths:
+      - 'scripts/runLeverage5050V6Rolling.py'
+      - '.github/workflows/leverage-5050-v6.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: leverage-5050-v6-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install 'numpy>=1.26,<3' openpyxl
+      - name: Compile and base self-test
+        run: |
+          python -m py_compile leverage5050Backtest.py leverage5050CashBacktest.py scripts/runLeverage5050Backtest.py scripts/runLeverage5050V2.py scripts/runLeverage5050V5Cash.py scripts/runLeverage5050V6Rolling.py
+          python scripts/selfTestLeverage5050.py
+      - name: Run fixed rolling-window confirmation
+        run: python scripts/runLeverage5050V6Rolling.py
+      - name: Commit compact v6 report
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/backtests/leverage_5050_v6.json docs/LEVERAGE_5050_V6.md
+          if git diff --cached --quiet; then
+            echo "No v6 leverage report changes."
+            exit 0
+          fi
+          git commit -m "backtest: update leverage 50-50 v6"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin HEAD:"$GITHUB_REF_NAME"
