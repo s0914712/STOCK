@@ -1,7 +1,9 @@
 const assert = require('assert');
+const http = require('http');
 const {
   adjustForCorporateActions,
   assertNoUnadjustedGaps,
+  fetchJSON,
 } = require('../scripts/twseData');
 
 function makeDates(n, from = '2024-01-02') {
@@ -130,9 +132,149 @@ function testSortsBeforeAdjusting() {
   assert(rows.every((row, i) => i === 0 || rows[i - 1].date <= row.date), 'output must be date-sorted');
 }
 
-testDetectsAndReversesSplit();
-testHandlesMultipleAndReverseSplits();
-testLeavesCleanSeriesUntouched();
-testTripwireRejectsImpossibleMove();
-testSortsBeforeAdjusting();
-console.log('twseData corporate-action tests passed');
+function withServer(handler, run) {
+  return new Promise((resolve, reject) => {
+    const server = http.createServer(handler);
+    server.listen(0, '127.0.0.1', async () => {
+      const base = `http://127.0.0.1:${server.address().port}`;
+      try {
+        await run(base);
+        resolve();
+      } catch (error) {
+        reject(error);
+      } finally {
+        server.close();
+      }
+    });
+  });
+}
+
+/**
+ * TWSE moved its endpoints under /rwd/ and answers the old paths with a 307.
+ * node's https.get does not follow redirects, so a live run failed every
+ * request until this was handled.
+ */
+async function testFollowsRedirects() {
+  let hops = 0;
+  let landedOn = null;
+  await withServer((req, res) => {
+    if (req.url.startsWith('/old')) {
+      hops += 1;
+      // Location without a query, exactly how TWSE points at the new path.
+      res.writeHead(307, { Location: '/rwd/new' });
+      res.end();
+      return;
+    }
+    if (req.url.startsWith('/rwd/new')) {
+      landedOn = req.url;
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ stat: 'OK', data: [['115/01/02', '1', '2', '3', '4', '5', '6']] }));
+      return;
+    }
+    res.writeHead(404);
+    res.end();
+  }, async base => {
+    const json = await fetchJSON(`${base}/old?date=20260101`);
+    assert.strictEqual(json.stat, 'OK', 'a 307 must be followed to the new endpoint');
+    assert.strictEqual(json.data.length, 1);
+    assert.strictEqual(hops, 1, 'the redirect should be followed once, not retried in a loop');
+    assert.strictEqual(landedOn, '/rwd/new?date=20260101',
+      'a Location without a query must inherit the original parameters, or every month would return the same data');
+  });
+}
+
+async function testRelativeAndPermanentRedirects() {
+  for (const code of [301, 302, 303, 308]) {
+    await withServer((req, res) => {
+      if (req.url === '/a') {
+        res.writeHead(code, { Location: '/b' });
+        res.end();
+        return;
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ ok: code }));
+    }, async base => {
+      const json = await fetchJSON(`${base}/a`);
+      assert.strictEqual(json.ok, code, `HTTP ${code} should be followed`);
+    });
+  }
+}
+
+async function testRedirectLoopGivesUp() {
+  await withServer((req, res) => {
+    res.writeHead(307, { Location: '/loop' });
+    res.end();
+  }, async base => {
+    await assert.rejects(
+      () => fetchJSON(`${base}/loop`, 1),
+      /too many redirects/,
+      'an endless redirect must terminate rather than hang',
+    );
+  });
+}
+
+/**
+ * The mapping is learned once so the remaining ~1200 calls skip the hop, and
+ * the original query must survive the rewrite or every month would return the
+ * same data.
+ */
+async function testMemoizesRedirectAndKeepsQuery() {
+  let redirects = 0;
+  const seen = [];
+  await withServer((req, res) => {
+    if (req.url.startsWith('/exchangeReport/STOCK_DAY')) {
+      redirects += 1;
+      res.writeHead(307, { Location: '/rwd/zh/afterTrading/STOCK_DAY' });
+      res.end();
+      return;
+    }
+    seen.push(req.url);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ stat: 'OK' }));
+  }, async base => {
+    await fetchJSON(`${base}/exchangeReport/STOCK_DAY?date=20260101&stockNo=0050`);
+    await fetchJSON(`${base}/exchangeReport/STOCK_DAY?date=20260201&stockNo=0050`);
+    await fetchJSON(`${base}/exchangeReport/STOCK_DAY?date=20260301&stockNo=0050`);
+
+    assert.strictEqual(redirects, 1, `only the first call should pay a redirect, saw ${redirects}`);
+    assert.strictEqual(seen.length, 3, 'every call must still reach the data endpoint');
+    assert(seen[0].includes('date=20260101'), 'the query must survive the redirect');
+    assert(seen[1].includes('date=20260201'), 'the memoized rewrite must keep each call distinct');
+    assert(seen[2].includes('date=20260301'));
+    assert(seen.every(u => u.startsWith('/rwd/zh/afterTrading/STOCK_DAY')), 'later calls should go straight to the new path');
+  });
+}
+
+async function testRetriesThenSucceeds() {
+  let calls = 0;
+  await withServer((req, res) => {
+    calls += 1;
+    if (calls < 3) {
+      res.writeHead(429);
+      res.end();
+      return;
+    }
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ recovered: true }));
+  }, async base => {
+    const json = await fetchJSON(`${base}/throttled`, 4);
+    assert.strictEqual(json.recovered, true, 'transient throttling should be retried through');
+    assert.strictEqual(calls, 3);
+  });
+}
+
+async function main() {
+  testDetectsAndReversesSplit();
+  testHandlesMultipleAndReverseSplits();
+  testLeavesCleanSeriesUntouched();
+  testTripwireRejectsImpossibleMove();
+  testSortsBeforeAdjusting();
+  await testFollowsRedirects();
+  await testRelativeAndPermanentRedirects();
+  await testRedirectLoopGivesUp();
+  await testMemoizesRedirectAndKeepsQuery();
+  await testRetriesThenSucceeds();
+  console.log('twseData tests passed');
+}
+
+main().catch(error => { console.error(error); process.exit(1); });

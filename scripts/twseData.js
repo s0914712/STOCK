@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const http = require('http');
 
 const ROOT = path.join(__dirname, '..');
 const CACHE_DIR = path.join(ROOT, 'data', 'cache');
@@ -17,29 +18,85 @@ const CACHE_VERSION = 1;
 
 function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
-function fetchJSON(url, attempts = 3) {
+const REDIRECT_CODES = new Set([301, 302, 303, 307, 308]);
+// TWSE throttles aggressively and has been migrating its endpoints under
+// /rwd/, answering the old paths with a 307. node's https.get does not follow
+// redirects, so every request failed until this was handled.
+const REQUEST_SPACING_MS = Number(process.env.TWSE_REQUEST_SPACING_MS || 400);
+// Spacing alone does not bound the request rate: the symbol fetch runs several
+// workers in parallel, so the effective rate is CONCURRENCY / spacing. At the
+// previous 65ms x 5 workers that was ~77 req/s, far past what TWSE tolerates.
+// 1 worker at 400ms is ~2.5 req/s, under the ~3 req/s it starts refusing at.
+const FETCH_CONCURRENCY = Number(process.env.TWSE_CONCURRENCY || 1);
+
+// Once TWSE tells us where a deprecated path now lives, reuse that mapping for
+// every later request. Otherwise each of the ~1200 calls pays a redirect hop
+// against a server that is already rate limiting us.
+const redirectMemo = new Map();
+
+function applyRedirectMemo(url) {
+  try {
+    const parsed = new URL(url);
+    const mapped = redirectMemo.get(`${parsed.origin}${parsed.pathname}`);
+    if (!mapped) return url;
+    parsed.pathname = mapped;
+    return parsed.toString();
+  } catch {
+    return url;
+  }
+}
+
+function rememberRedirect(from, to) {
+  // Only memoize a pure same-origin path swap. If the target carries its own
+  // query the rewrite would not be equivalent for other dates, so skip it.
+  if (from.origin !== to.origin) return;
+  if (to.search && to.search !== from.search) return;
+  redirectMemo.set(`${from.origin}${from.pathname}`, to.pathname);
+}
+
+function fetchJSON(rawUrl, attempts = 4, redirectsLeft = 5) {
+  const url = applyRedirectMemo(rawUrl);
   return new Promise((resolve, reject) => {
-    const req = https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0 STOCK-research', Accept: 'application/json' } }, res => {
+    const transport = url.startsWith('http://') ? http : https;
+    const retry = async (error) => {
+      if (attempts > 1) {
+        // Back off harder each time; a 429/307 storm means we are going too fast.
+        await sleep(700 * (5 - attempts));
+        try { resolve(await fetchJSON(url, attempts - 1, redirectsLeft)); } catch (e) { reject(e); }
+      } else reject(error);
+    };
+
+    const req = transport.get(url, { headers: { 'User-Agent': 'Mozilla/5.0 STOCK-research', Accept: 'application/json' } }, res => {
+      const status = res.statusCode;
+
+      if (REDIRECT_CODES.has(status) && res.headers.location) {
+        res.resume();
+        if (redirectsLeft <= 0) {
+          retry(new Error(`too many redirects from ${url}`));
+          return;
+        }
+        const from = new URL(url);
+        const to = new URL(res.headers.location, url);
+        // A redirect that drops the query would silently fetch the wrong month,
+        // so carry the original parameters across.
+        if (!to.search && from.search) to.search = from.search;
+        rememberRedirect(from, to);
+        fetchJSON(to.toString(), attempts, redirectsLeft - 1).then(resolve, reject);
+        return;
+      }
+
       let body = '';
       res.on('data', chunk => { body += chunk; });
-      res.on('end', async () => {
+      res.on('end', () => {
         try {
-          if (res.statusCode < 200 || res.statusCode >= 300) throw new Error(`HTTP ${res.statusCode}`);
+          if (status < 200 || status >= 300) throw new Error(`HTTP ${status}`);
           resolve(JSON.parse(body));
         } catch (error) {
-          if (attempts > 1) {
-            await sleep(700);
-            try { resolve(await fetchJSON(url, attempts - 1)); } catch (retry) { reject(retry); }
-          } else reject(error);
+          retry(error);
         }
       });
     });
-    req.on('error', async error => {
-      if (attempts > 1) {
-        await sleep(700);
-        try { resolve(await fetchJSON(url, attempts - 1)); } catch (retry) { reject(retry); }
-      } else reject(error);
-    });
+    req.on('error', retry);
     req.setTimeout(20000, () => req.destroy(new Error('request timeout')));
   });
 }
@@ -77,7 +134,7 @@ async function fetchStockHistory(symbol, months) {
         }
       }
     } catch (error) { console.warn(`[${symbol}] ${key}: ${error.message}`); }
-    await sleep(65);
+    await sleep(REQUEST_SPACING_MS);
   }
   const unique = new Map(rows.filter(r => Number.isFinite(r.open) && Number.isFinite(r.close)).map(r => [r.date, r]));
   return [...unique.values()].sort((a, b) => a.date.localeCompare(b.date));
@@ -96,7 +153,7 @@ async function fetchTaiexHistory(months) {
         }
       }
     } catch (error) { console.warn(`[TAIEX] ${key}: ${error.message}`); }
-    await sleep(65);
+    await sleep(REQUEST_SPACING_MS);
   }
   const unique = new Map(rows.map(r => [r.date, r]));
   return [...unique.values()].sort((a, b) => a.date.localeCompare(b.date));
@@ -129,7 +186,7 @@ async function fetchOfficialElectronicFinance(months) {
         }
       }
     } catch (error) { console.warn(`[EFTRI_HIST] ${key}: ${error.message}`); }
-    await sleep(65);
+    await sleep(REQUEST_SPACING_MS);
   }
   return series;
 }
@@ -293,7 +350,7 @@ function cacheCovers(cache, symbols) {
  * @param {boolean}  options.refresh  ignore any existing cache and refetch
  * @param {boolean}  options.offline  fail instead of hitting the network
  */
-async function loadMarketData({ symbols, months = monthKeys(64), refresh = false, offline = false }) {
+async function loadMarketData({ symbols, months = monthKeys(64), refresh = false, offline = false, minRowsPerSymbol = null }) {
   const cache = refresh ? null : readCache();
   if (cacheCovers(cache, symbols)) {
     console.log(`[cache] reusing TWSE snapshot fetched at ${cache.fetchedAt}`);
@@ -305,9 +362,27 @@ async function loadMarketData({ symbols, months = monthKeys(64), refresh = false
 
   console.log(`[fetch] downloading ${symbols.length} symbols across ${months.length} months from TWSE`);
   const taiexRows = await fetchTaiexHistory(months);
-  const fetched = await mapLimit(symbols, 5, async symbol => [symbol, await fetchStockHistory(symbol, months)]);
+  const estimateSeconds = Math.round(((symbols.length * months.length) / FETCH_CONCURRENCY) * (REQUEST_SPACING_MS / 1000));
+  console.log(`[fetch] ${FETCH_CONCURRENCY} worker(s), ${REQUEST_SPACING_MS}ms spacing (~${(FETCH_CONCURRENCY / (REQUEST_SPACING_MS / 1000)).toFixed(1)} req/s, roughly ${Math.ceil(estimateSeconds / 60)} min)`);
+  const fetched = await mapLimit(symbols, FETCH_CONCURRENCY, async symbol => [symbol, await fetchStockHistory(symbol, months)]);
   const histories = new Map(fetched);
   const official = await fetchOfficialElectronicFinance(months);
+
+  // A partially downloaded snapshot must never reach disk. The previous run
+  // cached a truncated fetch, and the follow-up --offline step would happily
+  // have built a report on top of it.
+  const minRows = minRowsPerSymbol ?? Math.floor(months.length * 20 * 0.5);
+  const short = fetched
+    .filter(([, rows]) => rows.length < minRows)
+    .map(([symbol, rows]) => `${symbol}:${rows.length}`);
+  if (short.length || taiexRows.length < minRows) {
+    throw new Error(
+      `TWSE download incomplete, refusing to cache it. Expected at least ${minRows} rows per series; `
+      + `TAIEX got ${taiexRows.length}${short.length ? `, short symbols: ${short.join(', ')}` : ''}. `
+      + 'This is usually rate limiting or an endpoint change — retry, or raise TWSE_REQUEST_SPACING_MS '
+      + `(currently ${REQUEST_SPACING_MS}ms between requests).`,
+    );
+  }
 
   writeCache({
     version: CACHE_VERSION,
