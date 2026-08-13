@@ -11,14 +11,16 @@ from typing import Callable, Mapping, Sequence
 from leverage5050Backtest import ETF_COSTS, StrategySpec, _cagr, _max_drawdown, _mean, _sharpe
 
 
-def simulate_with_cash_curve(
+def _run_cash_curve(
     rows: Sequence[Mapping],
     spec: StrategySpec,
     *,
     start_date: str,
     end_date: str,
     annual_cash_yield: Callable[[str], float],
-    costs: Mapping = ETF_COSTS,
+    costs: Mapping,
+    liquidate_end: bool,
+    signal_on_last_close: bool,
 ):
     data = [r for r in rows if start_date <= r["date"] <= end_date]
     if len(data) < 2:
@@ -70,6 +72,7 @@ def simulate_with_cash_curve(
             paid_cost += sell_value * slip + fee_tax
             trades.append({"date": row["date"], "action": "SELL", "target": target, "notional": sell_value})
 
+    next_open_target = None
     for i, row in enumerate(data):
         if i > 0 and cash > 0:
             annual = max(0.0, float(annual_cash_yield(row["date"])))
@@ -87,12 +90,16 @@ def simulate_with_cash_curve(
         equity_curve.append(close_equity)
         weights.append(weight)
 
-        if i < len(data) - 1:
+        should_signal = i < len(data) - 1 or signal_on_last_close
+        if should_signal:
             target = spec.signal(i, data, weight, None)
             if target is not None:
-                pending_target = float(target)
+                if i < len(data) - 1:
+                    pending_target = float(target)
+                else:
+                    next_open_target = float(target)
 
-    if shares > 0:
+    if liquidate_end and shares > 0:
         px = float(data[-1]["lev_close"])
         fill = px * (1 - slip)
         gross = shares * fill
@@ -103,6 +110,36 @@ def simulate_with_cash_curve(
         shares = 0.0
         equity_curve[-1] = cash
 
+    return {
+        "data": data,
+        "cash": cash,
+        "shares": shares,
+        "equityCurve": equity_curve,
+        "weights": weights,
+        "trades": trades,
+        "tradeNotional": trade_notional,
+        "paidCost": paid_cost,
+        "cashInterestEarned": cash_interest_earned,
+        "nextOpenTarget": next_open_target,
+    }
+
+
+def simulate_with_cash_curve(
+    rows: Sequence[Mapping],
+    spec: StrategySpec,
+    *,
+    start_date: str,
+    end_date: str,
+    annual_cash_yield: Callable[[str], float],
+    costs: Mapping = ETF_COSTS,
+):
+    state = _run_cash_curve(
+        rows, spec, start_date=start_date, end_date=end_date,
+        annual_cash_yield=annual_cash_yield, costs=costs,
+        liquidate_end=True, signal_on_last_close=False,
+    )
+    data = state["data"]
+    equity_curve = state["equityCurve"]
     total_return = equity_curve[-1] - 1.0
     avg_eq = _mean(equity_curve) or 1.0
     return {
@@ -114,10 +151,56 @@ def simulate_with_cash_curve(
             "cagr": _cagr(total_return, len(data)),
             "maxDrawdown": _max_drawdown(equity_curve),
             "sharpe": _sharpe(equity_curve),
-            "turnover": trade_notional / avg_eq,
-            "estimatedTradingCost": paid_cost,
-            "cashInterestEarnedOnInitialCapital": cash_interest_earned,
-            "tradeCount": len(trades),
-            "avgLeveragedEtfWeight": _mean(weights),
+            "turnover": state["tradeNotional"] / avg_eq,
+            "estimatedTradingCost": state["paidCost"],
+            "cashInterestEarnedOnInitialCapital": state["cashInterestEarned"],
+            "tradeCount": len(state["trades"]),
+            "avgLeveragedEtfWeight": _mean(state["weights"]),
         },
+    }
+
+
+def shadow_state_with_cash_curve(
+    rows: Sequence[Mapping],
+    spec: StrategySpec,
+    *,
+    start_date: str,
+    end_date: str,
+    annual_cash_yield: Callable[[str], float],
+    costs: Mapping = ETF_COSTS,
+):
+    """Reconstruct the hypothetical live portfolio without end liquidation.
+
+    The last close is allowed to generate a signal. If the band is breached,
+    `nextOpenTarget` is the weight to rebalance toward at the next available
+    session open; otherwise it is None.
+    """
+    state = _run_cash_curve(
+        rows, spec, start_date=start_date, end_date=end_date,
+        annual_cash_yield=annual_cash_yield, costs=costs,
+        liquidate_end=False, signal_on_last_close=True,
+    )
+    data = state["data"]
+    latest = data[-1]
+    equity = state["cash"] + state["shares"] * float(latest["lev_close"])
+    weight = state["shares"] * float(latest["lev_close"]) / equity if equity > 0 else 0.0
+    target = state["nextOpenTarget"]
+    if target is None:
+        action = "HOLD"
+    elif weight < target:
+        action = "BUY_TO_50"
+    else:
+        action = "SELL_TO_50"
+    return {
+        "asOf": latest["date"],
+        "leveragedEtfWeight": weight,
+        "cashWeight": 1.0 - weight,
+        "portfolioEquityFrom1": equity,
+        "action": action,
+        "nextOpenTarget": target,
+        "lowerBand": 0.35,
+        "upperBand": 0.775,
+        "tradeCountSinceInception": len(state["trades"]),
+        "lastTrades": state["trades"][-5:],
+        "cashInterestEarnedOnInitialCapital": state["cashInterestEarned"],
     }
