@@ -95,5 +95,42 @@
 
   <footer class="site-footer"><p>資料來源：TWSE / CBC。所有模型、機率、Shadow Portfolio 與回測僅供研究，不構成投資建議。</p></footer>
   <script src="research-dashboard.js"></script>
+  <script>
+  (() => {
+    const RAW = 'https://raw.githubusercontent.com/s0914712/STOCK/feature/leverage-5050-challenger';
+    const paths = {
+      market: `${RAW}/data/dashboard/market_latest.json`,
+      shadow: `${RAW}/data/shadow/leverage_5050_latest.json`,
+      backtest: `${RAW}/data/backtests/leverage_5050_v5.json`,
+    };
+    const nf = new Intl.NumberFormat('zh-TW', { maximumFractionDigits: 2 });
+    const nf0 = new Intl.NumberFormat('zh-TW', { maximumFractionDigits: 0 });
+    const pct2 = (v, d=2, sign=false) => Number.isFinite(v) ? `${sign && v > 0 ? '+' : ''}${(v*100).toFixed(d)}%` : '—';
+    const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+    const get = async url => { const r = await fetch(`${url}?v=${Date.now()}`, { cache: 'no-store' }); if (!r.ok) throw new Error(`${r.status}`); return r.json(); };
+    function renderMarket(data) {
+      const m = data?.market; if (!m) return;
+      set('market-date', `${m.asOf} 收盤`); set('market-index', nf.format(m.close));
+      set('market-change', `${m.change > 0 ? '+' : ''}${nf.format(m.change)} / ${pct2(m.changePct,2,true)}`);
+      set('market-turnover', `成交金額 ${nf0.format(m.amount/1e8)} 億`);
+      const e = document.getElementById('market-change'); if (e) e.className = `overview-change ${m.changePct > 0 ? 'up' : m.changePct < 0 ? 'down' : 'flat'}`;
+      set('sector-date', `${data?.sectors?.asOf ?? m.asOf} · Sector Radar`);
+      const rows = data?.sectors?.rows ?? []; const c = document.getElementById('sector-top-list');
+      if (c) c.innerHTML = rows.slice(0,3).map(x => `<div class="sector-rank-row"><span class="sector-rank">#${x.rank}</span><div class="sector-rank-main"><strong>${x.sector}</strong><small>${x.signal} · 5D ${pct2(x.momentum5,1,true)}</small></div><span class="sector-score">${Number(x.score).toFixed(1)}</span></div>`).join('');
+    }
+    function renderStrategy(shadow, report) {
+      const factor = report?.factors?.['0.50']; const p = factor?.ranking?.find(x => x.name === report?.primaryCandidate); const m = p?.full?.metrics; const b = factor?.windows?.full?.benchmarks?.taiwan50TotalReturn;
+      set('strategy-date', `${shadow?.asOf ?? report?.period?.end ?? '—'} · Shadow`); set('strategy-name', '00631L 35 / 77.5 → 50');
+      set('strategy-return', pct2(m?.totalReturn,2,true)); set('strategy-benchmark', `Taiwan 50 TR ${pct2(b?.totalReturn,2,true)}`);
+      set('strategy-risk', `DD ${pct2(m?.maxDrawdown,2)} · Sharpe ${Number.isFinite(m?.sharpe) ? m.sharpe.toFixed(2) : '—'}`);
+      set('strategy-live-weight', `00631L ${pct2(shadow?.leveragedEtfWeight,1)} · Cash ${pct2(shadow?.cashWeight,1)}`); set('strategy-action', shadow?.action ?? '—');
+      const e = document.getElementById('strategy-action'); if (e) e.className = `overview-action action-${String(shadow?.action ?? '').toLowerCase()}`;
+    }
+    Promise.allSettled([get(paths.market), get(paths.shadow), get(paths.backtest)]).then(r => {
+      if (r[0].status === 'fulfilled') renderMarket(r[0].value); else { set('market-date','資料暫時無法讀取'); set('sector-date','資料暫時無法讀取'); }
+      renderStrategy(r[1].status === 'fulfilled' ? r[1].value : null, r[2].status === 'fulfilled' ? r[2].value : null);
+    });
+  })();
+  </script>
 </body>
 </html>
