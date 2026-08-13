@@ -1,0 +1,94 @@
+{
+  "version": "dashboard-market-v1",
+  "generatedAt": "2026-08-13T22:32:15.609Z",
+  "dataSource": "TWSE FMTQIK + STOCK_DAY; sector score from sector-radar-baseline-v0.1",
+  "market": {
+    "asOf": "2026-08-13",
+    "close": 46021.48,
+    "previousClose": 45518.07,
+    "change": 503.4100000000035,
+    "changePct": 0.011059563817183093,
+    "volume": 11492166298,
+    "amount": 1104024642159,
+    "transactions": 5240402
+  },
+  "sectors": {
+    "asOf": "2026-08-13",
+    "model": "sector-radar-baseline-v0.1",
+    "failures": [],
+    "rows": [
+      {
+        "sector": "PCB",
+        "rank": 1,
+        "score": 74.9,
+        "signal": "強勢",
+        "momentum5": 0.09947098623863367,
+        "momentum20": 0.10391591814706443,
+        "volumeRatio": 1.2248377722967838,
+        "breadthAboveMA20": 1,
+        "volatility20": 0.9222902901445827,
+        "coverage": 1
+      },
+      {
+        "sector": "航運",
+        "rank": 2,
+        "score": 52.8,
+        "signal": "中性",
+        "momentum5": 0.03805782890459467,
+        "momentum20": 0.06188902794439747,
+        "volumeRatio": 1.0226307751345232,
+        "breadthAboveMA20": 1,
+        "volatility20": 0.26398658658496316,
+        "coverage": 1
+      },
+      {
+        "sector": "電子零組件",
+        "rank": 3,
+        "score": 52.7,
+        "signal": "中性",
+        "momentum5": 0.09699829528776897,
+        "momentum20": -0.021169730181287982,
+        "volumeRatio": 0.8860939681037823,
+        "breadthAboveMA20": 1,
+        "volatility20": 0.9154154072966416,
+        "coverage": 1
+      },
+      {
+        "sector": "AI伺服器",
+        "rank": 4,
+        "score": 50.6,
+        "signal": "中性",
+        "momentum5": 0.03542832698925025,
+        "momentum20": 0.11613924109679889,
+        "volumeRatio": 0.7367811794845268,
+        "breadthAboveMA20": 1,
+        "volatility20": 0.6141844172735952,
+        "coverage": 1
+      },
+      {
+        "sector": "金融",
+        "rank": 5,
+        "score": 36.6,
+        "signal": "弱勢",
+        "momentum5": 0.023255285019990895,
+        "momentum20": 0.035388679532564415,
+        "volumeRatio": 0.6341545806240764,
+        "breadthAboveMA20": 1,
+        "volatility20": 0.2909542918937427,
+        "coverage": 1
+      },
+      {
+        "sector": "半導體",
+        "rank": 6,
+        "score": 31.3,
+        "signal": "弱勢",
+        "momentum5": 0.04403192971391571,
+        "momentum20": -0.03138438286464603,
+        "volumeRatio": 0.685062247304329,
+        "breadthAboveMA20": 1,
+        "volatility20": 0.78944714372556,
+        "coverage": 1
+      }
+    ]
+  }
+}
