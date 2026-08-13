@@ -10,7 +10,8 @@ req = urllib.request.Request(URL, headers={"User-Agent": "Mozilla/5.0 STOCK-leve
 with urllib.request.urlopen(req, timeout=30) as resp:
     data = resp.read()
 print("downloaded", len(data), "bytes")
-books = pd.read_excel(BytesIO(data), sheet_name=None, header=None, engine="xlrd")
+# CBC serves OOXML/XLSX bytes behind a legacy .xls URL.
+books = pd.read_excel(BytesIO(data), sheet_name=None, header=None, engine="openpyxl")
 for name, df in books.items():
     print("\nSHEET", repr(name), "shape", df.shape)
-    print(df.head(35).to_string(index=True, header=True))
+    print(df.head(45).to_string(index=True, header=True))
