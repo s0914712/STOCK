@@ -2,13 +2,6 @@ name: Leverage 50-50 v5 CBC Cash Yield
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - feature/leverage-5050-challenger
-    paths:
-      - 'leverage5050CashBacktest.py'
-      - 'scripts/runLeverage5050V5Cash.py'
-      - '.github/workflows/leverage-5050-v5.yml'
 
 permissions:
   contents: write
