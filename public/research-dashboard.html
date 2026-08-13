@@ -11,141 +11,89 @@
   <header class="hero">
     <div>
       <p class="eyebrow">TAIWAN MOMENTUM ROTATION LAB</p>
-      <h1>類股輪動 / ML Challenger Research Dashboard</h1>
-      <p class="hero-copy">Momentum ranking → Trend confirmation → ML continuation probability → Portfolio rotation</p>
+      <h1>台股市場 × 類股輪動 × 策略研究</h1>
+      <p class="hero-copy">先看昨日大盤與輪動板塊，再看 Research Champion / Momentum / ML 的實際策略表現。</p>
     </div>
     <div class="hero-badge" id="champion-badge">Champion: loading…</div>
   </header>
 
   <main class="dashboard-shell">
+    <section class="daily-overview" aria-label="每日市場決策摘要">
+      <div class="overview-heading">
+        <div><p class="eyebrow">DAILY MARKET OVERVIEW</p><h2>昨日市場 / 類股輪動 / 策略表現</h2></div>
+        <p class="panel-note">「昨日」以最新完成交易日為準；遇週末或休市日自動顯示最近交易日。</p>
+      </div>
+      <div class="overview-grid">
+        <article class="overview-card">
+          <div class="overview-kicker"><span>昨日大盤</span><span id="market-date">載入中…</span></div>
+          <h3 class="overview-title">TAIEX 加權指數</h3>
+          <div class="overview-big" id="market-index">—</div>
+          <div class="overview-change flat" id="market-change">—</div>
+          <div class="overview-meta" id="market-turnover">成交金額 —</div>
+        </article>
+        <article class="overview-card">
+          <div class="overview-kicker"><span>類股輪動板塊</span><span id="sector-date">載入中…</span></div>
+          <h3 class="overview-title">Sector Radar Top 3</h3>
+          <div class="sector-top-list" id="sector-top-list"><div class="overview-empty">載入中…</div></div>
+          <p class="overview-meta">5D/20D 動能、量能、MA20 breadth、波動度綜合排名。</p>
+        </article>
+        <article class="overview-card">
+          <div class="overview-kicker"><span>策略表現</span><span id="strategy-date">載入中…</span></div>
+          <h3 class="overview-title" id="strategy-name">00631L Research Champion</h3>
+          <div class="strategy-hero-row">
+            <div class="strategy-return-block"><strong id="strategy-return">—</strong><span>歷史累積報酬</span></div>
+            <span class="overview-action" id="strategy-action">—</span>
+          </div>
+          <div class="strategy-detail-list">
+            <span id="strategy-benchmark">Taiwan 50 TR —</span>
+            <span id="strategy-risk">DD — · Sharpe —</span>
+            <span id="strategy-live-weight">00631L — · Cash —</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section class="status-grid" aria-label="系統狀態">
-      <article class="metric-card">
-        <span class="metric-label">最新 Sector Shadow</span>
-        <strong class="metric-value" id="as-of">—</strong>
-        <small>v0.3.1 as-of trading date</small>
-      </article>
-      <article class="metric-card">
-        <span class="metric-label">模型訓練截止</span>
-        <strong class="metric-value" id="trained-through">—</strong>
-        <small>mature labels only</small>
-      </article>
-      <article class="metric-card">
-        <span class="metric-label">成熟 OOS snapshots</span>
-        <strong class="metric-value" id="scored-snapshots">—</strong>
-        <small>forward-only evaluation</small>
-      </article>
-      <article class="metric-card">
-        <span class="metric-label">Rotation 回測期間</span>
-        <strong class="metric-value compact" id="backtest-period">—</strong>
-        <small>five-year validation</small>
-      </article>
+      <article class="metric-card"><span class="metric-label">最新 Sector Shadow</span><strong class="metric-value" id="as-of">—</strong><small>v0.3.1 as-of trading date</small></article>
+      <article class="metric-card"><span class="metric-label">模型訓練截止</span><strong class="metric-value" id="trained-through">—</strong><small>mature labels only</small></article>
+      <article class="metric-card"><span class="metric-label">成熟 OOS snapshots</span><strong class="metric-value" id="scored-snapshots">—</strong><small>forward-only evaluation</small></article>
+      <article class="metric-card"><span class="metric-label">Rotation 回測期間</span><strong class="metric-value compact" id="backtest-period">—</strong><small>five-year validation</small></article>
     </section>
 
     <section class="panel">
-      <div class="panel-heading">
-        <div>
-          <p class="eyebrow">LIVE SHADOW v0.3.1</p>
-          <h2>Sector Baseline vs LightGBM vs XGBoost</h2>
-        </div>
-        <span class="pill" id="target-label">5D relative outperform probability</span>
-      </div>
+      <div class="panel-heading"><div><p class="eyebrow">LIVE SHADOW v0.3.1</p><h2>Sector Baseline vs LightGBM vs XGBoost</h2></div><span class="pill" id="target-label">5D relative outperform probability</span></div>
       <p class="panel-note">每個數字代表「未來 5 個交易日該類股報酬高於 TAIEX」的機率。排名只供 Shadow 比較，不代表已升級為 production signal。</p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>類股</th><th>Baseline</th><th>LightGBM</th><th>XGBoost</th><th>三模型排序</th></tr></thead>
-          <tbody id="prediction-body"><tr><td colspan="5" class="loading-cell">載入中…</td></tr></tbody>
-        </table>
-      </div>
+      <div class="table-wrap"><table><thead><tr><th>類股</th><th>Baseline</th><th>LightGBM</th><th>XGBoost</th><th>三模型排序</th></tr></thead><tbody id="prediction-body"><tr><td colspan="5" class="loading-cell">載入中…</td></tr></tbody></table></div>
     </section>
 
     <section class="two-column">
-      <article class="panel">
-        <div class="panel-heading"><div><p class="eyebrow">HOLDOUT</p><h2>Chronological Validation</h2></div></div>
-        <div id="validation-cards" class="model-grid"></div>
-      </article>
-      <article class="panel">
-        <div class="panel-heading"><div><p class="eyebrow">FORWARD OOS</p><h2>Live Shadow Scoreboard</h2></div></div>
-        <div id="oos-cards" class="model-grid"></div>
-        <p class="panel-note" id="oos-note">等待第一批 5D label 成熟。</p>
-      </article>
+      <article class="panel"><div class="panel-heading"><div><p class="eyebrow">HOLDOUT</p><h2>Chronological Validation</h2></div></div><div id="validation-cards" class="model-grid"></div></article>
+      <article class="panel"><div class="panel-heading"><div><p class="eyebrow">FORWARD OOS</p><h2>Live Shadow Scoreboard</h2></div></div><div id="oos-cards" class="model-grid"></div><p class="panel-note" id="oos-note">等待第一批 5D label 成熟。</p></article>
     </section>
 
     <section class="panel">
-      <div class="panel-heading">
-        <div>
-          <p class="eyebrow">MOMENTUM ROTATION v0.5</p>
-          <h2>Stock-level Continuation → Portfolio Decision</h2>
-        </div>
-        <span class="pill warning">OOS Challenger</span>
-      </div>
-      <p class="panel-note" id="v05-shadow-note">v0.5：5/10/20/60D momentum → Close &gt; MA20 &gt; MA60 → 10D continuation probability → Top-5 / Top-10 hysteresis → portfolio action。ML label 同時要求超額報酬涵蓋成本緩衝，且 10D path drawdown 不超過風險門檻。</p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>股票</th><th>類別</th><th>Momentum rank</th><th>Trend</th><th>OOS ensemble</th><th>Action</th><th>Target weight</th></tr>
-          </thead>
-          <tbody id="v05-shadow-body"><tr><td colspan="7" class="loading-cell">等待 v0.5 Shadow seed…</td></tr></tbody>
-        </table>
-      </div>
-
-      <div class="subsection-heading">
-        <p class="eyebrow">WALK-FORWARD ABLATION</p>
-        <h3>逐層投資績效比較</h3>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Layer</th><th>Net return</th><th>CAGR</th><th>Max DD</th><th>Sharpe</th><th>Turnover</th><th>Precision@K</th><th>Excess vs TAIEX</th><th>Excess vs 0050</th></tr>
-          </thead>
-          <tbody id="v05-ablation-body"><tr><td colspan="9" class="loading-cell">5Y walk-forward 回測執行中…</td></tr></tbody>
-        </table>
-      </div>
+      <div class="panel-heading"><div><p class="eyebrow">MOMENTUM ROTATION v0.5</p><h2>Stock-level Continuation → Portfolio Decision</h2></div><span class="pill warning">OOS Challenger</span></div>
+      <p class="panel-note" id="v05-shadow-note">v0.5：5/10/20/60D momentum → Close &gt; MA20 &gt; MA60 → 10D continuation probability → Top-5 / Top-10 hysteresis → portfolio action。</p>
+      <div class="table-wrap"><table><thead><tr><th>股票</th><th>類別</th><th>Momentum rank</th><th>Trend</th><th>OOS ensemble</th><th>Action</th><th>Target weight</th></tr></thead><tbody id="v05-shadow-body"><tr><td colspan="7" class="loading-cell">等待 v0.5 Shadow seed…</td></tr></tbody></table></div>
+      <div class="subsection-heading"><p class="eyebrow">WALK-FORWARD ABLATION</p><h3>逐層投資績效比較</h3></div>
+      <div class="table-wrap"><table><thead><tr><th>Layer</th><th>Net return</th><th>CAGR</th><th>Max DD</th><th>Sharpe</th><th>Turnover</th><th>Precision@K</th><th>Excess vs TAIEX</th><th>Excess vs 0050</th></tr></thead><tbody id="v05-ablation-body"><tr><td colspan="9" class="loading-cell">5Y walk-forward 回測執行中…</td></tr></tbody></table></div>
     </section>
 
     <section class="panel">
-      <div class="panel-heading">
-        <div><p class="eyebrow">ROTATION v0.4</p><h2>5Y Sector Strategy Comparison</h2></div>
-        <span class="pill warning">Research only</span>
-      </div>
+      <div class="panel-heading"><div><p class="eyebrow">ROTATION v0.4</p><h2>5Y Sector Strategy Comparison</h2></div><span class="pill warning">Research only</span></div>
       <p class="panel-note">Trailing-stop 對參數高度敏感。8% 報酬最高不等於最佳；10% 目前只作為較平衡的 forward-shadow candidate。</p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Strategy</th><th>Net return</th><th>CAGR</th><th>Max DD</th><th>Trades</th><th>Win rate</th></tr></thead>
-          <tbody id="strategy-body"><tr><td colspan="6" class="loading-cell">載入中…</td></tr></tbody>
-        </table>
-      </div>
+      <div class="table-wrap"><table><thead><tr><th>Strategy</th><th>Net return</th><th>CAGR</th><th>Max DD</th><th>Trades</th><th>Win rate</th></tr></thead><tbody id="strategy-body"><tr><td colspan="6" class="loading-cell">載入中…</td></tr></tbody></table></div>
     </section>
 
     <section class="two-column">
-      <article class="panel">
-        <div class="panel-heading"><div><p class="eyebrow">TWSE CROSS-CHECK</p><h2>Official Sector Proxy Correlation</h2></div></div>
-        <div id="proxy-checks" class="correlation-list"></div>
-      </article>
-      <article class="panel">
-        <div class="panel-heading"><div><p class="eyebrow">PROMOTION POLICY</p><h2>Champion / Challenger Gate</h2></div></div>
-        <ol class="gate-list">
-          <li>Sector Baseline 保持 Champion，除非 challenger 在 forward OOS 持續勝出。</li>
-          <li>v0.5 ML 必須先勝過 Momentum + Trend，而不是只看 AUC。</li>
-          <li>投資層優先比較扣成本報酬、Max DD、Sharpe、turnover、Precision@K 與 benchmark excess。</li>
-          <li>必須跨不同 market regimes，而非只靠單一強勢年份。</li>
-        </ol>
-      </article>
+      <article class="panel"><div class="panel-heading"><div><p class="eyebrow">TWSE CROSS-CHECK</p><h2>Official Sector Proxy Correlation</h2></div></div><div id="proxy-checks" class="correlation-list"></div></article>
+      <article class="panel"><div class="panel-heading"><div><p class="eyebrow">PROMOTION POLICY</p><h2>Champion / Challenger Gate</h2></div></div><ol class="gate-list"><li>00631L 35 / 77.5 → 50 為 Research Champion，先累積 forward Shadow。</li><li>ML 必須真正勝過簡單 Momentum / Trend 與 leverage-band benchmark。</li><li>優先比較扣成本報酬、Max DD、Sharpe、turnover、Precision@K。</li><li>必須跨不同 market regimes。</li></ol></article>
     </section>
 
-    <section class="panel footer-panel">
-      <div>
-        <p class="eyebrow">DATA</p>
-        <h2>自動更新來源</h2>
-        <p class="panel-note">Dashboard 直接讀 GitHub Pages 同一版本的 Shadow / Backtest JSON。每次資料 ledger 更新後，Pages workflow 會重新部署。</p>
-      </div>
-      <div class="footer-meta">
-        <span id="generated-at">Last data generation: —</span>
-        <a href="https://github.com/s0914712/STOCK" target="_blank" rel="noreferrer">GitHub Repository ↗</a>
-      </div>
-    </section>
+    <section class="panel footer-panel"><div><p class="eyebrow">DATA</p><h2>自動更新來源</h2><p class="panel-note">市場摘要每日自動抓 TWSE；研究表格讀 Shadow / Backtest JSON。</p></div><div class="footer-meta"><span id="generated-at">Last data generation: —</span><a href="https://github.com/s0914712/STOCK" target="_blank" rel="noreferrer">GitHub Repository ↗</a></div></section>
   </main>
 
-  <footer class="site-footer"><p>資料來源：TWSE。所有模型、機率、Shadow Portfolio 與回測僅供研究，不構成投資建議。</p></footer>
+  <footer class="site-footer"><p>資料來源：TWSE / CBC。所有模型、機率、Shadow Portfolio 與回測僅供研究，不構成投資建議。</p></footer>
   <script src="research-dashboard.js"></script>
 </body>
 </html>
