@@ -27,6 +27,13 @@ def asym_band(lower, upper, target):
     return signal
 
 
+def label_weight(x):
+    pct = x * 100
+    if abs(pct - round(pct)) < 1e-9:
+        return str(int(round(pct)))
+    return f"{pct:.1f}".replace(".", "_").rstrip("0").rstrip("_")
+
+
 def specs():
     # Pre-registered asymmetric-band neighborhood. Lower threshold refills risk
     # earlier after selloffs; upper threshold deliberately lets bull-market gains run.
@@ -39,9 +46,7 @@ def specs():
     ]
     out = []
     for low, high, target in candidates:
-        def f(x):
-            return str(int(round(x * 1000))).rstrip("0") if abs(x * 100 - round(x * 100)) > 1e-8 else str(int(round(x * 100)))
-        name = f"asym{f(low)}_{f(high)}_t{f(target)}"
+        name = f"asym{label_weight(low)}_{label_weight(high)}_t{label_weight(target)}"
         out.append(StrategySpec(name, "asymmetric_band", asym_band(low, high, target)))
     return out
 
