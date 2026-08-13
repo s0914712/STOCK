@@ -1,0 +1,55 @@
+name: Dashboard Market Snapshot
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 8 * * 1-5' # 16:20 Asia/Taipei
+  push:
+    branches:
+      - feature/leverage-5050-challenger
+    paths:
+      - 'scripts/runDashboardMarketSnapshot.js'
+      - '.github/workflows/dashboard-market.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dashboard-market-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate dashboard snapshot runner
+        run: node --check scripts/runDashboardMarketSnapshot.js
+      - name: Build latest market snapshot
+        run: node scripts/runDashboardMarketSnapshot.js
+      - name: Commit dashboard snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/dashboard/market_latest.json
+          if git diff --cached --quiet; then
+            echo "No dashboard market changes."
+            exit 0
+          fi
+          git commit -m "data: update dashboard market snapshot"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin "$GITHUB_REF_NAME"
+            if git push origin HEAD:"$GITHUB_REF_NAME"; then
+              exit 0
+            fi
+            echo "Concurrent branch update detected; retrying push ($attempt/4)."
+            sleep $((attempt * 2))
+          done
+          exit 1
