@@ -161,3 +161,22 @@
 這個 repo 的整套紀律 —— champion/challenger、robustness gate、half-sample、逐年分布 —— 全部是在防「過度擬合」。但這次的失敗不是過度擬合，是**輸入資料錯了**，而所有那些 gate 對壞資料完全沒有抵抗力，反而讓錯誤看起來更可信。
 
 因此新增一條原則：**任何 benchmark 在使用前必須先對已知的市場事實做 sanity check。** 便宜、快、而且會擋掉這一整類的錯誤。
+
+## 附錄二：第二次執行也失敗了 —— TWSE 307（2026-08-13）
+
+修好分割還原之後，重跑直接掛掉：
+
+```
+[EFTRI_HIST] 20260701: HTTP 307
+Error: insufficient 0050 history
+```
+
+兩個獨立的問題：
+
+**1. 沒有跟隨 redirect。** TWSE 已把 API 搬到 `/rwd/` 底下，舊路徑一律回 **307**。Node 的 `https.get` **不會**自動跟隨 redirect，所以每一個請求都被當成失敗。修法是在 `fetchJSON` 內處理 301/302/303/307/308；若 `Location` 沒帶 query 就把原本的參數接上去 —— 否則每個月份都會抓到同一批資料，而且不會有任何錯誤訊息。學到的路徑對應會記下來重用，不然剩下約 1200 次呼叫每一次都要多付一趟。
+
+**2. 請求速率遠超 TWSE 容許值。** 真正的原因不是 spacing，是併發：抓股價用 `mapLimit(symbols, 5, ...)`，5 個 worker 各自間隔 65ms，實際速率是 **約 77 req/s**。TWSE 大約 3 req/s 就會開始拒絕。現在預設 1 個 worker、400ms 間隔（約 2.5 req/s），可用 `TWSE_CONCURRENCY` 與 `TWSE_REQUEST_SPACING_MS` 覆寫。整趟抓取約 9 分鐘。
+
+**3. 壞資料被寫進快取。** 這是最危險的一點：抓取只成功一部分，卻仍然 `writeCache`，接著 workflow 第二步 `runRotationV05.js --offline` 會拿這份殘缺快取產出報告。現在下載完成後會先驗證每個序列的筆數，不足就**拒絕寫入快取並中止**。
+
+三個問題都有測試涵蓋（用 local HTTP server 實測 redirect 跟隨、query 保留、memo 只付一次、redirect 迴圈中止、throttle 重試）。
