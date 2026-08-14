@@ -1,0 +1,637 @@
+{
+  "version": "leverage-5050-v6-rolling-confirmation",
+  "generatedAt": "2026-08-13T10:04:57.200715+00:00",
+  "method": "asym35_77_5_t50",
+  "cashRateFactor": 0.5,
+  "cashRateSource": "CBC five leading banks, 1Y fixed term-deposit average, one-month lag",
+  "costs": {
+    "buyCommission": 0.001425,
+    "sellCommission": 0.001425,
+    "sellTax": 0.001,
+    "slippagePerSide": 0.001
+  },
+  "corporateActions": {
+    "0050": {
+      "date": "2025-06-18",
+      "ratio": 4.0
+    },
+    "00631L": {
+      "date": "2026-03-31",
+      "ratio": 22.0
+    }
+  },
+  "rolling3y": [
+    {
+      "label": "2015-2017",
+      "period": {
+        "start": "2015-01-05",
+        "end": "2017-12-29",
+        "tradingDays": 734
+      },
+      "strategy": {
+        "totalReturn": 0.32694247016101285,
+        "cagr": 0.10199114109899288,
+        "maxDrawdown": -0.22346680471641522,
+        "sharpe": 0.7793604694503669,
+        "turnover": 1.222475192041222,
+        "estimatedTradingCost": 0.004025861879297174,
+        "cashInterestEarnedOnInitialCapital": 0.008466804156428217,
+        "tradeCount": 1,
+        "avgLeveragedEtfWeight": 0.5268216358095894
+      },
+      "benchmark": {
+        "totalReturn": 0.3422690040765841,
+        "cagr": 0.10634460312669969,
+        "maxDrawdown": -0.2128999750286371,
+        "sharpe": 0.7646459854790351,
+        "tradingDays": 734
+      },
+      "returnWin": false,
+      "sharpeWin": true,
+      "drawdownWithin5pp": true,
+      "relativeReturn": -0.015326533915571261
+    },
+    {
+      "label": "2016-2018",
+      "period": {
+        "start": "2016-01-04",
+        "end": "2018-12-28",
+        "tradingDays": 737
+      },
+      "strategy": {
+        "totalReturn": 0.3871663766654825,
+        "cagr": 0.11840101236537892,
+        "maxDrawdown": -0.19202944020375923,
+        "sharpe": 0.7770774152440982,
+        "turnover": 1.047177383658744,
+        "estimatedTradingCost": 0.004304571330802635,
+        "cashInterestEarnedOnInitialCapital": 0.007593165595190104,
+        "tradeCount": 2,
+        "avgLeveragedEtfWeight": 0.6253020279762418
+      },
+      "benchmark": {
+        "totalReturn": 0.39577671712792273,
+        "cagr": 0.1207698620944957,
+        "maxDrawdown": -0.1640812113004484,
+        "sharpe": 0.8641762015112516,
+        "tradingDays": 737
+      },
+      "returnWin": false,
+      "sharpeWin": false,
+      "drawdownWithin5pp": true,
+      "relativeReturn": -0.008610340462440247
+    },
+    {
+      "label": "2017-2019",
+      "period": {
+        "start": "2017-01-03",
+        "end": "2019-12-31",
+        "tradingDays": 735
+      },
+      "strategy": {
+        "totalReturn": 0.5731482010685021,
+        "cagr": 0.16805656821416237,
+        "maxDrawdown": -0.17784854846682818,
+        "sharpe": 1.122952515970645,
+        "turnover": 1.2798356312220327,
+        "estimatedTradingCost": 0.004874415909090909,
+        "cashInterestEarnedOnInitialCapital": 0.007592547047524531,
+        "tradeCount": 1,
+        "avgLeveragedEtfWeight": 0.5865650179827816
+      },
+      "benchmark": {
+        "totalReturn": 0.5130851004619581,
+        "cagr": 0.15257033087952787,
+        "maxDrawdown": -0.17960241577094105,
+        "sharpe": 1.0983287898181926,
+        "tradingDays": 735
+      },
+      "returnWin": true,
+      "sharpeWin": true,
+      "drawdownWithin5pp": true,
+      "relativeReturn": 0.06006310060654396
+    },
+    {
+      "label": "2018-2020",
+      "period": {
+        "start": "2018-01-02",
+        "end": "2020-12-31",
+        "tradingDays": 734
+      },
+      "strategy": {
+        "totalReturn": 0.7889579822380726,
+        "cagr": 0.22102274473133487,
+        "maxDrawdown": -0.3176345403638243,
+        "sharpe": 1.1332568814149084,
+        "turnover": 1.5619956031500568,
+        "estimatedTradingCost": 0.005617367248411481,
+        "cashInterestEarnedOnInitialCapital": 0.007071485900887116,
+        "tradeCount": 1,
+        "avgLeveragedEtfWeight": 0.5507085818341219
+      },
+      "benchmark": {
+        "totalReturn": 0.679502381588895,
+        "cagr": 0.19484059380799978,
+        "maxDrawdown": -0.2762710679146094,
+        "sharpe": 1.0687533786043166,
+        "tradingDays": 734
+      },
+      "returnWin": true,
+      "sharpeWin": true,
+      "drawdownWithin5pp": true,
+      "relativeReturn": 0.10945560064917759
+    },
+    {
+      "label": "2019-2021",
+      "period": {
+        "start": "2019-01-02",
+        "end": "2021-12-30",
+        "tradingDays": 731
+      },
+      "strategy": {
+        "totalReturn": 1.6043581899998482,
+        "cagr": 0.3909318604412946,
+        "maxDrawdown": -0.33642984756878336,
+        "sharpe": 1.714985414863474,
+        "turnover": 1.5980663293300055,
+        "estimatedTradingCost": 0.008489420407545783,
+        "cashInterestEarnedOnInitialCapital": 0.00832448619830228,
+        "tradeCount": 3,
+        "avgLeveragedEtfWeight": 0.589801853608736
+      },
+      "benchmark": {
+        "totalReturn": 1.2142593997182796,
+        "cagr": 0.31526038337519213,
+        "maxDrawdown": -0.2762710679146094,
+        "sharpe": 1.5705521745807847,
+        "tradingDays": 731
+      },
+      "returnWin": true,
+      "sharpeWin": true,
+      "drawdownWithin5pp": false,
+      "relativeReturn": 0.3900987902815687
+    },
+    {
+      "label": "2020-2022",
+      "period": {
+        "start": "2020-01-02",
+        "end": "2022-12-30",
+        "tradingDays": 735
+      },
+      "strategy": {
+        "totalReturn": 0.666865146911388,
+        "cagr": 0.19146190132037955,
+        "maxDrawdown": -0.307667743401389,
+        "sharpe": 0.8840868269236567,
+        "turnover": 1.1661274441796516,
+        "estimatedTradingCost": 0.005883011603670397,
+        "cashInterestEarnedOnInitialCapital": 0.009415126254840945,
+        "tradeCount": 3,
+        "avgLeveragedEtfWeight": 0.5686518646479017
+      },
+      "benchmark": {
+        "totalReturn": 0.25829379505305083,
+        "cagr": 0.08195946452032499,
+        "maxDrawdown": -0.33955372701648623,
+        "sharpe": 0.4730510648691098,
+        "tradingDays": 735
+      },
+      "returnWin": true,
+      "sharpeWin": true,
+      "drawdownWithin5pp": true,
+      "relativeReturn": 0.40857135185833715
+    },
+    {
+      "label": "2021-2023",
+      "period": {
+        "start": "2021-01-04",
+        "end": "2023-12-29",
+        "tradingDays": 729
+      },
+      "strategy": {
+        "totalReturn": 0.3447237174058966,
+        "cagr": 0.10781119801109984,
+        "maxDrawdown": -0.32044219848707867,
+        "sharpe": 0.5917168760840088,
+        "turnover": 1.1446047550251783,
+        "estimatedTradingCost": 0.004087785670947518,
+        "cashInterestEarnedOnInitialCapital": 0.008217225830174755,
+        "tradeCount": 1,
+        "avgLeveragedEtfWeight": 0.5676501420807806
+      },
+      "benchmark": {
+        "totalReturn": 0.2285198001776969,
+        "cagr": 0.07373605600527178,
+        "maxDrawdown": -0.33955372701648623,
+        "sharpe": 0.46660145763702077,
+        "tradingDays": 729
+      },
+      "returnWin": true,
+      "sharpeWin": true,
+      "drawdownWithin5pp": true,
+      "relativeReturn": 0.11620391722819967
+    },
+    {
+      "label": "2022-2024",
+      "period": {
+        "start": "2022-01-03",
+        "end": "2024-12-31",
+        "tradingDays": 727
+      },
+      "strategy": {
+        "totalReturn": 0.6114831889071555,
+        "cagr": 0.17986051954132187,
+        "maxDrawdown": -0.26566984350528555,
+        "sharpe": 0.9391131911986285,
+        "turnover": 1.6519662130624693,
+        "estimatedTradingCost": 0.005684783679673662,
+        "cashInterestEarnedOnInitialCapital": 0.010202589249888414,
+        "tradeCount": 3,
+        "avgLeveragedEtfWeight": 0.5541415333775923
+      },
+      "benchmark": {
+        "totalReturn": 0.5002130343756706,
+        "cagr": 0.15095909535263297,
+        "maxDrawdown": -0.33955372701648623,
+        "sharpe": 0.7541855761412962,
+        "tradingDays": 727
+      },
+      "returnWin": true,
+      "sharpeWin": true,
+      "drawdownWithin5pp": true,
+      "relativeReturn": 0.11127015453148492
+    },
+    {
+      "label": "2023-2025",
+      "period": {
+        "start": "2023-01-03",
+        "end": "2025-12-31",
+        "tradingDays": 719
+      },
+      "strategy": {
+        "totalReturn": 1.403895574696909,
+        "cagr": 0.3598965880039533,
+        "maxDrawdown": -0.4137249576735236,
+        "sharpe": 1.2498738355201475,
+        "turnover": 1.5129939452710268,
+        "estimatedTradingCost": 0.007709139522202784,
+        "cashInterestEarnedOnInitialCapital": 0.012931694722741376,
+        "tradeCount": 2,
+        "avgLeveragedEtfWeight": 0.6440588764850027
+      },
+      "benchmark": {
+        "totalReturn": 1.62898145959048,
+        "cagr": 0.4032336166948838,
+        "maxDrawdown": -0.2752123423047753,
+        "sharpe": 1.5699098956938893,
+        "tradingDays": 719
+      },
+      "returnWin": false,
+      "sharpeWin": false,
+      "drawdownWithin5pp": false,
+      "relativeReturn": -0.22508588489357084
+    }
+  ],
+  "calendarYears": [
+    {
+      "label": "2015",
+      "period": {
+        "start": "2015-01-05",
+        "end": "2015-12-31",
+        "tradingDays": 244
+      },
+      "strategy": {
+        "totalReturn": -0.07654324715965477,
+        "cagr": -0.07895112119957648,
+        "maxDrawdown": -0.22346680471641522,
+        "sharpe": -0.48320228787771535,
+        "turnover": 0.9367258481898002,
+        "estimatedTradingCost": 0.002658199541634836,
+        "cashInterestEarnedOnInitialCapital": 0.0032138240984990255,
+        "tradeCount": 1,
+        "avgLeveragedEtfWeight": 0.48985205248383984
+      },
+      "benchmark": {
+        "totalReturn": -0.051730582342827236,
+        "cagr": -0.05338058344286489,
+        "maxDrawdown": -0.2128999750286371,
+        "sharpe": -0.22403274550497643,
+        "tradingDays": 244
+      },
+      "returnWin": false,
+      "sharpeWin": false,
+      "drawdownWithin5pp": true,
+      "relativeReturn": -0.024812664816827534
+    },
+    {
+      "label": "2016",
+      "period": {
+        "start": "2016-01-04",
+        "end": "2016-12-30",
+        "tradingDays": 244
+      },
+      "strategy": {
+        "totalReturn": 0.2019983502406324,
+        "cagr": 0.20927109090802865,
+        "maxDrawdown": -0.09031230414840286,
+        "sharpe": 1.3838302470877137,
+        "turnover": 1.1154181346677394,
+        "estimatedTradingCost": 0.0036857931054879896,
+        "cashInterestEarnedOnInitialCapital": 0.002599543070952926,
+        "tradeCount": 2,
+        "avgLeveragedEtfWeight": 0.5522594323354318
+      },
+      "benchmark": {
+        "totalReturn": 0.22888913063913252,
+        "cagr": 0.2372217486200594,
+        "maxDrawdown": -0.08612438807598954,
+        "sharpe": 1.513667823607976,
+        "tradingDays": 244
+      },
+      "returnWin": false,
+      "sharpeWin": false,
+      "drawdownWithin5pp": true,
+      "relativeReturn": -0.026890780398500125
+    },
+    {
+      "label": "2017",
+      "period": {
+        "start": "2017-01-03",
+        "end": "2017-12-29",
+        "tradingDays": 246
+      },
+      "strategy": {
+        "totalReturn": 0.1981190080781312,
+        "cagr": 0.2034127026993009,
+        "maxDrawdown": -0.05865211080299981,
+        "sharpe": 1.9612516100304134,
+        "turnover": 1.056890060870971,
+        "estimatedTradingCost": 0.0036038575974025977,
+        "cashInterestEarnedOnInitialCapital": 0.002521566974235626,
+        "tradeCount": 1,
+        "avgLeveragedEtfWeight": 0.5568369880425418
+      },
+      "benchmark": {
+        "totalReturn": 0.1838592976011577,
+        "cagr": 0.18874279133866834,
+        "maxDrawdown": -0.05767262937855866,
+        "sharpe": 1.7623761272096374,
+        "tradingDays": 246
+      },
+      "returnWin": true,
+      "sharpeWin": true,
+      "drawdownWithin5pp": true,
+      "relativeReturn": 0.014259710476973497
+    },
+    {
+      "label": "2018",
+      "period": {
+        "start": "2018-01-02",
+        "end": "2018-12-28",
+        "tradingDays": 247
+      },
+      "strategy": {
+        "totalReturn": -0.05155114213942136,
+        "cagr": -0.052566770874055146,
+        "maxDrawdown": -0.14699757411746606,
+        "sharpe": -0.26606947918919854,
+        "turnover": 0.9295902375737415,
+        "estimatedTradingCost": 0.002746372661835731,
+        "cashInterestEarnedOnInitialCapital": 0.002531885136052047,
+        "tradeCount": 1,
+        "avgLeveragedEtfWeight": 0.5084254930152584
+      },
+      "benchmark": {
+        "totalReturn": -0.050296512847931796,
+        "cagr": -0.05128809780870669,
+        "maxDrawdown": -0.1640812113004484,
+        "sharpe": -0.2172858580137473,
+        "tradingDays": 247
+      },
+      "returnWin": false,
+      "sharpeWin": false,
+      "drawdownWithin5pp": true,
+      "relativeReturn": -0.0012546292914895618
+    },
+    {
+      "label": "2019",
+      "period": {
+        "start": "2019-01-02",
+        "end": "2019-12-31",
+        "tradingDays": 242
+      },
+      "strategy": {
+        "totalReturn": 0.35154142996264115,
+        "cagr": 0.3684708001954373,
+        "maxDrawdown": -0.0855717597155532,
+        "sharpe": 2.782994660055292,
+        "turnover": 1.2038822237463223,
+        "estimatedTradingCost": 0.00420712654531729,
+        "cashInterestEarnedOnInitialCapital": 0.0024160891079919367,
+        "tradeCount": 2,
+        "avgLeveragedEtfWeight": 0.5714830914611961
+      },
+      "benchmark": {
+        "totalReturn": 0.3676330820550129,
+        "cagr": 0.385441447128144,
+        "maxDrawdown": -0.08786876026053081,
+        "sharpe": 2.6339401484195446,
+        "tradingDays": 242
+      },
+      "returnWin": false,
+      "sharpeWin": true,
+      "drawdownWithin5pp": true,
+      "relativeReturn": -0.016091652092371733
+    },
+    {
+      "label": "2020",
+      "period": {
+        "start": "2020-01-02",
+        "end": "2020-12-31",
+        "tradingDays": 245
+      },
+      "strategy": {
+        "totalReturn": 0.5873962073010064,
+        "cagr": 0.6084931107500062,
+        "maxDrawdown": -0.26339933358376877,
+        "sharpe": 1.9694717206805437,
+        "turnover": 1.6055345865259412,
+        "estimatedTradingCost": 0.005636765589133548,
+        "cashInterestEarnedOnInitialCapital": 0.0016475282026856182,
+        "tradeCount": 2,
+        "avgLeveragedEtfWeight": 0.6292378685488096
+      },
+      "benchmark": {
+        "totalReturn": 0.3092820699851371,
+        "cagr": 0.319401661833693,
+        "maxDrawdown": -0.2762710679146094,
+        "sharpe": 1.3259141131347796,
+        "tradingDays": 245
+      },
+      "returnWin": true,
+      "sharpeWin": true,
+      "drawdownWithin5pp": true,
+      "relativeReturn": 0.2781141373158693
+    },
+    {
+      "label": "2021",
+      "period": {
+        "start": "2021-01-04",
+        "end": "2021-12-30",
+        "tradingDays": 244
+      },
+      "strategy": {
+        "totalReturn": 0.30956431646227056,
+        "cagr": 0.32119541161107223,
+        "maxDrawdown": -0.14273825212451308,
+        "sharpe": 1.3704412489811295,
+        "turnover": 1.1062295809264742,
+        "estimatedTradingCost": 0.003988900184909641,
+        "cashInterestEarnedOnInitialCapital": 0.0018510706285711372,
+        "tradeCount": 1,
+        "avgLeveragedEtfWeight": 0.5766940502825969
+      },
+      "benchmark": {
+        "totalReturn": 0.20985951289401927,
+        "cagr": 0.21743999426315774,
+        "maxDrawdown": -0.1098285467476624,
+        "sharpe": 1.155297204404414,
+        "tradingDays": 244
+      },
+      "returnWin": true,
+      "sharpeWin": true,
+      "drawdownWithin5pp": true,
+      "relativeReturn": 0.09970480356825129
+    },
+    {
+      "label": "2022",
+      "period": {
+        "start": "2022-01-03",
+        "end": "2022-12-30",
+        "tradingDays": 246
+      },
+      "strategy": {
+        "totalReturn": -0.16550195080577101,
+        "cagr": -0.169176312217986,
+        "maxDrawdown": -0.26566984350528555,
+        "sharpe": -0.868614966738621,
+        "turnover": 1.2164303719516107,
+        "estimatedTradingCost": 0.0030428879154771812,
+        "cashInterestEarnedOnInitialCapital": 0.0024785111064926897,
+        "tradeCount": 2,
+        "avgLeveragedEtfWeight": 0.46084268096084013
+      },
+      "benchmark": {
+        "totalReturn": -0.22134878320796836,
+        "cagr": -0.22608583605947907,
+        "maxDrawdown": -0.33955372701648623,
+        "sharpe": -1.0098234723775839,
+        "tradingDays": 246
+      },
+      "returnWin": true,
+      "sharpeWin": true,
+      "drawdownWithin5pp": true,
+      "relativeReturn": 0.055846832402197344
+    },
+    {
+      "label": "2023",
+      "period": {
+        "start": "2023-01-03",
+        "end": "2023-12-29",
+        "tradingDays": 239
+      },
+      "strategy": {
+        "totalReturn": 0.3255136193235717,
+        "cagr": 0.3459876504718662,
+        "maxDrawdown": -0.08756939982363299,
+        "sharpe": 1.9666976302706607,
+        "turnover": 1.1101208271726777,
+        "estimatedTradingCost": 0.004037507451564829,
+        "cashInterestEarnedOnInitialCapital": 0.003647022682506574,
+        "tradeCount": 1,
+        "avgLeveragedEtfWeight": 0.5788339376545305
+      },
+      "benchmark": {
+        "totalReturn": 0.28379001235143475,
+        "cagr": 0.30135366497963334,
+        "maxDrawdown": -0.07199684935098571,
+        "sharpe": 1.8100758031838486,
+        "tradingDays": 239
+      },
+      "returnWin": true,
+      "sharpeWin": true,
+      "drawdownWithin5pp": true,
+      "relativeReturn": 0.04172360697213695
+    },
+    {
+      "label": "2024",
+      "period": {
+        "start": "2024-01-02",
+        "end": "2024-12-31",
+        "tradingDays": 242
+      },
+      "strategy": {
+        "totalReturn": 0.29040923773461325,
+        "cagr": 0.3040762285699754,
+        "maxDrawdown": -0.24150583552159688,
+        "sharpe": 1.1930818036517388,
+        "turnover": 1.0691423820374215,
+        "estimatedTradingCost": 0.003915770089285714,
+        "cashInterestEarnedOnInitialCapital": 0.003989842988734411,
+        "tradeCount": 1,
+        "avgLeveragedEtfWeight": 0.5808246879512066
+      },
+      "benchmark": {
+        "totalReturn": 0.49772281034864063,
+        "cagr": 0.522932579210297,
+        "maxDrawdown": -0.2108914925125458,
+        "sharpe": 1.7664808170757764,
+        "tradingDays": 242
+      },
+      "returnWin": false,
+      "sharpeWin": false,
+      "drawdownWithin5pp": true,
+      "relativeReturn": -0.20731357261402739
+    },
+    {
+      "label": "2025",
+      "period": {
+        "start": "2025-01-02",
+        "end": "2025-12-31",
+        "tradingDays": 238
+      },
+      "strategy": {
+        "totalReturn": 0.38730371244716855,
+        "cagr": 0.41427733248706344,
+        "maxDrawdown": -0.2584536193921839,
+        "sharpe": 1.519289463729274,
+        "turnover": 1.4499886492615812,
+        "estimatedTradingCost": 0.004783798115348243,
+        "cashInterestEarnedOnInitialCapital": 0.003447193124652484,
+        "tradeCount": 2,
+        "avgLeveragedEtfWeight": 0.5895133670314437
+      },
+      "benchmark": {
+        "totalReturn": 0.3881355667229702,
+        "cagr": 0.41517526051305187,
+        "maxDrawdown": -0.2752123423047753,
+        "sharpe": 1.4152961656413268,
+        "tradingDays": 238
+      },
+      "returnWin": false,
+      "sharpeWin": true,
+      "drawdownWithin5pp": true,
+      "relativeReturn": -0.00083185427580168
+    }
+  ],
+  "confirmationGate": {
+    "windowCount": 9,
+    "returnWins": 6,
+    "sharpeWins": 7,
+    "drawdownPasses": 7,
+    "requiredReturnWins": 5,
+    "requiredSharpeWins": 5,
+    "requiredDrawdownPasses": 7,
+    "passed": true
+  }
+}

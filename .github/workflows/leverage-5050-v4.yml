@@ -1,0 +1,48 @@
+name: Leverage 50-50 v4 Common Calendar
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/leverage-5050-challenger
+    paths:
+      - 'scripts/runLeverage5050V4Aligned.py'
+      - '.github/workflows/leverage-5050-v4.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: leverage-5050-v4-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install 'numpy>=1.26,<3'
+      - name: Compile and self-test
+        run: |
+          python -m py_compile leverage5050Backtest.py scripts/runLeverage5050Backtest.py scripts/runLeverage5050V2.py scripts/runLeverage5050V3.py scripts/runLeverage5050V4Aligned.py
+          python scripts/selfTestLeverage5050.py
+      - name: Run common-calendar validation
+        run: python scripts/runLeverage5050V4Aligned.py
+      - name: Commit compact v4 report
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/backtests/leverage_5050_v4.json docs/LEVERAGE_5050_V4.md
+          if git diff --cached --quiet; then
+            echo "No v4 leverage report changes."
+            exit 0
+          fi
+          git commit -m "backtest: update leverage 50-50 v4"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin HEAD:"$GITHUB_REF_NAME"

@@ -1,0 +1,2655 @@
+{
+  "version": "leverage-5050-v1",
+  "generatedAt": "2026-08-13T09:30:47.194679+00:00",
+  "period": {
+    "start": "2014-10-31",
+    "end": "2026-08-13"
+  },
+  "instrument": "00631L Yuanta Taiwan 50 Daily 2X",
+  "cashAnnualYield": 0.0,
+  "costs": {
+    "buyCommission": 0.001425,
+    "sellCommission": 0.001425,
+    "sellTax": 0.001,
+    "slippagePerSide": 0.001
+  },
+  "corporateActions": {
+    "0050": {
+      "date": "2025-06-18",
+      "ratio": 4.0
+    },
+    "00631L": {
+      "date": "2026-03-31",
+      "ratio": 22.0
+    }
+  },
+  "windows": {
+    "full": {
+      "period": {
+        "start": "2014-10-31",
+        "end": "2026-08-13"
+      },
+      "benchmarks": {
+        "0050": {
+          "name": "0050_buyhold_after_cost",
+          "period": {
+            "start": "2014-10-31",
+            "end": "2026-08-13",
+            "tradingDays": 2865
+          },
+          "metrics": {
+            "totalReturn": 5.527841374646369,
+            "cagr": 0.17941215059428628,
+            "maxDrawdown": -0.3638157894736842,
+            "sharpe": 0.931695078035709
+          }
+        },
+        "taiwan50TotalReturn": {
+          "totalReturn": 8.798037681357776,
+          "cagr": 0.2211100199575513,
+          "maxDrawdown": -0.33955372701648623,
+          "sharpe": 1.0825497440850762,
+          "tradingDays": 2879
+        }
+      }
+    },
+    "development": {
+      "period": {
+        "start": "2014-10-31",
+        "end": "2021-12-31"
+      },
+      "benchmarks": {
+        "0050": {
+          "name": "0050_buyhold_after_cost",
+          "period": {
+            "start": "2014-10-31",
+            "end": "2021-12-30",
+            "tradingDays": 1757
+          },
+          "metrics": {
+            "totalReturn": 1.2254004686294442,
+            "cagr": 0.12157279732858894,
+            "maxDrawdown": -0.30476673427991896,
+            "sharpe": 0.7753681017254015
+          }
+        },
+        "taiwan50TotalReturn": {
+          "totalReturn": 1.837413976239144,
+          "cagr": 0.1608515519514948,
+          "maxDrawdown": -0.2762710679146094,
+          "sharpe": 0.9750960191666413,
+          "tradingDays": 1762
+        }
+      }
+    },
+    "holdout": {
+      "period": {
+        "start": "2022-01-01",
+        "end": "2026-08-13"
+      },
+      "benchmarks": {
+        "0050": {
+          "name": "0050_buyhold_after_cost",
+          "period": {
+            "start": "2022-01-03",
+            "end": "2026-08-13",
+            "tradingDays": 1108
+          },
+          "metrics": {
+            "totalReturn": 1.9062307489863972,
+            "cagr": 0.27461294392245095,
+            "maxDrawdown": -0.3638157894736842,
+            "sharpe": 1.127740044920998
+          }
+        },
+        "taiwan50TotalReturn": {
+          "totalReturn": 2.424959031184142,
+          "cagr": 0.32014170579551204,
+          "maxDrawdown": -0.33955372701648623,
+          "sharpe": 1.2343954554798295,
+          "tradingDays": 1117
+        }
+      }
+    },
+    "regime_2015_2019": {
+      "period": {
+        "start": "2014-10-31",
+        "end": "2019-12-31"
+      },
+      "benchmarks": {
+        "0050": {
+          "name": "0050_buyhold_after_cost",
+          "period": {
+            "start": "2014-10-31",
+            "end": "2019-12-31",
+            "tradingDays": 1268
+          },
+          "metrics": {
+            "totalReturn": 0.4828355699905471,
+            "cagr": 0.0814406965771588,
+            "maxDrawdown": -0.23298969072164966,
+            "sharpe": 0.6106547673670484
+          }
+        },
+        "taiwan50TotalReturn": {
+          "totalReturn": 0.7525233140632175,
+          "cagr": 0.11746800431787974,
+          "maxDrawdown": -0.2128999750286371,
+          "sharpe": 0.8224317560973737,
+          "tradingDays": 1273
+        }
+      }
+    },
+    "regime_2020_2022": {
+      "period": {
+        "start": "2020-01-01",
+        "end": "2022-12-31"
+      },
+      "benchmarks": {
+        "0050": {
+          "name": "0050_buyhold_after_cost",
+          "period": {
+            "start": "2020-01-02",
+            "end": "2022-12-30",
+            "tradingDays": 735
+          },
+          "metrics": {
+            "totalReturn": 0.12887171963243582,
+            "cagr": 0.0424364170153233,
+            "maxDrawdown": -0.3638157894736842,
+            "sharpe": 0.2949809239896736
+          }
+        },
+        "taiwan50TotalReturn": {
+          "totalReturn": 0.25829379505305083,
+          "cagr": 0.08195946452032499,
+          "maxDrawdown": -0.33955372701648623,
+          "sharpe": 0.4730510648691098,
+          "tradingDays": 735
+        }
+      }
+    },
+    "regime_2023_now": {
+      "period": {
+        "start": "2023-01-01",
+        "end": "2026-08-13"
+      },
+      "benchmarks": {
+        "0050": {
+          "name": "0050_buyhold_after_cost",
+          "period": {
+            "start": "2023-01-03",
+            "end": "2026-08-13",
+            "tradingDays": 862
+          },
+          "metrics": {
+            "totalReturn": 2.871438771459983,
+            "cagr": 0.48545878791415054,
+            "maxDrawdown": -0.28473581213307253,
+            "sharpe": 1.7306833064644822
+          }
+        },
+        "taiwan50TotalReturn": {
+          "totalReturn": 3.365793375300224,
+          "cagr": 0.5317389429405062,
+          "maxDrawdown": -0.2752123423047753,
+          "sharpe": 1.796645223607406,
+          "tradingDays": 871
+        }
+      }
+    }
+  },
+  "ranking": [
+    {
+      "name": "band35_65",
+      "family": "band",
+      "full": {
+        "name": "band35_65",
+        "family": "band",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 7.905980153137488,
+          "cagr": 0.21208259329619805,
+          "maxDrawdown": -0.3119505294594266,
+          "sharpe": 1.084901244592191,
+          "turnover": 3.8987669694950395,
+          "estimatedTradingCost": 0.03263763870860982,
+          "tradeCount": 8,
+          "avgLeveragedEtfWeight": 0.5264070821541772
+        }
+      },
+      "development": {
+        "name": "band35_65",
+        "family": "band",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 2.120137685819044,
+          "cagr": 0.17727388747746176,
+          "maxDrawdown": -0.3119505294594266,
+          "sharpe": 1.0418200388816439,
+          "turnover": 2.029057934110154,
+          "estimatedTradingCost": 0.010213362451534674,
+          "tradeCount": 4,
+          "avgLeveragedEtfWeight": 0.5367247855489277
+        }
+      },
+      "holdout": {
+        "name": "band35_65",
+        "family": "band",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 2.199497961786685,
+          "cagr": 0.30278937686491236,
+          "maxDrawdown": -0.29724619493228,
+          "sharpe": 1.2491790256085584,
+          "turnover": 2.7062237871093435,
+          "estimatedTradingCost": 0.012270258271045869,
+          "tradeCount": 7,
+          "avgLeveragedEtfWeight": 0.5356766808345699
+        }
+      },
+      "regime_2015_2019": {
+        "name": "band35_65",
+        "family": "band",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.7381448332350744,
+          "cagr": 0.11612862058055762,
+          "maxDrawdown": -0.23100221392294518,
+          "sharpe": 0.8520768250058647,
+          "turnover": 1.4049271891735815,
+          "estimatedTradingCost": 0.005467143975401143,
+          "tradeCount": 2,
+          "avgLeveragedEtfWeight": 0.5256198332076142
+        }
+      },
+      "regime_2020_2022": {
+        "name": "band35_65",
+        "family": "band",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.5163559656819272,
+          "cagr": 0.15342396490955612,
+          "maxDrawdown": -0.3095758327606126,
+          "sharpe": 0.7592966972201932,
+          "turnover": 1.163521966165083,
+          "estimatedTradingCost": 0.005397002570460224,
+          "tradeCount": 4,
+          "avgLeveragedEtfWeight": 0.543383412843357
+        }
+      },
+      "regime_2023_now": {
+        "name": "band35_65",
+        "family": "band",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 2.440117445469608,
+          "cagr": 0.43503881242270315,
+          "maxDrawdown": -0.3436319440456984,
+          "sharpe": 1.5160147161124793,
+          "turnover": 1.954483649870035,
+          "estimatedTradingCost": 0.011312278299328469,
+          "tradeCount": 4,
+          "avgLeveragedEtfWeight": 0.5695109353405801
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": true,
+        "fullSharpeBeats0050": true,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": true,
+        "holdoutSharpeBeats0050": true,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": true,
+      "regimeWins": 2,
+      "calmar": 0.679859699753394
+    },
+    {
+      "name": "ma200_55_35",
+      "family": "trend",
+      "full": {
+        "name": "ma200_55_35",
+        "family": "trend",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 6.807917812548885,
+          "cagr": 0.19813489477299906,
+          "maxDrawdown": -0.27109495416852547,
+          "sharpe": 1.068373933755462,
+          "turnover": 11.20102690594633,
+          "estimatedTradingCost": 0.07714742126060214,
+          "tradeCount": 230,
+          "avgLeveragedEtfWeight": 0.4977069539785885
+        }
+      },
+      "development": {
+        "name": "ma200_55_35",
+        "family": "trend",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 1.6454663043301707,
+          "cagr": 0.1497354705502052,
+          "maxDrawdown": -0.27109495416852547,
+          "sharpe": 0.9704784502092517,
+          "turnover": 7.676859515695425,
+          "estimatedTradingCost": 0.032457885915857396,
+          "tradeCount": 122,
+          "avgLeveragedEtfWeight": 0.49656706724211325
+        }
+      },
+      "holdout": {
+        "name": "ma200_55_35",
+        "family": "trend",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 1.9274505618428002,
+          "cagr": 0.27672365702086577,
+          "maxDrawdown": -0.25851472272803966,
+          "sharpe": 1.210779052590584,
+          "turnover": 4.8376424944145,
+          "estimatedTradingCost": 0.01998866313834924,
+          "tradeCount": 110,
+          "avgLeveragedEtfWeight": 0.49923300995176
+        }
+      },
+      "regime_2015_2019": {
+        "name": "ma200_55_35",
+        "family": "trend",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.555381566305178,
+          "cagr": 0.09175533785173573,
+          "maxDrawdown": -0.23100221392294518,
+          "sharpe": 0.7270355997863892,
+          "turnover": 5.3425532485668255,
+          "estimatedTradingCost": 0.01873438635021568,
+          "tradeCount": 76,
+          "avgLeveragedEtfWeight": 0.48644720417705073
+        }
+      },
+      "regime_2020_2022": {
+        "name": "ma200_55_35",
+        "family": "trend",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.4483171678769844,
+          "cagr": 0.13541142839049058,
+          "maxDrawdown": -0.2708353391921222,
+          "sharpe": 0.757361879373988,
+          "turnover": 3.222594505252229,
+          "estimatedTradingCost": 0.013052356017061551,
+          "tradeCount": 70,
+          "avgLeveragedEtfWeight": 0.473719945397675
+        }
+      },
+      "regime_2023_now": {
+        "name": "ma200_55_35",
+        "family": "trend",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 2.4944245902887623,
+          "cagr": 0.44162493304322537,
+          "maxDrawdown": -0.25851472272803944,
+          "sharpe": 1.6332074495957576,
+          "turnover": 4.070351904463475,
+          "estimatedTradingCost": 0.022179450802937373,
+          "tradeCount": 86,
+          "avgLeveragedEtfWeight": 0.535267659903693
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": true,
+        "fullSharpeBeats0050": true,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": true,
+        "holdoutSharpeBeats0050": true,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": true,
+      "regimeWins": 2,
+      "calmar": 0.7308689878817479
+    },
+    {
+      "name": "regime_ladder_B",
+      "family": "hybrid",
+      "full": {
+        "name": "regime_ladder_B",
+        "family": "hybrid",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 7.562616046953007,
+          "cagr": 0.20789812563022236,
+          "maxDrawdown": -0.2994356173952225,
+          "sharpe": 1.0635253134182057,
+          "turnover": 13.620677797549298,
+          "estimatedTradingCost": 0.09996726453289828,
+          "tradeCount": 238,
+          "avgLeveragedEtfWeight": 0.5166902981971975
+        }
+      },
+      "development": {
+        "name": "regime_ladder_B",
+        "family": "hybrid",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 1.8722309290908248,
+          "cagr": 0.1633776179962747,
+          "maxDrawdown": -0.28259345846591366,
+          "sharpe": 1.0175812492009881,
+          "turnover": 9.302418738561713,
+          "estimatedTradingCost": 0.0410450394856704,
+          "tradeCount": 126,
+          "avgLeveragedEtfWeight": 0.5053156630192873
+        }
+      },
+      "holdout": {
+        "name": "regime_ladder_B",
+        "family": "hybrid",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 1.9569479947805197,
+          "cagr": 0.27963818815515284,
+          "maxDrawdown": -0.29943533279377954,
+          "sharpe": 1.153795157198432,
+          "turnover": 5.729898844620178,
+          "estimatedTradingCost": 0.023580803947914147,
+          "tradeCount": 114,
+          "avgLeveragedEtfWeight": 0.5344460049028588
+        }
+      },
+      "regime_2015_2019": {
+        "name": "regime_ladder_B",
+        "family": "hybrid",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.5942443971431575,
+          "cagr": 0.09712317791228764,
+          "maxDrawdown": -0.23100221392294518,
+          "sharpe": 0.7471970956594499,
+          "turnover": 6.621918221773689,
+          "estimatedTradingCost": 0.023684425082553206,
+          "tradeCount": 80,
+          "avgLeveragedEtfWeight": 0.49532898707344597
+        }
+      },
+      "regime_2020_2022": {
+        "name": "regime_ladder_B",
+        "family": "hybrid",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.5060421557575283,
+          "cagr": 0.15072813004787133,
+          "maxDrawdown": -0.2994356173952224,
+          "sharpe": 0.7495412275208861,
+          "turnover": 4.6772153123337405,
+          "estimatedTradingCost": 0.0198454037833899,
+          "tradeCount": 73,
+          "avgLeveragedEtfWeight": 0.5255538966710541
+        }
+      },
+      "regime_2023_now": {
+        "name": "regime_ladder_B",
+        "family": "hybrid",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 2.550285842698476,
+          "cagr": 0.4483243860972157,
+          "maxDrawdown": -0.2777397163353542,
+          "sharpe": 1.627913954691544,
+          "turnover": 4.30989016613464,
+          "estimatedTradingCost": 0.02370034037239011,
+          "tradeCount": 88,
+          "avgLeveragedEtfWeight": 0.5401991699600653
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": true,
+        "fullSharpeBeats0050": true,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": true,
+        "holdoutSharpeBeats0050": true,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": true,
+      "regimeWins": 2,
+      "calmar": 0.6942999214279155
+    },
+    {
+      "name": "lev50_hold",
+      "family": "fixed",
+      "full": {
+        "name": "lev50_hold",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 19.380543926702366,
+          "cagr": 0.30363541919603,
+          "maxDrawdown": -0.514937193832312,
+          "sharpe": 1.012824181826398,
+          "turnover": 5.8858256808365645,
+          "estimatedTradingCost": 0.06949128046165942,
+          "tradeCount": 1,
+          "avgLeveragedEtfWeight": 0.7416645558658357
+        }
+      },
+      "development": {
+        "name": "lev50_hold",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 3.1349790733091325,
+          "cagr": 0.22579680083200815,
+          "maxDrawdown": -0.38266252203287865,
+          "sharpe": 1.0539196967329458,
+          "turnover": 2.4915924801634106,
+          "estimatedTradingCost": 0.013698661912124896,
+          "tradeCount": 1,
+          "avgLeveragedEtfWeight": 0.6443948917545481
+        }
+      },
+      "holdout": {
+        "name": "lev50_hold",
+        "family": "fixed",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 2.190054703586867,
+          "cagr": 0.3019138474567524,
+          "maxDrawdown": -0.36190128868462035,
+          "sharpe": 1.0735007063227835,
+          "turnover": 2.480071132876536,
+          "estimatedTradingCost": 0.01045348051068769,
+          "tradeCount": 1,
+          "avgLeveragedEtfWeight": 0.5597766757384787
+        }
+      },
+      "regime_2015_2019": {
+        "name": "lev50_hold",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.832789443497973,
+          "cagr": 0.12795172225756613,
+          "maxDrawdown": -0.23100221392294518,
+          "sharpe": 0.8373668130541175,
+          "turnover": 1.4776797288341332,
+          "estimatedTradingCost": 0.005792184728728001,
+          "tradeCount": 1,
+          "avgLeveragedEtfWeight": 0.5858531487275838
+        }
+      },
+      "regime_2020_2022": {
+        "name": "lev50_hold",
+        "family": "fixed",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.3571333221444295,
+          "cagr": 0.1103773039063991,
+          "maxDrawdown": -0.37880805910715576,
+          "sharpe": 0.5414578804069825,
+          "turnover": 0.9716584212870989,
+          "estimatedTradingCost": 0.0041586249984926875,
+          "tradeCount": 1,
+          "avgLeveragedEtfWeight": 0.6236401356606002
+        }
+      },
+      "regime_2023_now": {
+        "name": "lev50_hold",
+        "family": "fixed",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 3.8427445051342106,
+          "cagr": 0.5859225944859421,
+          "maxDrawdown": -0.4163530937819321,
+          "sharpe": 1.4818710464160056,
+          "turnover": 2.4686543544823287,
+          "estimatedTradingCost": 0.01612936143637783,
+          "tradeCount": 1,
+          "avgLeveragedEtfWeight": 0.7008971626385063
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": true,
+        "fullSharpeBeats0050": true,
+        "fullDrawdownWithin5pp": false,
+        "holdoutReturnBeats0050": true,
+        "holdoutSharpeBeats0050": false,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": false,
+      "regimeWins": 3,
+      "calmar": 0.5896552488980008
+    },
+    {
+      "name": "band40_60",
+      "family": "band",
+      "full": {
+        "name": "band40_60",
+        "family": "band",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 7.806129798416684,
+          "cagr": 0.21088114051811857,
+          "maxDrawdown": -0.3153064809355024,
+          "sharpe": 1.0808688882912916,
+          "turnover": 4.127014281649696,
+          "estimatedTradingCost": 0.0345328954146282,
+          "tradeCount": 16,
+          "avgLeveragedEtfWeight": 0.529754458538316
+        }
+      },
+      "development": {
+        "name": "band40_60",
+        "family": "band",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 2.132328457137305,
+          "cagr": 0.17793251234911467,
+          "maxDrawdown": -0.28587454585244954,
+          "sharpe": 1.057950980066956,
+          "turnover": 2.2331624518890734,
+          "estimatedTradingCost": 0.011117131585371634,
+          "tradeCount": 7,
+          "avgLeveragedEtfWeight": 0.5343217021918563
+        }
+      },
+      "holdout": {
+        "name": "band40_60",
+        "family": "band",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 1.770026044882977,
+          "cagr": 0.2607736446063156,
+          "maxDrawdown": -0.31530648093390434,
+          "sharpe": 1.1265897114670274,
+          "turnover": 2.4610923173548316,
+          "estimatedTradingCost": 0.010218193611951847,
+          "tradeCount": 9,
+          "avgLeveragedEtfWeight": 0.52297487732895
+        }
+      },
+      "regime_2015_2019": {
+        "name": "band40_60",
+        "family": "band",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.7062638755828043,
+          "cagr": 0.11202982791086602,
+          "maxDrawdown": -0.23100221392294518,
+          "sharpe": 0.8064594505907912,
+          "turnover": 1.3940465218538038,
+          "estimatedTradingCost": 0.005357654270036085,
+          "tradeCount": 3,
+          "avgLeveragedEtfWeight": 0.531989998394095
+        }
+      },
+      "regime_2020_2022": {
+        "name": "band40_60",
+        "family": "band",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.4648927687686233,
+          "cagr": 0.1398500297944496,
+          "maxDrawdown": -0.2963150716933033,
+          "sharpe": 0.7138895481542985,
+          "turnover": 1.3319434544198892,
+          "estimatedTradingCost": 0.0058229179275544425,
+          "tradeCount": 6,
+          "avgLeveragedEtfWeight": 0.5251267006773145
+        }
+      },
+      "regime_2023_now": {
+        "name": "band40_60",
+        "family": "band",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 2.447372260514257,
+          "cagr": 0.43592288150353276,
+          "maxDrawdown": -0.31989565038985524,
+          "sharpe": 1.617172923157561,
+          "turnover": 2.113363544346838,
+          "estimatedTradingCost": 0.012161311622668126,
+          "tradeCount": 8,
+          "avgLeveragedEtfWeight": 0.5292493951745604
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": true,
+        "fullSharpeBeats0050": true,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": false,
+        "holdoutSharpeBeats0050": false,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": false,
+      "regimeWins": 2,
+      "calmar": 0.6688132127587172
+    },
+    {
+      "name": "band45_55",
+      "family": "band",
+      "full": {
+        "name": "band45_55",
+        "family": "band",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 7.263758456959508,
+          "cagr": 0.20412954977848563,
+          "maxDrawdown": -0.304948397180685,
+          "sharpe": 1.0691224901459313,
+          "turnover": 5.130741931890461,
+          "estimatedTradingCost": 0.040712997607177656,
+          "tradeCount": 46,
+          "avgLeveragedEtfWeight": 0.5098511262923049
+        }
+      },
+      "development": {
+        "name": "band45_55",
+        "family": "band",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 2.0428036611083034,
+          "cagr": 0.17304369397432673,
+          "maxDrawdown": -0.2960915164291863,
+          "sharpe": 1.0575011847933042,
+          "turnover": 2.4556306728181716,
+          "estimatedTradingCost": 0.01216530287735754,
+          "tradeCount": 22,
+          "avgLeveragedEtfWeight": 0.5116065514972209
+        }
+      },
+      "holdout": {
+        "name": "band45_55",
+        "family": "band",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 1.6639498500185947,
+          "cagr": 0.2496266880402771,
+          "maxDrawdown": -0.31288762404965176,
+          "sharpe": 1.0968370946068844,
+          "turnover": 2.972592754597193,
+          "estimatedTradingCost": 0.011893575553924073,
+          "tradeCount": 24,
+          "avgLeveragedEtfWeight": 0.509490221511519
+        }
+      },
+      "regime_2015_2019": {
+        "name": "band45_55",
+        "family": "band",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.743352277165857,
+          "cagr": 0.11679238431562533,
+          "maxDrawdown": -0.2263156563241283,
+          "sharpe": 0.8588567949055491,
+          "turnover": 1.7250515861258937,
+          "estimatedTradingCost": 0.006713027528603917,
+          "tradeCount": 13,
+          "avgLeveragedEtfWeight": 0.5097306618114932
+        }
+      },
+      "regime_2020_2022": {
+        "name": "band45_55",
+        "family": "band",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.4165550908027482,
+          "cagr": 0.12681203058894797,
+          "maxDrawdown": -0.2935803509943744,
+          "sharpe": 0.666362547291202,
+          "turnover": 1.5147573848047915,
+          "estimatedTradingCost": 0.006383048651595709,
+          "tradeCount": 15,
+          "avgLeveragedEtfWeight": 0.5096213654318328
+        }
+      },
+      "regime_2023_now": {
+        "name": "band45_55",
+        "family": "band",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 2.3522573640614346,
+          "cagr": 0.42422597278375385,
+          "maxDrawdown": -0.304948397180678,
+          "sharpe": 1.6219789402859277,
+          "turnover": 2.6033779947803626,
+          "estimatedTradingCost": 0.01442713841265348,
+          "tradeCount": 21,
+          "avgLeveragedEtfWeight": 0.5083350477919218
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": true,
+        "fullSharpeBeats0050": true,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": false,
+        "holdoutSharpeBeats0050": false,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": false,
+      "regimeWins": 2,
+      "calmar": 0.6693904662746492
+    },
+    {
+      "name": "lev50_quarterly",
+      "family": "fixed",
+      "full": {
+        "name": "lev50_quarterly",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 7.107738246271085,
+          "cagr": 0.20211248082671363,
+          "maxDrawdown": -0.31294420459180416,
+          "sharpe": 1.0636608909977192,
+          "turnover": 4.174246588446429,
+          "estimatedTradingCost": 0.033226037976460135,
+          "tradeCount": 41,
+          "avgLeveragedEtfWeight": 0.5112794292059702
+        }
+      },
+      "development": {
+        "name": "lev50_quarterly",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 2.039090053687337,
+          "cagr": 0.17283825059530233,
+          "maxDrawdown": -0.26381285512576724,
+          "sharpe": 1.0830765291246465,
+          "turnover": 2.4458854017402074,
+          "estimatedTradingCost": 0.011944711529548086,
+          "tradeCount": 23,
+          "avgLeveragedEtfWeight": 0.5094649128970821
+        }
+      },
+      "holdout": {
+        "name": "lev50_quarterly",
+        "family": "fixed",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 1.6433769895651071,
+          "cagr": 0.24742523582520537,
+          "maxDrawdown": -0.3129442045918043,
+          "sharpe": 1.0783670992292707,
+          "turnover": 2.4479764485834425,
+          "estimatedTradingCost": 0.009838857121207155,
+          "tradeCount": 18,
+          "avgLeveragedEtfWeight": 0.5141583333924404
+        }
+      },
+      "regime_2015_2019": {
+        "name": "lev50_quarterly",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.6987350528346226,
+          "cagr": 0.11105293335108857,
+          "maxDrawdown": -0.21824653043877185,
+          "sharpe": 0.8380240047308948,
+          "turnover": 1.6108407153663977,
+          "estimatedTradingCost": 0.006139737470507568,
+          "tradeCount": 15,
+          "avgLeveragedEtfWeight": 0.5045302348167026
+        }
+      },
+      "regime_2020_2022": {
+        "name": "lev50_quarterly",
+        "family": "fixed",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.4459406775988941,
+          "cagr": 0.13477232205704492,
+          "maxDrawdown": -0.28934355846485194,
+          "sharpe": 0.7129023784248044,
+          "turnover": 1.5022723281430372,
+          "estimatedTradingCost": 0.006451963124073475,
+          "tradeCount": 12,
+          "avgLeveragedEtfWeight": 0.5132049177539075
+        }
+      },
+      "regime_2023_now": {
+        "name": "lev50_quarterly",
+        "family": "fixed",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 2.2959926818656355,
+          "cagr": 0.41719578405298097,
+          "maxDrawdown": -0.31294420459180416,
+          "sharpe": 1.5713121229470528,
+          "turnover": 2.0706001169319523,
+          "estimatedTradingCost": 0.011499247501575032,
+          "tradeCount": 14,
+          "avgLeveragedEtfWeight": 0.5195696936434648
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": true,
+        "fullSharpeBeats0050": true,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": false,
+        "holdoutSharpeBeats0050": false,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": false,
+      "regimeWins": 2,
+      "calmar": 0.6458419036401188
+    },
+    {
+      "name": "regime_ladder_A",
+      "family": "hybrid",
+      "full": {
+        "name": "regime_ladder_A",
+        "family": "hybrid",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 6.045545039600157,
+          "cagr": 0.18735605051404858,
+          "maxDrawdown": -0.27388963972418356,
+          "sharpe": 1.0551787263611323,
+          "turnover": 13.39519151627329,
+          "estimatedTradingCost": 0.08834822414589796,
+          "tradeCount": 239,
+          "avgLeveragedEtfWeight": 0.470224096172362
+        }
+      },
+      "development": {
+        "name": "regime_ladder_A",
+        "family": "hybrid",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 1.5723624117988928,
+          "cagr": 0.14512374615921786,
+          "maxDrawdown": -0.2562589625423676,
+          "sharpe": 0.9935407834690618,
+          "turnover": 9.17794973769822,
+          "estimatedTradingCost": 0.03836408516347715,
+          "tradeCount": 127,
+          "avgLeveragedEtfWeight": 0.46104492619465504
+        }
+      },
+      "holdout": {
+        "name": "regime_ladder_A",
+        "family": "hybrid",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 1.7136809345379502,
+          "cagr": 0.2548945476005475,
+          "maxDrawdown": -0.2741461553276201,
+          "sharpe": 1.1594360907471148,
+          "turnover": 5.534311991339561,
+          "estimatedTradingCost": 0.02212664081528962,
+          "tradeCount": 112,
+          "avgLeveragedEtfWeight": 0.48471230456317316
+        }
+      },
+      "regime_2015_2019": {
+        "name": "regime_ladder_A",
+        "family": "hybrid",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.5019115246424084,
+          "cagr": 0.08419144199397932,
+          "maxDrawdown": -0.23100221392294518,
+          "sharpe": 0.7061164061581363,
+          "turnover": 6.56089164846838,
+          "estimatedTradingCost": 0.02278112978414074,
+          "tradeCount": 81,
+          "avgLeveragedEtfWeight": 0.453243610602874
+        }
+      },
+      "regime_2020_2022": {
+        "name": "regime_ladder_A",
+        "family": "hybrid",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.4637673786763088,
+          "cagr": 0.13954972115460373,
+          "maxDrawdown": -0.27388963972418345,
+          "sharpe": 0.7559990923746565,
+          "turnover": 4.605918568563242,
+          "estimatedTradingCost": 0.018928530764641984,
+          "tradeCount": 73,
+          "avgLeveragedEtfWeight": 0.475754459883154
+        }
+      },
+      "regime_2023_now": {
+        "name": "regime_ladder_A",
+        "family": "hybrid",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 2.19932218094203,
+          "cagr": 0.4049160043167521,
+          "maxDrawdown": -0.2486841224112386,
+          "sharpe": 1.6356386308610373,
+          "turnover": 4.175223419403139,
+          "estimatedTradingCost": 0.021743839305626192,
+          "tradeCount": 88,
+          "avgLeveragedEtfWeight": 0.49047931440716563
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": true,
+        "fullSharpeBeats0050": true,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": false,
+        "holdoutSharpeBeats0050": true,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": false,
+      "regimeWins": 2,
+      "calmar": 0.6840567270186731
+    },
+    {
+      "name": "fixed40_monthly",
+      "family": "fixed",
+      "full": {
+        "name": "fixed40_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 4.203212383096558,
+          "cagr": 0.1561172888444422,
+          "maxDrawdown": -0.25666209189305966,
+          "sharpe": 1.0510869663518974,
+          "turnover": 4.289853938456516,
+          "estimatedTradingCost": 0.026723163837902544,
+          "tradeCount": 94,
+          "avgLeveragedEtfWeight": 0.40372484118139995
+        }
+      },
+      "development": {
+        "name": "fixed40_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 1.3864784094811657,
+          "cagr": 0.13287074012648703,
+          "maxDrawdown": -0.22560849621234158,
+          "sharpe": 1.0490599006525858,
+          "turnover": 2.4341822376539004,
+          "estimatedTradingCost": 0.01053542477806509,
+          "tradeCount": 54,
+          "avgLeveragedEtfWeight": 0.40405210012484666
+        }
+      },
+      "holdout": {
+        "name": "fixed40_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 1.1520880802994662,
+          "cagr": 0.19043210384175402,
+          "maxDrawdown": -0.2566620918930598,
+          "sharpe": 1.0745840593828455,
+          "turnover": 2.5625913965820732,
+          "estimatedTradingCost": 0.009511153255471097,
+          "tradeCount": 40,
+          "avgLeveragedEtfWeight": 0.40483409253587543
+        }
+      },
+      "regime_2015_2019": {
+        "name": "fixed40_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.5310096497769403,
+          "cagr": 0.0883339449851539,
+          "maxDrawdown": -0.18470680771478587,
+          "sharpe": 0.8249119891028579,
+          "turnover": 1.7703592255715483,
+          "estimatedTradingCost": 0.006367494800667348,
+          "tradeCount": 38,
+          "avgLeveragedEtfWeight": 0.4023721747376903
+        }
+      },
+      "regime_2020_2022": {
+        "name": "fixed40_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.31162381034136466,
+          "cagr": 0.09746772535008708,
+          "maxDrawdown": -0.23894536405900113,
+          "sharpe": 0.6402425825622341,
+          "turnover": 1.5370678245240197,
+          "estimatedTradingCost": 0.005887576015994289,
+          "tradeCount": 25,
+          "avgLeveragedEtfWeight": 0.40604682201424747
+        }
+      },
+      "regime_2023_now": {
+        "name": "fixed40_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 1.59555130458463,
+          "cagr": 0.321591660901819,
+          "maxDrawdown": -0.2566620918930598,
+          "sharpe": 1.6039700279665587,
+          "turnover": 2.1419058594967835,
+          "estimatedTradingCost": 0.010458859462020858,
+          "tradeCount": 31,
+          "avgLeveragedEtfWeight": 0.4070036455874674
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": false,
+        "fullSharpeBeats0050": true,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": false,
+        "holdoutSharpeBeats0050": false,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": false,
+      "regimeWins": 2,
+      "calmar": 0.6082600188168409
+    },
+    {
+      "name": "fixed45_monthly",
+      "family": "fixed",
+      "full": {
+        "name": "fixed45_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 5.2857889785510555,
+          "cagr": 0.1754988889959499,
+          "maxDrawdown": -0.28509759788698086,
+          "sharpe": 1.0504448364602172,
+          "turnover": 4.656500490780055,
+          "estimatedTradingCost": 0.03189514670694088,
+          "tradeCount": 97,
+          "avgLeveragedEtfWeight": 0.45368040313496105
+        }
+      },
+      "development": {
+        "name": "fixed45_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 1.6409503118055198,
+          "cagr": 0.14945376498401886,
+          "maxDrawdown": -0.2521871970495101,
+          "sharpe": 1.049030367426905,
+          "turnover": 2.584029672538598,
+          "estimatedTradingCost": 0.011719567557447672,
+          "tradeCount": 57,
+          "avgLeveragedEtfWeight": 0.4539797157471667
+        }
+      },
+      "holdout": {
+        "name": "fixed45_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 1.3541120720624322,
+          "cagr": 0.21497455366451268,
+          "maxDrawdown": -0.28509759788698097,
+          "sharpe": 1.0778893033295482,
+          "turnover": 2.710265332124609,
+          "estimatedTradingCost": 0.01037664276474715,
+          "tradeCount": 40,
+          "avgLeveragedEtfWeight": 0.45402049900869784
+        }
+      },
+      "regime_2015_2019": {
+        "name": "fixed45_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.6092856407814411,
+          "cagr": 0.09917259391747568,
+          "maxDrawdown": -0.20604686968677854,
+          "sharpe": 0.8266382367616432,
+          "turnover": 1.8549926253194,
+          "estimatedTradingCost": 0.0068274714925568815,
+          "tradeCount": 41,
+          "avgLeveragedEtfWeight": 0.4522224038627138
+        }
+      },
+      "regime_2020_2022": {
+        "name": "fixed45_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.36057477103022384,
+          "cagr": 0.11134189020667162,
+          "maxDrawdown": -0.2654290227812447,
+          "sharpe": 0.6586275780486937,
+          "turnover": 1.5527028346569973,
+          "estimatedTradingCost": 0.006193505234851442,
+          "tradeCount": 25,
+          "avgLeveragedEtfWeight": 0.4550288946627379
+        }
+      },
+      "regime_2023_now": {
+        "name": "fixed45_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 1.8704630934192066,
+          "cagr": 0.36106613843960855,
+          "maxDrawdown": -0.28509759788698086,
+          "sharpe": 1.5920190828820635,
+          "turnover": 2.2641744616205637,
+          "estimatedTradingCost": 0.011611410149928744,
+          "tradeCount": 31,
+          "avgLeveragedEtfWeight": 0.4563068498736244
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": false,
+        "fullSharpeBeats0050": true,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": false,
+        "holdoutSharpeBeats0050": false,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": false,
+      "regimeWins": 2,
+      "calmar": 0.6155747726275885
+    },
+    {
+      "name": "lev50_monthly",
+      "family": "fixed",
+      "full": {
+        "name": "lev50_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 6.5544771171671075,
+          "cagr": 0.19466242595886052,
+          "maxDrawdown": -0.3127789056735045,
+          "sharpe": 1.0490615241941026,
+          "turnover": 4.985374082240533,
+          "estimatedTradingCost": 0.037545918592953864,
+          "tradeCount": 98,
+          "avgLeveragedEtfWeight": 0.5034837902640158
+        }
+      },
+      "development": {
+        "name": "lev50_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 1.9135357021207682,
+          "cagr": 0.165762522278746,
+          "maxDrawdown": -0.27840952052119994,
+          "sharpe": 1.0475333203521007,
+          "turnover": 2.6947485841309935,
+          "estimatedTradingCost": 0.012810128766167567,
+          "tradeCount": 58,
+          "avgLeveragedEtfWeight": 0.5037023997858019
+        }
+      },
+      "holdout": {
+        "name": "lev50_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 1.5695991844953348,
+          "cagr": 0.23941994675196665,
+          "maxDrawdown": -0.3127789056735043,
+          "sharpe": 1.080148551184916,
+          "turnover": 2.86659682385231,
+          "estimatedTradingCost": 0.011314630140077112,
+          "tradeCount": 40,
+          "avgLeveragedEtfWeight": 0.5031380645503927
+        }
+      },
+      "regime_2015_2019": {
+        "name": "lev50_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.6897082992531545,
+          "cagr": 0.10987709260102263,
+          "maxDrawdown": -0.22701354956784103,
+          "sharpe": 0.8276031141781411,
+          "turnover": 1.9005558523570296,
+          "estimatedTradingCost": 0.007159340842031677,
+          "tradeCount": 41,
+          "avgLeveragedEtfWeight": 0.5020079179691265
+        }
+      },
+      "regime_2020_2022": {
+        "name": "lev50_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.4074698253881852,
+          "cagr": 0.1243289757110253,
+          "maxDrawdown": -0.2912063912753403,
+          "sharpe": 0.6703414509151395,
+          "turnover": 1.605902336040582,
+          "estimatedTradingCost": 0.0066538964031289645,
+          "tradeCount": 26,
+          "avgLeveragedEtfWeight": 0.5036668834335769
+        }
+      },
+      "regime_2023_now": {
+        "name": "lev50_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 2.1700604625601176,
+          "cagr": 0.4011472657275308,
+          "maxDrawdown": -0.3127789056735043,
+          "sharpe": 1.5819558304243273,
+          "turnover": 2.379635911043588,
+          "estimatedTradingCost": 0.01281990699137841,
+          "tradeCount": 31,
+          "avgLeveragedEtfWeight": 0.5055010168980996
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": true,
+        "fullSharpeBeats0050": true,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": false,
+        "holdoutSharpeBeats0050": false,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": false,
+      "regimeWins": 2,
+      "calmar": 0.6223643040750952
+    },
+    {
+      "name": "fixed55_monthly",
+      "family": "fixed",
+      "full": {
+        "name": "fixed55_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 8.07111927230493,
+          "cagr": 0.2140429344046344,
+          "maxDrawdown": -0.3397218838213565,
+          "sharpe": 1.0488164548605745,
+          "turnover": 5.332852760128154,
+          "estimatedTradingCost": 0.044255817320545864,
+          "tradeCount": 97,
+          "avgLeveragedEtfWeight": 0.5534828145523858
+        }
+      },
+      "development": {
+        "name": "fixed55_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 2.2179833549217607,
+          "cagr": 0.18249921960195303,
+          "maxDrawdown": -0.30427671142347135,
+          "sharpe": 1.0481071172225607,
+          "turnover": 2.8570948471902557,
+          "estimatedTradingCost": 0.014231115191451095,
+          "tradeCount": 57,
+          "avgLeveragedEtfWeight": 0.5537835095368872
+        }
+      },
+      "holdout": {
+        "name": "fixed55_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 1.7984800612092808,
+          "cagr": 0.26370751804465087,
+          "maxDrawdown": -0.3397218838213565,
+          "sharpe": 1.081556400987754,
+          "turnover": 3.065698567307859,
+          "estimatedTradingCost": 0.012455541789466616,
+          "tradeCount": 40,
+          "avgLeveragedEtfWeight": 0.5521950177921929
+        }
+      },
+      "regime_2015_2019": {
+        "name": "fixed55_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.7738392741575901,
+          "cagr": 0.12064682712593,
+          "maxDrawdown": -0.2476160576562637,
+          "sharpe": 0.8291299800438735,
+          "turnover": 2.01263736015765,
+          "estimatedTradingCost": 0.007747962508474213,
+          "tradeCount": 41,
+          "avgLeveragedEtfWeight": 0.5520552552965082
+        }
+      },
+      "regime_2020_2022": {
+        "name": "fixed55_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.4570229776405683,
+          "cagr": 0.13774680111423065,
+          "maxDrawdown": -0.31629081525072833,
+          "sharpe": 0.6823215176362705,
+          "turnover": 1.6624262985368774,
+          "estimatedTradingCost": 0.00716011498934112,
+          "tradeCount": 25,
+          "avgLeveragedEtfWeight": 0.5527450510408
+        }
+      },
+      "regime_2023_now": {
+        "name": "fixed55_monthly",
+        "family": "fixed",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 2.498448642979776,
+          "cagr": 0.44211006141005305,
+          "maxDrawdown": -0.3397218838213564,
+          "sharpe": 1.574057568329599,
+          "turnover": 2.487597995683369,
+          "estimatedTradingCost": 0.014091854570528691,
+          "tradeCount": 29,
+          "avgLeveragedEtfWeight": 0.5548587166349309
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": true,
+        "fullSharpeBeats0050": true,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": false,
+        "holdoutSharpeBeats0050": false,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": false,
+      "regimeWins": 2,
+      "calmar": 0.6300534189819498
+    },
+    {
+      "name": "dd_50_60_70_80",
+      "family": "drawdown",
+      "full": {
+        "name": "dd_50_60_70_80",
+        "family": "drawdown",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 7.252093973776869,
+          "cagr": 0.20397995489994813,
+          "maxDrawdown": -0.3636662870543824,
+          "sharpe": 0.9841276780695725,
+          "turnover": 10.246393364311501,
+          "estimatedTradingCost": 0.0797014628019786,
+          "tradeCount": 242,
+          "avgLeveragedEtfWeight": 0.5368054526697362
+        }
+      },
+      "development": {
+        "name": "dd_50_60_70_80",
+        "family": "drawdown",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 2.245513200004995,
+          "cagr": 0.18394487188322906,
+          "maxDrawdown": -0.3298907253598562,
+          "sharpe": 1.0489051448864044,
+          "turnover": 5.576843235069837,
+          "estimatedTradingCost": 0.027089901603693175,
+          "tradeCount": 133,
+          "avgLeveragedEtfWeight": 0.5264962219398439
+        }
+      },
+      "holdout": {
+        "name": "dd_50_60_70_80",
+        "family": "drawdown",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 1.5191680468533542,
+          "cagr": 0.23384512345008646,
+          "maxDrawdown": -0.3638910707547257,
+          "sharpe": 0.949197726958158,
+          "turnover": 5.039480781068638,
+          "estimatedTradingCost": 0.0189356803502852,
+          "tradeCount": 109,
+          "avgLeveragedEtfWeight": 0.5530856402082245
+        }
+      },
+      "regime_2015_2019": {
+        "name": "dd_50_60_70_80",
+        "family": "drawdown",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.7715888745480237,
+          "cagr": 0.12036413332883633,
+          "maxDrawdown": -0.251531939202682,
+          "sharpe": 0.8283989053626452,
+          "turnover": 3.86523435698617,
+          "estimatedTradingCost": 0.014687338329024848,
+          "tradeCount": 88,
+          "avgLeveragedEtfWeight": 0.528478810770673
+        }
+      },
+      "regime_2020_2022": {
+        "name": "dd_50_60_70_80",
+        "family": "drawdown",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.41841940780497944,
+          "cagr": 0.12732026405817765,
+          "maxDrawdown": -0.3636662870543824,
+          "sharpe": 0.6049996353516883,
+          "turnover": 3.3308151495042146,
+          "estimatedTradingCost": 0.014149468174468577,
+          "tradeCount": 70,
+          "avgLeveragedEtfWeight": 0.5632948012790919
+        }
+      },
+      "regime_2023_now": {
+        "name": "dd_50_60_70_80",
+        "family": "drawdown",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 2.2327236416778717,
+          "cagr": 0.409188221810187,
+          "maxDrawdown": -0.35055200660929486,
+          "sharpe": 1.478382854646166,
+          "turnover": 4.068769877097576,
+          "estimatedTradingCost": 0.021634552014702102,
+          "tradeCount": 88,
+          "avgLeveragedEtfWeight": 0.5255131094759522
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": true,
+        "fullSharpeBeats0050": true,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": false,
+        "holdoutSharpeBeats0050": false,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": false,
+      "regimeWins": 2,
+      "calmar": 0.560898719955983
+    },
+    {
+      "name": "dd_45_55_65_75",
+      "family": "drawdown",
+      "full": {
+        "name": "dd_45_55_65_75",
+        "family": "drawdown",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 5.884665731591717,
+          "cagr": 0.18494610302480097,
+          "maxDrawdown": -0.34047703754966774,
+          "sharpe": 0.9778376621374347,
+          "turnover": 9.975966549553046,
+          "estimatedTradingCost": 0.07069392639495445,
+          "tradeCount": 247,
+          "avgLeveragedEtfWeight": 0.4868120334485988
+        }
+      },
+      "development": {
+        "name": "dd_45_55_65_75",
+        "family": "drawdown",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 1.945865932558303,
+          "cagr": 0.16760912105723835,
+          "maxDrawdown": -0.3045027125021842,
+          "sharpe": 1.0504017383440942,
+          "turnover": 5.495160469701465,
+          "estimatedTradingCost": 0.02551942239532837,
+          "tradeCount": 134,
+          "avgLeveragedEtfWeight": 0.47661625151250503
+        }
+      },
+      "holdout": {
+        "name": "dd_45_55_65_75",
+        "family": "drawdown",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 1.3150057863617008,
+          "cagr": 0.2103544385020104,
+          "maxDrawdown": -0.34063179705329083,
+          "sharpe": 0.9347217746308554,
+          "turnover": 4.947866590031465,
+          "estimatedTradingCost": 0.01808989579758711,
+          "tradeCount": 115,
+          "avgLeveragedEtfWeight": 0.5031495637860741
+        }
+      },
+      "regime_2015_2019": {
+        "name": "dd_45_55_65_75",
+        "family": "drawdown",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.6899909699166944,
+          "cagr": 0.10991399002708735,
+          "maxDrawdown": -0.2309728596545002,
+          "sharpe": 0.8283642155815708,
+          "turnover": 3.859253745785838,
+          "estimatedTradingCost": 0.014360767602025239,
+          "tradeCount": 89,
+          "avgLeveragedEtfWeight": 0.4785933551208956
+        }
+      },
+      "regime_2020_2022": {
+        "name": "dd_45_55_65_75",
+        "family": "drawdown",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.3817366215515381,
+          "cagr": 0.11723827672905829,
+          "maxDrawdown": -0.3404770375496676,
+          "sharpe": 0.5989490597190144,
+          "turnover": 3.3612640528269964,
+          "estimatedTradingCost": 0.013858669430358123,
+          "tradeCount": 72,
+          "avgLeveragedEtfWeight": 0.5136204456683087
+        }
+      },
+      "regime_2023_now": {
+        "name": "dd_45_55_65_75",
+        "family": "drawdown",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 1.9151068733371401,
+          "cagr": 0.36722082605085826,
+          "maxDrawdown": -0.32362580480835046,
+          "sharpe": 1.471789296396793,
+          "turnover": 3.9018834792927146,
+          "estimatedTradingCost": 0.019691275949932717,
+          "tradeCount": 89,
+          "avgLeveragedEtfWeight": 0.4754569767524827
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": true,
+        "fullSharpeBeats0050": true,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": false,
+        "holdoutSharpeBeats0050": false,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": false,
+      "regimeWins": 2,
+      "calmar": 0.5431969931241593
+    },
+    {
+      "name": "vol22",
+      "family": "volatility",
+      "full": {
+        "name": "vol22",
+        "family": "volatility",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 6.474061976028784,
+          "cagr": 0.19353841139946004,
+          "maxDrawdown": -0.35035354179733935,
+          "sharpe": 0.9179580503471156,
+          "turnover": 27.76975131290082,
+          "estimatedTradingCost": 0.20022361219239632,
+          "tradeCount": 367,
+          "avgLeveragedEtfWeight": 0.6333589730007011
+        }
+      },
+      "development": {
+        "name": "vol22",
+        "family": "volatility",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 2.1578397994961476,
+          "cagr": 0.17930372644472015,
+          "maxDrawdown": -0.35035354179733935,
+          "sharpe": 0.8862768170498551,
+          "turnover": 14.961988062700517,
+          "estimatedTradingCost": 0.06862733530335993,
+          "tradeCount": 193,
+          "avgLeveragedEtfWeight": 0.6786361889746653
+        }
+      },
+      "holdout": {
+        "name": "vol22",
+        "family": "volatility",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 1.3520171292596093,
+          "cagr": 0.21472856089498005,
+          "maxDrawdown": -0.3502225597087659,
+          "sharpe": 0.9656284006706928,
+          "turnover": 12.824477273217877,
+          "estimatedTradingCost": 0.04580671622466354,
+          "tradeCount": 175,
+          "avgLeveragedEtfWeight": 0.5604834444444943
+        }
+      },
+      "regime_2015_2019": {
+        "name": "vol22",
+        "family": "volatility",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.8830632557915099,
+          "cagr": 0.13403419214256873,
+          "maxDrawdown": -0.31816324710178734,
+          "sharpe": 0.7440481500631488,
+          "turnover": 8.169150919417511,
+          "estimatedTradingCost": 0.0300100366355286,
+          "tradeCount": 118,
+          "avgLeveragedEtfWeight": 0.7015735033189235
+        }
+      },
+      "regime_2020_2022": {
+        "name": "vol22",
+        "family": "volatility",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.2149562562859475,
+          "cagr": 0.06903572827366511,
+          "maxDrawdown": -0.3501896283231951,
+          "sharpe": 0.3923437747179184,
+          "turnover": 9.194820723598887,
+          "estimatedTradingCost": 0.034708714894362766,
+          "tradeCount": 121,
+          "avgLeveragedEtfWeight": 0.5884888302081331
+        }
+      },
+      "regime_2023_now": {
+        "name": "vol22",
+        "family": "volatility",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 2.228191043106742,
+          "cagr": 0.4086103167051631,
+          "maxDrawdown": -0.32983923437199103,
+          "sharpe": 1.5797938980734736,
+          "turnover": 9.65548244669559,
+          "estimatedTradingCost": 0.0518652042835747,
+          "tradeCount": 130,
+          "avgLeveragedEtfWeight": 0.5700994272154902
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": true,
+        "fullSharpeBeats0050": false,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": false,
+        "holdoutSharpeBeats0050": false,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": false,
+      "regimeWins": 2,
+      "calmar": 0.5524088907638661
+    },
+    {
+      "name": "vol18",
+      "family": "volatility",
+      "full": {
+        "name": "vol18",
+        "family": "volatility",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 4.803273770844096,
+          "cagr": 0.16726978234356604,
+          "maxDrawdown": -0.3051394068404687,
+          "sharpe": 0.9177205048847233,
+          "turnover": 27.97899464151028,
+          "estimatedTradingCost": 0.17815585636678724,
+          "tradeCount": 426,
+          "avgLeveragedEtfWeight": 0.5505959606339872
+        }
+      },
+      "development": {
+        "name": "vol18",
+        "family": "volatility",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 1.7543440194806363,
+          "cagr": 0.1564055774351596,
+          "maxDrawdown": -0.3051394068404687,
+          "sharpe": 0.8776594855595048,
+          "turnover": 17.56315386255107,
+          "estimatedTradingCost": 0.07585281757074247,
+          "tradeCount": 239,
+          "avgLeveragedEtfWeight": 0.5990139589393604
+        }
+      },
+      "holdout": {
+        "name": "vol18",
+        "family": "volatility",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 1.0924351236608532,
+          "cagr": 0.18284563767987394,
+          "maxDrawdown": -0.3018980672368158,
+          "sharpe": 0.9778504702383566,
+          "turnover": 11.840790844763298,
+          "estimatedTradingCost": 0.040990141470994966,
+          "tradeCount": 188,
+          "avgLeveragedEtfWeight": 0.47297013760928475
+        }
+      },
+      "regime_2015_2019": {
+        "name": "vol18",
+        "family": "volatility",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.7495986484440136,
+          "cagr": 0.11758648186818332,
+          "maxDrawdown": -0.2829111872646515,
+          "sharpe": 0.7308800942666508,
+          "turnover": 10.549105575811032,
+          "estimatedTradingCost": 0.03751653047516252,
+          "tradeCount": 152,
+          "avgLeveragedEtfWeight": 0.6254729074889367
+        }
+      },
+      "regime_2020_2022": {
+        "name": "vol18",
+        "family": "volatility",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.20630520489084558,
+          "cagr": 0.0664197594829099,
+          "maxDrawdown": -0.30474991156117326,
+          "sharpe": 0.41005532870931993,
+          "turnover": 9.188601298267768,
+          "estimatedTradingCost": 0.03378935833863683,
+          "tradeCount": 131,
+          "avgLeveragedEtfWeight": 0.4990542638827437
+        }
+      },
+      "regime_2023_now": {
+        "name": "vol18",
+        "family": "volatility",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 1.7419463845254022,
+          "cagr": 0.34296173909377714,
+          "maxDrawdown": -0.2788651055828629,
+          "sharpe": 1.6010984839844324,
+          "turnover": 9.023134094340705,
+          "estimatedTradingCost": 0.044342522011098284,
+          "tradeCount": 145,
+          "avgLeveragedEtfWeight": 0.4839760527343617
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": false,
+        "fullSharpeBeats0050": false,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": false,
+        "holdoutSharpeBeats0050": false,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": false,
+      "regimeWins": 2,
+      "calmar": 0.5481749606697541
+    },
+    {
+      "name": "vol18_dd",
+      "family": "hybrid",
+      "full": {
+        "name": "vol18_dd",
+        "family": "hybrid",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 5.072558597480484,
+          "cagr": 0.17193601127424296,
+          "maxDrawdown": -0.33565165187752255,
+          "sharpe": 0.904361664580609,
+          "turnover": 29.12562973387817,
+          "estimatedTradingCost": 0.19186811377531002,
+          "tradeCount": 433,
+          "avgLeveragedEtfWeight": 0.5681445137870679
+        }
+      },
+      "development": {
+        "name": "vol18_dd",
+        "family": "hybrid",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 1.8802178081146046,
+          "cagr": 0.1638410548794127,
+          "maxDrawdown": -0.3238004920527354,
+          "sharpe": 0.8902579954213701,
+          "turnover": 18.239605139687498,
+          "estimatedTradingCost": 0.08050457983822272,
+          "tradeCount": 242,
+          "avgLeveragedEtfWeight": 0.6114435928981728
+        }
+      },
+      "holdout": {
+        "name": "vol18_dd",
+        "family": "hybrid",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 1.0938400786482396,
+          "cagr": 0.18302622474927976,
+          "maxDrawdown": -0.33598675891873964,
+          "sharpe": 0.9253734455966867,
+          "turnover": 12.301738833214534,
+          "estimatedTradingCost": 0.042502186761809745,
+          "tradeCount": 192,
+          "avgLeveragedEtfWeight": 0.4986359660550814
+        }
+      },
+      "regime_2015_2019": {
+        "name": "vol18_dd",
+        "family": "hybrid",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.7805174760585365,
+          "cagr": 0.12148405034988397,
+          "maxDrawdown": -0.2918982985789027,
+          "sharpe": 0.7345018106818775,
+          "turnover": 11.057306323936714,
+          "estimatedTradingCost": 0.03969421535101093,
+          "tradeCount": 155,
+          "avgLeveragedEtfWeight": 0.6389135031991784
+        }
+      },
+      "regime_2020_2022": {
+        "name": "vol18_dd",
+        "family": "hybrid",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.2184380091528504,
+          "cagr": 0.07008511180351484,
+          "maxDrawdown": -0.33565165187752244,
+          "sharpe": 0.41190334626366376,
+          "turnover": 9.525383821232419,
+          "estimatedTradingCost": 0.03572792634004269,
+          "tradeCount": 131,
+          "avgLeveragedEtfWeight": 0.5302193169450351
+        }
+      },
+      "regime_2023_now": {
+        "name": "vol18_dd",
+        "family": "hybrid",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 1.7719041260711221,
+          "cagr": 0.34723476247204466,
+          "maxDrawdown": -0.29877662218138745,
+          "sharpe": 1.558049749543523,
+          "turnover": 9.412388068534378,
+          "estimatedTradingCost": 0.04670989977099696,
+          "tradeCount": 148,
+          "avgLeveragedEtfWeight": 0.49538485303374197
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": false,
+        "fullSharpeBeats0050": false,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": false,
+        "holdoutSharpeBeats0050": false,
+        "winsAtLeast2of3Regimes": true
+      },
+      "gatePassed": false,
+      "regimeWins": 2,
+      "calmar": 0.5122453898632428
+    },
+    {
+      "name": "ma200_50_25",
+      "family": "trend",
+      "full": {
+        "name": "ma200_50_25",
+        "family": "trend",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2026-08-13",
+          "tradingDays": 2865
+        },
+        "metrics": {
+          "totalReturn": 5.128553398910931,
+          "cagr": 0.17288254583877882,
+          "maxDrawdown": -0.23279834129221966,
+          "sharpe": 1.0560854525197771,
+          "turnover": 11.946899505651588,
+          "estimatedTradingCost": 0.0706852034044321,
+          "tradeCount": 223,
+          "avgLeveragedEtfWeight": 0.4382917445588599
+        }
+      },
+      "development": {
+        "name": "ma200_50_25",
+        "family": "trend",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2021-12-30",
+          "tradingDays": 1757
+        },
+        "metrics": {
+          "totalReturn": 1.2311782562065519,
+          "cagr": 0.12198998093292368,
+          "maxDrawdown": -0.23279834129221966,
+          "sharpe": 0.8972745571067129,
+          "turnover": 8.647587633835204,
+          "estimatedTradingCost": 0.0333979336009873,
+          "tradeCount": 119,
+          "avgLeveragedEtfWeight": 0.43955423195746496
+        }
+      },
+      "holdout": {
+        "name": "ma200_50_25",
+        "family": "trend",
+        "period": {
+          "start": "2022-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 1108
+        },
+        "metrics": {
+          "totalReturn": 1.7214480500007765,
+          "cagr": 0.25571054612333,
+          "maxDrawdown": -0.20748149371262226,
+          "sharpe": 1.2635716179834404,
+          "turnover": 4.789298170863449,
+          "estimatedTradingCost": 0.019432417435447876,
+          "tradeCount": 104,
+          "avgLeveragedEtfWeight": 0.4362221984146762
+        }
+      },
+      "regime_2015_2019": {
+        "name": "ma200_50_25",
+        "family": "trend",
+        "period": {
+          "start": "2014-10-31",
+          "end": "2019-12-31",
+          "tradingDays": 1268
+        },
+        "metrics": {
+          "totalReturn": 0.4086349926573185,
+          "cagr": 0.07046367905055018,
+          "maxDrawdown": -0.23100221392294518,
+          "sharpe": 0.6306354055293758,
+          "turnover": 6.109960186884531,
+          "estimatedTradingCost": 0.02034009106845142,
+          "tradeCount": 73,
+          "avgLeveragedEtfWeight": 0.4295302793786586
+        }
+      },
+      "regime_2020_2022": {
+        "name": "ma200_50_25",
+        "family": "trend",
+        "period": {
+          "start": "2020-01-02",
+          "end": "2022-12-30",
+          "tradingDays": 735
+        },
+        "metrics": {
+          "totalReturn": 0.404936803412548,
+          "cagr": 0.1236348095156754,
+          "maxDrawdown": -0.23315625531015527,
+          "sharpe": 0.7912727105522627,
+          "turnover": 3.384912726931446,
+          "estimatedTradingCost": 0.013089735864599737,
+          "tradeCount": 69,
+          "avgLeveragedEtfWeight": 0.40421105670144425
+        }
+      },
+      "regime_2023_now": {
+        "name": "ma200_50_25",
+        "family": "trend",
+        "period": {
+          "start": "2023-01-03",
+          "end": "2026-08-13",
+          "tradingDays": 862
+        },
+        "metrics": {
+          "totalReturn": 2.1417281470370693,
+          "cagr": 0.3974746980713608,
+          "maxDrawdown": -0.20748149371262248,
+          "sharpe": 1.6559620214629178,
+          "turnover": 4.187843607640537,
+          "estimatedTradingCost": 0.021469702900758184,
+          "tradeCount": 85,
+          "avgLeveragedEtfWeight": 0.4813754086196516
+        }
+      },
+      "gate": {
+        "fullReturnBeats0050": false,
+        "fullSharpeBeats0050": true,
+        "fullDrawdownWithin5pp": true,
+        "holdoutReturnBeats0050": false,
+        "holdoutSharpeBeats0050": true,
+        "winsAtLeast2of3Regimes": false
+      },
+      "gatePassed": false,
+      "regimeWins": 1,
+      "calmar": 0.742627910831067
+    }
+  ],
+  "foundMethod": {
+    "name": "band35_65",
+    "family": "band",
+    "full": {
+      "name": "band35_65",
+      "family": "band",
+      "period": {
+        "start": "2014-10-31",
+        "end": "2026-08-13",
+        "tradingDays": 2865
+      },
+      "metrics": {
+        "totalReturn": 7.905980153137488,
+        "cagr": 0.21208259329619805,
+        "maxDrawdown": -0.3119505294594266,
+        "sharpe": 1.084901244592191,
+        "turnover": 3.8987669694950395,
+        "estimatedTradingCost": 0.03263763870860982,
+        "tradeCount": 8,
+        "avgLeveragedEtfWeight": 0.5264070821541772
+      }
+    },
+    "development": {
+      "name": "band35_65",
+      "family": "band",
+      "period": {
+        "start": "2014-10-31",
+        "end": "2021-12-30",
+        "tradingDays": 1757
+      },
+      "metrics": {
+        "totalReturn": 2.120137685819044,
+        "cagr": 0.17727388747746176,
+        "maxDrawdown": -0.3119505294594266,
+        "sharpe": 1.0418200388816439,
+        "turnover": 2.029057934110154,
+        "estimatedTradingCost": 0.010213362451534674,
+        "tradeCount": 4,
+        "avgLeveragedEtfWeight": 0.5367247855489277
+      }
+    },
+    "holdout": {
+      "name": "band35_65",
+      "family": "band",
+      "period": {
+        "start": "2022-01-03",
+        "end": "2026-08-13",
+        "tradingDays": 1108
+      },
+      "metrics": {
+        "totalReturn": 2.199497961786685,
+        "cagr": 0.30278937686491236,
+        "maxDrawdown": -0.29724619493228,
+        "sharpe": 1.2491790256085584,
+        "turnover": 2.7062237871093435,
+        "estimatedTradingCost": 0.012270258271045869,
+        "tradeCount": 7,
+        "avgLeveragedEtfWeight": 0.5356766808345699
+      }
+    },
+    "regime_2015_2019": {
+      "name": "band35_65",
+      "family": "band",
+      "period": {
+        "start": "2014-10-31",
+        "end": "2019-12-31",
+        "tradingDays": 1268
+      },
+      "metrics": {
+        "totalReturn": 0.7381448332350744,
+        "cagr": 0.11612862058055762,
+        "maxDrawdown": -0.23100221392294518,
+        "sharpe": 0.8520768250058647,
+        "turnover": 1.4049271891735815,
+        "estimatedTradingCost": 0.005467143975401143,
+        "tradeCount": 2,
+        "avgLeveragedEtfWeight": 0.5256198332076142
+      }
+    },
+    "regime_2020_2022": {
+      "name": "band35_65",
+      "family": "band",
+      "period": {
+        "start": "2020-01-02",
+        "end": "2022-12-30",
+        "tradingDays": 735
+      },
+      "metrics": {
+        "totalReturn": 0.5163559656819272,
+        "cagr": 0.15342396490955612,
+        "maxDrawdown": -0.3095758327606126,
+        "sharpe": 0.7592966972201932,
+        "turnover": 1.163521966165083,
+        "estimatedTradingCost": 0.005397002570460224,
+        "tradeCount": 4,
+        "avgLeveragedEtfWeight": 0.543383412843357
+      }
+    },
+    "regime_2023_now": {
+      "name": "band35_65",
+      "family": "band",
+      "period": {
+        "start": "2023-01-03",
+        "end": "2026-08-13",
+        "tradingDays": 862
+      },
+      "metrics": {
+        "totalReturn": 2.440117445469608,
+        "cagr": 0.43503881242270315,
+        "maxDrawdown": -0.3436319440456984,
+        "sharpe": 1.5160147161124793,
+        "turnover": 1.954483649870035,
+        "estimatedTradingCost": 0.011312278299328469,
+        "tradeCount": 4,
+        "avgLeveragedEtfWeight": 0.5695109353405801
+      }
+    },
+    "gate": {
+      "fullReturnBeats0050": true,
+      "fullSharpeBeats0050": true,
+      "fullDrawdownWithin5pp": true,
+      "holdoutReturnBeats0050": true,
+      "holdoutSharpeBeats0050": true,
+      "winsAtLeast2of3Regimes": true
+    },
+    "gatePassed": true,
+    "regimeWins": 2,
+    "calmar": 0.679859699753394
+  }
+}
