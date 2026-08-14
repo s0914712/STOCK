@@ -3,7 +3,13 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { buildSectorRadar } = require('../sectorRadar');
+const {
+  buildSectorRadar,
+  DEFAULT_SECTORS,
+  computeStockFeatures,
+  aggregateSector,
+  rankSectors,
+} = require('../sectorRadar');
 
 const ROOT = path.join(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'data', 'dashboard');
@@ -109,11 +115,48 @@ async function fetchStockHistory(symbol, keys) {
   return [...unique.values()].sort((a, b) => a.date.localeCompare(b.date));
 }
 
+function buildRankHistory(histories, taiexRows, tradingDays = 20) {
+  const dates = taiexRows.map(row => row.date).slice(-tradingDays);
+  const rows = [];
+
+  for (const date of dates) {
+    const featureMap = new Map();
+    for (const [symbol, history] of histories.entries()) {
+      const features = computeStockFeatures(history.filter(row => row.date <= date));
+      if (features) featureMap.set(symbol, features);
+    }
+
+    const raw = Object.entries(DEFAULT_SECTORS)
+      .map(([sector, symbols]) => aggregateSector(sector, symbols, featureMap))
+      .filter(Boolean);
+    const ranked = rankSectors(raw);
+    if (!ranked.length) continue;
+
+    rows.push({
+      date,
+      sectors: ranked.map(item => ({
+        sector: item.sector,
+        rank: item.rank,
+        score: item.score,
+        signal: item.signal,
+      })),
+    });
+  }
+
+  return {
+    requestedTradingDays: tradingDays,
+    tradingDays: rows.length,
+    startDate: rows[0]?.date ?? null,
+    endDate: rows.at(-1)?.date ?? null,
+    rows,
+  };
+}
+
 async function main() {
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const keys = monthKeys(4);
   const taiex = await fetchTaiexHistory(keys);
-  if (taiex.length < 2) throw new Error(`insufficient TAIEX rows: ${taiex.length}`);
+  if (taiex.length < 25) throw new Error(`insufficient TAIEX rows: ${taiex.length}`);
 
   const latest = taiex.at(-1);
   const previous = taiex.at(-2);
@@ -130,6 +173,10 @@ async function main() {
     },
   });
 
+  const histories = new Map();
+  for (const [symbol, promise] of cache.entries()) histories.set(symbol, await promise);
+  const rankHistory = buildRankHistory(histories, taiex, 20);
+
   const sectorRows = radar.data.map(row => ({
     sector: row.sector,
     rank: row.rank,
@@ -144,7 +191,7 @@ async function main() {
   }));
 
   const report = {
-    version: 'dashboard-market-v1',
+    version: 'dashboard-market-v2',
     generatedAt: new Date().toISOString(),
     dataSource: 'TWSE FMTQIK + STOCK_DAY; sector score from sector-radar-baseline-v0.1',
     market: {
@@ -162,12 +209,14 @@ async function main() {
       model: radar.model,
       failures: radar.failures,
       rows: sectorRows,
+      rankHistory,
     },
   };
 
   fs.writeFileSync(OUT_PATH, `${JSON.stringify(report, null, 2)}\n`);
   console.log(`TAIEX ${latest.date}: ${latest.close} (${changePct >= 0 ? '+' : ''}${(changePct * 100).toFixed(2)}%)`);
   console.log('Sector Top 3:', sectorRows.slice(0, 3).map(r => `${r.rank}.${r.sector} ${r.score}`).join(' | '));
+  console.log(`Rank history: ${rankHistory.startDate} → ${rankHistory.endDate} (${rankHistory.tradingDays} trading days)`);
 }
 
 main().catch(error => {
