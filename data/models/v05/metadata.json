@@ -1,0 +1,58 @@
+{
+  "version": "v0.5",
+  "generatedAt": "2026-08-12T07:09:43.420386+00:00",
+  "target": "10d stock return > TAIEX 10d return + 1% cost buffer AND max drawdown >= -10%",
+  "featureNames": [
+    "momentum5",
+    "momentum10",
+    "momentum20",
+    "momentum60",
+    "relative5",
+    "relative10",
+    "relative20",
+    "relative60",
+    "momentum_score",
+    "volume_ratio",
+    "distance_ma20",
+    "ma20_slope5",
+    "ma20_over_ma60",
+    "volatility20",
+    "sector_0",
+    "sector_1",
+    "sector_2",
+    "sector_3",
+    "sector_4",
+    "sector_5"
+  ],
+  "trainedThrough": "2026-07-29",
+  "labelThrough": "2026-08-12",
+  "samples": 24377,
+  "dates": 1375,
+  "validation": {
+    "splitDate": "2025-06-13",
+    "trainSamples": 19344,
+    "validationSamples": 4853,
+    "metrics": {
+      "baseline": {
+        "brier": 0.22303380695528696,
+        "logloss": 0.638519466744705,
+        "rocAuc": 0.5356802365399055
+      },
+      "lightgbm": {
+        "brier": 0.2233582429944811,
+        "logloss": 0.6391858601170051,
+        "rocAuc": 0.5213511604851085
+      },
+      "xgboost": {
+        "brier": 0.22355394622142927,
+        "logloss": 0.6395973385163665,
+        "rocAuc": 0.4996898711951745
+      },
+      "calibrated": {
+        "brier": 0.22323117515927965,
+        "logloss": 0.6389205403489654,
+        "rocAuc": 0.5399618959666764
+      }
+    }
+  }
+}

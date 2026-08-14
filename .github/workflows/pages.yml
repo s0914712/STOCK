@@ -4,7 +4,9 @@ on:
   workflow_dispatch:
   push:
     branches:
+      - claude/taiwan-stock-dashboard-AsiJO
       - main
+      - feature/momentum-rotation-v05
     paths:
       - 'public/research-dashboard.html'
       - 'public/research-dashboard.css'
@@ -12,6 +14,8 @@ on:
       - 'data/shadow/**'
       - 'data/backtests/ml_challenger_v031.json'
       - 'data/backtests/rotation_v0.4.json'
+      - 'data/backtests/momentum_rotation_v0.5.json'
+      - 'data/backtests/momentum_v05_ml_validation.json'
       - '.github/workflows/pages.yml'
 
 permissions:
@@ -40,9 +44,18 @@ jobs:
           cp data/shadow/challenger_latest.json _site/data/shadow/challenger_latest.json
           cp data/backtests/ml_challenger_v031.json _site/data/backtests/ml_challenger_v031.json
           cp data/backtests/rotation_v0.4.json _site/data/backtests/rotation_v0.4.json
-          if [ -f data/shadow/latest.json ]; then
-            cp data/shadow/latest.json _site/data/shadow/latest.json
-          fi
+          # Optional v0.5 files are copied as soon as their Shadow/backtest jobs exist.
+          # momentum_rotation_v0.5.json contains the split-adjusted 0050 benchmark.
+          for f in \
+            data/shadow/latest.json \
+            data/shadow/momentum_v05_latest.json \
+            data/backtests/momentum_rotation_v0.5.json \
+            data/backtests/momentum_v05_ml_validation.json; do
+            if [ -f "$f" ]; then
+              mkdir -p "_site/$(dirname "$f")"
+              cp "$f" "_site/$f"
+            fi
+          done
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
@@ -50,8 +63,11 @@ jobs:
           path: _site
 
   deploy:
+    # Keep a separate preview environment while stacked PRs are on feature branches.
+    # After the stack lands on the repository default branch, the same workflow
+    # continues to publish the canonical Pages site without branch-root deployment.
     environment:
-      name: github-pages
+      name: github-pages-preview
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build

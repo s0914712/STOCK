@@ -1,0 +1,33 @@
+name: Momentum Rotation v0.5 CI
+
+on:
+  push:
+    branches:
+      - feature/momentum-rotation-v05
+    paths:
+      - 'momentumV05*.py'
+      - 'scripts/*MomentumV05*.py'
+      - '.github/workflows/momentum-v05-ci.yml'
+      - 'requirements-ml.txt'
+  pull_request:
+    paths:
+      - 'momentumV05*.py'
+      - 'scripts/*MomentumV05*.py'
+      - '.github/workflows/momentum-v05-ci.yml'
+      - 'requirements-ml.txt'
+
+jobs:
+  python-self-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-ml.txt
+      - run: pip install -r requirements-ml.txt
+      - name: Compile v0.5 modules
+        run: python -m py_compile momentumV05Features.py momentumV05Models.py momentumV05Backtest.py scripts/trainMomentumV05.py scripts/runMomentumV05Backtest.py scripts/runMomentumV05Shadow.py scripts/selfTestMomentumV05.py
+      - name: Synthetic no-leak / portfolio self-test
+        run: python scripts/selfTestMomentumV05.py

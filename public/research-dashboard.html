@@ -10,159 +10,205 @@
 <body>
   <header class="hero">
     <div>
-      <p class="eyebrow">TAIWAN SECTOR RADAR</p>
-      <h1>類股輪動 / ML Challenger Research Dashboard</h1>
-      <p class="hero-copy">Momentum ranking → Trend confirmation → ML continuation probability → Portfolio rotation</p>
+      <p class="eyebrow">TAIWAN MOMENTUM ROTATION LAB</p>
+      <h1>台股市場 × 類股輪動 × 策略研究</h1>
+      <p class="hero-copy">先看昨日大盤與輪動板塊，再看 Research Champion / Momentum / ML 的實際策略表現。</p>
     </div>
     <div class="hero-badge" id="champion-badge">Champion: loading…</div>
   </header>
 
   <main class="dashboard-shell">
+    <section class="daily-overview" aria-label="每日市場決策摘要">
+      <div class="overview-heading">
+        <div><p class="eyebrow">DAILY MARKET OVERVIEW</p><h2>昨日市場 / 類股輪動 / 策略表現</h2></div>
+        <p class="panel-note">「昨日」以最新完成交易日為準；遇週末或休市日自動顯示最近交易日。</p>
+      </div>
+      <div class="overview-grid">
+        <article class="overview-card">
+          <div class="overview-kicker"><span>昨日大盤</span><span id="market-date">載入中…</span></div>
+          <h3 class="overview-title">TAIEX 加權指數</h3>
+          <div class="overview-big" id="market-index">—</div>
+          <div class="overview-change flat" id="market-change">—</div>
+          <div class="overview-meta" id="market-turnover">成交金額 —</div>
+        </article>
+        <article class="overview-card">
+          <div class="overview-kicker"><span>類股輪動板塊</span><span id="sector-date">載入中…</span></div>
+          <h3 class="overview-title">Sector Radar Top 3</h3>
+          <div class="sector-top-list" id="sector-top-list"><div class="overview-empty">載入中…</div></div>
+          <p class="overview-meta">5D/20D 動能、量能、MA20 breadth、波動度綜合排名。</p>
+        </article>
+        <article class="overview-card">
+          <div class="overview-kicker"><span>策略表現</span><span id="strategy-date">載入中…</span></div>
+          <h3 class="overview-title" id="strategy-name">00631L Research Champion</h3>
+          <div class="strategy-hero-row">
+            <div class="strategy-return-block"><strong id="strategy-return">—</strong><span>歷史累積報酬</span></div>
+            <span class="overview-action" id="strategy-action">—</span>
+          </div>
+          <div class="strategy-detail-list">
+            <span id="strategy-benchmark">Taiwan 50 TR —</span>
+            <span id="strategy-risk">DD — · Sharpe —</span>
+            <span id="strategy-live-weight">00631L — · Cash —</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel rank-history-panel">
+      <div class="panel-heading">
+        <div><p class="eyebrow">SECTOR ROTATION TREND</p><h2>近 20 日類股排名變化</h2></div>
+        <span class="pill" id="rank-history-period">近 20 交易日</span>
+      </div>
+      <p class="panel-note">#1 在最上方、#6 在最下方。往上代表相對強勢排名改善；往下代表輪動轉弱。右側顯示最新排名與相較期初的名次變化。</p>
+      <div class="rank-history-layout">
+        <div class="rank-chart-wrap">
+          <svg id="sector-rank-chart" viewBox="0 0 1000 360" role="img" aria-label="近20日類股排名變化折線圖">
+            <text x="500" y="180" text-anchor="middle" class="rank-chart-loading">載入中…</text>
+          </svg>
+        </div>
+        <div class="rank-summary-list" id="sector-rank-summary"><div class="overview-empty">載入中…</div></div>
+      </div>
+    </section>
+
     <section class="status-grid" aria-label="系統狀態">
-      <article class="metric-card">
-        <span class="metric-label">最新 Shadow</span>
-        <strong class="metric-value" id="as-of">—</strong>
-        <small>as-of trading date</small>
-      </article>
-      <article class="metric-card">
-        <span class="metric-label">模型訓練截止</span>
-        <strong class="metric-value" id="trained-through">—</strong>
-        <small>mature labels only</small>
-      </article>
-      <article class="metric-card">
-        <span class="metric-label">成熟 OOS snapshots</span>
-        <strong class="metric-value" id="scored-snapshots">—</strong>
-        <small>forward-only evaluation</small>
-      </article>
-      <article class="metric-card">
-        <span class="metric-label">Rotation 回測期間</span>
-        <strong class="metric-value compact" id="backtest-period">—</strong>
-        <small>five-year validation</small>
-      </article>
+      <article class="metric-card"><span class="metric-label">最新 Sector Shadow</span><strong class="metric-value" id="as-of">—</strong><small>v0.3.1 as-of trading date</small></article>
+      <article class="metric-card"><span class="metric-label">模型訓練截止</span><strong class="metric-value" id="trained-through">—</strong><small>mature labels only</small></article>
+      <article class="metric-card"><span class="metric-label">成熟 OOS snapshots</span><strong class="metric-value" id="scored-snapshots">—</strong><small>forward-only evaluation</small></article>
+      <article class="metric-card"><span class="metric-label">Rotation 回測期間</span><strong class="metric-value compact" id="backtest-period">—</strong><small>five-year validation</small></article>
     </section>
 
     <section class="panel">
-      <div class="panel-heading">
-        <div>
-          <p class="eyebrow">LIVE SHADOW</p>
-          <h2>Baseline vs LightGBM vs XGBoost</h2>
-        </div>
-        <span class="pill" id="target-label">5D relative outperform probability</span>
-      </div>
+      <div class="panel-heading"><div><p class="eyebrow">LIVE SHADOW v0.3.1</p><h2>Sector Baseline vs LightGBM vs XGBoost</h2></div><span class="pill" id="target-label">5D relative outperform probability</span></div>
       <p class="panel-note">每個數字代表「未來 5 個交易日該類股報酬高於 TAIEX」的機率。排名只供 Shadow 比較，不代表已升級為 production signal。</p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>類股</th>
-              <th>Baseline</th>
-              <th>LightGBM</th>
-              <th>XGBoost</th>
-              <th>三模型排序</th>
-            </tr>
-          </thead>
-          <tbody id="prediction-body">
-            <tr><td colspan="5" class="loading-cell">載入中…</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="table-wrap"><table><thead><tr><th>類股</th><th>Baseline</th><th>LightGBM</th><th>XGBoost</th><th>三模型排序</th></tr></thead><tbody id="prediction-body"><tr><td colspan="5" class="loading-cell">載入中…</td></tr></tbody></table></div>
     </section>
 
     <section class="two-column">
-      <article class="panel">
-        <div class="panel-heading">
-          <div>
-            <p class="eyebrow">HOLDOUT</p>
-            <h2>Chronological Validation</h2>
-          </div>
-        </div>
-        <div id="validation-cards" class="model-grid"></div>
-      </article>
-
-      <article class="panel">
-        <div class="panel-heading">
-          <div>
-            <p class="eyebrow">FORWARD OOS</p>
-            <h2>Live Shadow Scoreboard</h2>
-          </div>
-        </div>
-        <div id="oos-cards" class="model-grid"></div>
-        <p class="panel-note" id="oos-note">等待第一批 5D label 成熟。</p>
-      </article>
+      <article class="panel"><div class="panel-heading"><div><p class="eyebrow">HOLDOUT</p><h2>Chronological Validation</h2></div></div><div id="validation-cards" class="model-grid"></div></article>
+      <article class="panel"><div class="panel-heading"><div><p class="eyebrow">FORWARD OOS</p><h2>Live Shadow Scoreboard</h2></div></div><div id="oos-cards" class="model-grid"></div><p class="panel-note" id="oos-note">等待第一批 5D label 成熟。</p></article>
     </section>
 
     <section class="panel">
-      <div class="panel-heading">
-        <div>
-          <p class="eyebrow">ROTATION v0.4</p>
-          <h2>5Y Strategy Comparison</h2>
-        </div>
-        <span class="pill warning">Research only</span>
-      </div>
+      <div class="panel-heading"><div><p class="eyebrow">MOMENTUM ROTATION v0.5</p><h2>Stock-level Continuation → Portfolio Decision</h2></div><span class="pill warning">OOS Challenger</span></div>
+      <p class="panel-note" id="v05-shadow-note">v0.5：5/10/20/60D momentum → Close &gt; MA20 &gt; MA60 → 10D continuation probability → Top-5 / Top-10 hysteresis → portfolio action。</p>
+      <div class="table-wrap"><table><thead><tr><th>股票</th><th>類別</th><th>Momentum rank</th><th>Trend</th><th>OOS ensemble</th><th>Action</th><th>Target weight</th></tr></thead><tbody id="v05-shadow-body"><tr><td colspan="7" class="loading-cell">等待 v0.5 Shadow seed…</td></tr></tbody></table></div>
+      <div class="subsection-heading"><p class="eyebrow">WALK-FORWARD ABLATION</p><h3>逐層投資績效比較</h3></div>
+      <div class="table-wrap"><table><thead><tr><th>Layer</th><th>Net return</th><th>CAGR</th><th>Max DD</th><th>Sharpe</th><th>Turnover</th><th>Precision@K</th><th>Excess vs TAIEX</th><th>Excess vs 0050</th></tr></thead><tbody id="v05-ablation-body"><tr><td colspan="9" class="loading-cell">5Y walk-forward 回測執行中…</td></tr></tbody></table></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading"><div><p class="eyebrow">ROTATION v0.4</p><h2>5Y Sector Strategy Comparison</h2></div><span class="pill warning">Research only</span></div>
       <p class="panel-note">Trailing-stop 對參數高度敏感。8% 報酬最高不等於最佳；10% 目前只作為較平衡的 forward-shadow candidate。</p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Strategy</th>
-              <th>Net return</th>
-              <th>CAGR</th>
-              <th>Max DD</th>
-              <th>Trades</th>
-              <th>Win rate</th>
-            </tr>
-          </thead>
-          <tbody id="strategy-body">
-            <tr><td colspan="6" class="loading-cell">載入中…</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="table-wrap"><table><thead><tr><th>Strategy</th><th>Net return</th><th>CAGR</th><th>Max DD</th><th>Trades</th><th>Win rate</th></tr></thead><tbody id="strategy-body"><tr><td colspan="6" class="loading-cell">載入中…</td></tr></tbody></table></div>
     </section>
 
     <section class="two-column">
-      <article class="panel">
-        <div class="panel-heading">
-          <div>
-            <p class="eyebrow">TWSE CROSS-CHECK</p>
-            <h2>Official Sector Proxy Correlation</h2>
-          </div>
-        </div>
-        <div id="proxy-checks" class="correlation-list"></div>
-      </article>
-
-      <article class="panel">
-        <div class="panel-heading">
-          <div>
-            <p class="eyebrow">PROMOTION POLICY</p>
-            <h2>Champion / Challenger Gate</h2>
-          </div>
-        </div>
-        <ol class="gate-list">
-          <li>Baseline 保持 Champion，除非 challenger 在 forward OOS 持續勝出。</li>
-          <li>優先看 Brier / calibration，再看 ranking 與 Top-k。</li>
-          <li>必須跨不同 market regimes，而非只靠單一強勢年份。</li>
-          <li>策略層同時檢查 drawdown、turnover、交易成本與參數穩定性。</li>
-        </ol>
-      </article>
+      <article class="panel"><div class="panel-heading"><div><p class="eyebrow">TWSE CROSS-CHECK</p><h2>Official Sector Proxy Correlation</h2></div></div><div id="proxy-checks" class="correlation-list"></div></article>
+      <article class="panel"><div class="panel-heading"><div><p class="eyebrow">PROMOTION POLICY</p><h2>Champion / Challenger Gate</h2></div></div><ol class="gate-list"><li>00631L 35 / 77.5 → 50 為 Research Champion，先累積 forward Shadow。</li><li>ML 必須真正勝過簡單 Momentum / Trend 與 leverage-band benchmark。</li><li>優先比較扣成本報酬、Max DD、Sharpe、turnover、Precision@K。</li><li>必須跨不同 market regimes。</li></ol></article>
     </section>
 
-    <section class="panel footer-panel">
-      <div>
-        <p class="eyebrow">DATA</p>
-        <h2>自動更新來源</h2>
-        <p class="panel-note">Dashboard 直接讀 GitHub Pages 同一版本的 Shadow / Backtest JSON。每次資料 ledger 更新後，Pages workflow 會重新部署。</p>
-      </div>
-      <div class="footer-meta">
-        <span id="generated-at">Last data generation: —</span>
-        <a href="https://github.com/s0914712/STOCK" target="_blank" rel="noreferrer">GitHub Repository ↗</a>
-      </div>
-    </section>
+    <section class="panel footer-panel"><div><p class="eyebrow">DATA</p><h2>自動更新來源</h2><p class="panel-note">市場摘要每日自動抓 TWSE；研究表格讀 Shadow / Backtest JSON。</p></div><div class="footer-meta"><span id="generated-at">Last data generation: —</span><a href="https://github.com/s0914712/STOCK" target="_blank" rel="noreferrer">GitHub Repository ↗</a></div></section>
   </main>
 
-  <footer class="site-footer">
-    <p>資料來源：TWSE。所有模型、機率與回測僅供研究，不構成投資建議。</p>
-  </footer>
-
+  <footer class="site-footer"><p>資料來源：TWSE / CBC。所有模型、機率、Shadow Portfolio 與回測僅供研究，不構成投資建議。</p></footer>
   <script src="research-dashboard.js"></script>
+  <script>
+  (() => {
+    const RAW = 'https://raw.githubusercontent.com/s0914712/STOCK/feature/leverage-5050-challenger';
+    const paths = {
+      market: `${RAW}/data/dashboard/market_latest.json`,
+      shadow: `${RAW}/data/shadow/leverage_5050_latest.json`,
+      backtest: `${RAW}/data/backtests/leverage_5050_v5.json`,
+    };
+    const SECTOR_COLORS = {
+      'PCB': '#6ee7b7',
+      '航運': '#60a5fa',
+      '電子零組件': '#fbbf24',
+      'AI伺服器': '#c084fc',
+      '金融': '#fb7185',
+      '半導體': '#22d3ee',
+    };
+    const nf = new Intl.NumberFormat('zh-TW', { maximumFractionDigits: 2 });
+    const nf0 = new Intl.NumberFormat('zh-TW', { maximumFractionDigits: 0 });
+    const pct2 = (v, d=2, sign=false) => Number.isFinite(v) ? `${sign && v > 0 ? '+' : ''}${(v*100).toFixed(d)}%` : '—';
+    const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+    const get = async url => { const r = await fetch(`${url}?v=${Date.now()}`, { cache: 'no-store' }); if (!r.ok) throw new Error(`${r.status}`); return r.json(); };
+    const esc = v => String(v ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
+    function renderRankHistory(data) {
+      const history = data?.sectors?.rankHistory;
+      const rows = history?.rows ?? [];
+      const svg = document.getElementById('sector-rank-chart');
+      const summary = document.getElementById('sector-rank-summary');
+      if (!svg || rows.length < 2) {
+        if (svg) svg.innerHTML = '<text x="500" y="180" text-anchor="middle" class="rank-chart-loading">排名歷史尚未建立</text>';
+        if (summary) summary.innerHTML = '<div class="overview-empty">等待下一次市場快照。</div>';
+        return;
+      }
+      set('rank-history-period', `${history.startDate} → ${history.endDate}`);
+      const sectors = rows.at(-1).sectors.map(x => x.sector);
+      const W=1000,H=360,L=48,R=165,T=24,B=48;
+      const iw=W-L-R, ih=H-T-B;
+      const x=i => L + (rows.length === 1 ? 0 : i*iw/(rows.length-1));
+      const y=rank => T + (rank-1)*ih/5;
+      const parts=[];
+      for (let rank=1; rank<=6; rank++) {
+        const yy=y(rank);
+        parts.push(`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" class="rank-grid-line"/>`);
+        parts.push(`<text x="${L-12}" y="${yy+4}" text-anchor="end" class="rank-axis-label">#${rank}</text>`);
+      }
+      rows.forEach((row,i) => {
+        if (i % 4 !== 0 && i !== rows.length-1) return;
+        const xx=x(i); const label=row.date.slice(5).replace('-','/');
+        parts.push(`<text x="${xx}" y="${H-16}" text-anchor="middle" class="rank-date-label">${label}</text>`);
+      });
+      for (const sector of sectors) {
+        const points=rows.map((row,i) => {
+          const item=row.sectors.find(s => s.sector===sector); return item ? `${x(i).toFixed(1)},${y(item.rank).toFixed(1)}` : null;
+        }).filter(Boolean).join(' ');
+        const latest=rows.at(-1).sectors.find(s=>s.sector===sector);
+        const color=SECTOR_COLORS[sector] || '#eef3ff';
+        parts.push(`<polyline points="${points}" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="rank-sector-line"/>`);
+        if (latest) {
+          const lx=x(rows.length-1), ly=y(latest.rank);
+          parts.push(`<circle cx="${lx}" cy="${ly}" r="5" fill="${color}"/>`);
+          parts.push(`<text x="${lx+12}" y="${ly+4}" fill="${color}" class="rank-end-label">${esc(sector)} #${latest.rank}</text>`);
+        }
+      }
+      svg.innerHTML=parts.join('');
+
+      if (summary) {
+        const first=rows[0].sectors; const last=rows.at(-1).sectors;
+        summary.innerHTML=last.slice().sort((a,b)=>a.rank-b.rank).map(item => {
+          const start=first.find(x=>x.sector===item.sector); const moved=start ? start.rank-item.rank : 0;
+          const moveText=moved>0 ? `↑ ${moved}` : moved<0 ? `↓ ${Math.abs(moved)}` : '—';
+          const moveClass=moved>0 ? 'rank-move-up' : moved<0 ? 'rank-move-down' : 'rank-move-flat';
+          return `<div class="rank-summary-item"><span class="rank-color-dot" style="background:${SECTOR_COLORS[item.sector] || '#eef3ff'}"></span><strong>#${item.rank} ${esc(item.sector)}</strong><span class="${moveClass}">${moveText}</span></div>`;
+        }).join('');
+      }
+    }
+    function renderMarket(data) {
+      const m = data?.market; if (!m) return;
+      set('market-date', `${m.asOf} 收盤`); set('market-index', nf.format(m.close));
+      set('market-change', `${m.change > 0 ? '+' : ''}${nf.format(m.change)} / ${pct2(m.changePct,2,true)}`);
+      set('market-turnover', `成交金額 ${nf0.format(m.amount/1e8)} 億`);
+      const e = document.getElementById('market-change'); if (e) e.className = `overview-change ${m.changePct > 0 ? 'up' : m.changePct < 0 ? 'down' : 'flat'}`;
+      set('sector-date', `${data?.sectors?.asOf ?? m.asOf} · Sector Radar`);
+      const rows = data?.sectors?.rows ?? []; const c = document.getElementById('sector-top-list');
+      if (c) c.innerHTML = rows.slice(0,3).map(x => `<div class="sector-rank-row"><span class="sector-rank">#${x.rank}</span><div class="sector-rank-main"><strong>${esc(x.sector)}</strong><small>${esc(x.signal)} · 5D ${pct2(x.momentum5,1,true)}</small></div><span class="sector-score">${Number(x.score).toFixed(1)}</span></div>`).join('');
+      renderRankHistory(data);
+    }
+    function renderStrategy(shadow, report) {
+      const factor = report?.factors?.['0.50']; const p = factor?.ranking?.find(x => x.name === report?.primaryCandidate); const m = p?.full?.metrics; const b = factor?.windows?.full?.benchmarks?.taiwan50TotalReturn;
+      set('strategy-date', `${shadow?.asOf ?? report?.period?.end ?? '—'} · Shadow`); set('strategy-name', '00631L 35 / 77.5 → 50');
+      set('strategy-return', pct2(m?.totalReturn,2,true)); set('strategy-benchmark', `Taiwan 50 TR ${pct2(b?.totalReturn,2,true)}`);
+      set('strategy-risk', `DD ${pct2(m?.maxDrawdown,2)} · Sharpe ${Number.isFinite(m?.sharpe) ? m.sharpe.toFixed(2) : '—'}`);
+      set('strategy-live-weight', `00631L ${pct2(shadow?.leveragedEtfWeight,1)} · Cash ${pct2(shadow?.cashWeight,1)}`); set('strategy-action', shadow?.action ?? '—');
+      const e = document.getElementById('strategy-action'); if (e) e.className = `overview-action action-${String(shadow?.action ?? '').toLowerCase()}`;
+    }
+    Promise.allSettled([get(paths.market), get(paths.shadow), get(paths.backtest)]).then(r => {
+      if (r[0].status === 'fulfilled') renderMarket(r[0].value); else { set('market-date','資料暫時無法讀取'); set('sector-date','資料暫時無法讀取'); renderRankHistory(null); }
+      renderStrategy(r[1].status === 'fulfilled' ? r[1].value : null, r[2].status === 'fulfilled' ? r[2].value : null);
+    });
+  })();
+  </script>
 </body>
 </html>
