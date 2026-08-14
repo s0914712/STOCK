@@ -1,6 +1,6 @@
 {
-  "version": "dashboard-market-v1",
-  "generatedAt": "2026-08-13T22:39:19.038Z",
+  "version": "dashboard-market-v2",
+  "generatedAt": "2026-08-14T04:29:42.184Z",
   "dataSource": "TWSE FMTQIK + STOCK_DAY; sector score from sector-radar-baseline-v0.1",
   "market": {
     "asOf": "2026-08-13",
@@ -89,6 +89,834 @@
         "volatility20": 0.78944714372556,
         "coverage": 1
       }
-    ]
+    ],
+    "rankHistory": {
+      "requestedTradingDays": 20,
+      "tradingDays": 20,
+      "startDate": "2026-07-17",
+      "endDate": "2026-08-13",
+      "rows": [
+        {
+          "date": "2026-07-17",
+          "sectors": [
+            {
+              "sector": "航運",
+              "rank": 1,
+              "score": 82.7,
+              "signal": "強勢"
+            },
+            {
+              "sector": "AI伺服器",
+              "rank": 2,
+              "score": 61.1,
+              "signal": "強勢"
+            },
+            {
+              "sector": "金融",
+              "rank": 3,
+              "score": 59,
+              "signal": "中性"
+            },
+            {
+              "sector": "半導體",
+              "rank": 4,
+              "score": 39.8,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 5,
+              "score": 32,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "PCB",
+              "rank": 6,
+              "score": 22.9,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-07-20",
+          "sectors": [
+            {
+              "sector": "航運",
+              "rank": 1,
+              "score": 82.2,
+              "signal": "強勢"
+            },
+            {
+              "sector": "AI伺服器",
+              "rank": 2,
+              "score": 65.9,
+              "signal": "強勢"
+            },
+            {
+              "sector": "金融",
+              "rank": 3,
+              "score": 56.6,
+              "signal": "中性"
+            },
+            {
+              "sector": "半導體",
+              "rank": 4,
+              "score": 42.5,
+              "signal": "中性"
+            },
+            {
+              "sector": "PCB",
+              "rank": 5,
+              "score": 25.9,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 6,
+              "score": 24.9,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-07-21",
+          "sectors": [
+            {
+              "sector": "航運",
+              "rank": 1,
+              "score": 87.2,
+              "signal": "強勢"
+            },
+            {
+              "sector": "AI伺服器",
+              "rank": 2,
+              "score": 63.9,
+              "signal": "強勢"
+            },
+            {
+              "sector": "金融",
+              "rank": 3,
+              "score": 48.7,
+              "signal": "中性"
+            },
+            {
+              "sector": "半導體",
+              "rank": 4,
+              "score": 42.5,
+              "signal": "中性"
+            },
+            {
+              "sector": "PCB",
+              "rank": 5,
+              "score": 28,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 6,
+              "score": 23.3,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-07-22",
+          "sectors": [
+            {
+              "sector": "航運",
+              "rank": 1,
+              "score": 83.3,
+              "signal": "強勢"
+            },
+            {
+              "sector": "AI伺服器",
+              "rank": 2,
+              "score": 75.2,
+              "signal": "強勢"
+            },
+            {
+              "sector": "金融",
+              "rank": 3,
+              "score": 51.8,
+              "signal": "中性"
+            },
+            {
+              "sector": "半導體",
+              "rank": 4,
+              "score": 33.5,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "PCB",
+              "rank": 5,
+              "score": 27,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 6,
+              "score": 24.7,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-07-23",
+          "sectors": [
+            {
+              "sector": "AI伺服器",
+              "rank": 1,
+              "score": 83.2,
+              "signal": "強勢"
+            },
+            {
+              "sector": "航運",
+              "rank": 2,
+              "score": 74.8,
+              "signal": "強勢"
+            },
+            {
+              "sector": "金融",
+              "rank": 3,
+              "score": 52.8,
+              "signal": "中性"
+            },
+            {
+              "sector": "半導體",
+              "rank": 4,
+              "score": 35.8,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "PCB",
+              "rank": 5,
+              "score": 27.8,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 6,
+              "score": 22.2,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-07-24",
+          "sectors": [
+            {
+              "sector": "AI伺服器",
+              "rank": 1,
+              "score": 82.2,
+              "signal": "強勢"
+            },
+            {
+              "sector": "航運",
+              "rank": 2,
+              "score": 76,
+              "signal": "強勢"
+            },
+            {
+              "sector": "金融",
+              "rank": 3,
+              "score": 49.9,
+              "signal": "中性"
+            },
+            {
+              "sector": "半導體",
+              "rank": 4,
+              "score": 37.8,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "PCB",
+              "rank": 5,
+              "score": 28.7,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 6,
+              "score": 21.9,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-07-27",
+          "sectors": [
+            {
+              "sector": "AI伺服器",
+              "rank": 1,
+              "score": 83.9,
+              "signal": "強勢"
+            },
+            {
+              "sector": "航運",
+              "rank": 2,
+              "score": 69.4,
+              "signal": "強勢"
+            },
+            {
+              "sector": "金融",
+              "rank": 3,
+              "score": 48.9,
+              "signal": "中性"
+            },
+            {
+              "sector": "半導體",
+              "rank": 4,
+              "score": 37.2,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "PCB",
+              "rank": 5,
+              "score": 27.9,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 6,
+              "score": 27.8,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-07-28",
+          "sectors": [
+            {
+              "sector": "AI伺服器",
+              "rank": 1,
+              "score": 77.4,
+              "signal": "強勢"
+            },
+            {
+              "sector": "航運",
+              "rank": 2,
+              "score": 74.9,
+              "signal": "強勢"
+            },
+            {
+              "sector": "金融",
+              "rank": 3,
+              "score": 63.3,
+              "signal": "強勢"
+            },
+            {
+              "sector": "半導體",
+              "rank": 4,
+              "score": 34.4,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 5,
+              "score": 26.7,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "PCB",
+              "rank": 6,
+              "score": 22.9,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-07-29",
+          "sectors": [
+            {
+              "sector": "航運",
+              "rank": 1,
+              "score": 77.6,
+              "signal": "強勢"
+            },
+            {
+              "sector": "AI伺服器",
+              "rank": 2,
+              "score": 74.7,
+              "signal": "強勢"
+            },
+            {
+              "sector": "金融",
+              "rank": 3,
+              "score": 60.1,
+              "signal": "強勢"
+            },
+            {
+              "sector": "半導體",
+              "rank": 4,
+              "score": 35.5,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 5,
+              "score": 30.1,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "PCB",
+              "rank": 6,
+              "score": 21.5,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-07-30",
+          "sectors": [
+            {
+              "sector": "航運",
+              "rank": 1,
+              "score": 79,
+              "signal": "強勢"
+            },
+            {
+              "sector": "金融",
+              "rank": 2,
+              "score": 65.4,
+              "signal": "強勢"
+            },
+            {
+              "sector": "AI伺服器",
+              "rank": 3,
+              "score": 61.4,
+              "signal": "強勢"
+            },
+            {
+              "sector": "半導體",
+              "rank": 4,
+              "score": 41.5,
+              "signal": "中性"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 5,
+              "score": 27.2,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "PCB",
+              "rank": 6,
+              "score": 24.9,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-07-31",
+          "sectors": [
+            {
+              "sector": "金融",
+              "rank": 1,
+              "score": 75.9,
+              "signal": "強勢"
+            },
+            {
+              "sector": "航運",
+              "rank": 2,
+              "score": 67.6,
+              "signal": "強勢"
+            },
+            {
+              "sector": "AI伺服器",
+              "rank": 3,
+              "score": 60.9,
+              "signal": "強勢"
+            },
+            {
+              "sector": "半導體",
+              "rank": 4,
+              "score": 49.4,
+              "signal": "中性"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 5,
+              "score": 27.1,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "PCB",
+              "rank": 6,
+              "score": 21.3,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-08-03",
+          "sectors": [
+            {
+              "sector": "金融",
+              "rank": 1,
+              "score": 69,
+              "signal": "強勢"
+            },
+            {
+              "sector": "航運",
+              "rank": 2,
+              "score": 68.5,
+              "signal": "強勢"
+            },
+            {
+              "sector": "AI伺服器",
+              "rank": 3,
+              "score": 65.4,
+              "signal": "強勢"
+            },
+            {
+              "sector": "半導體",
+              "rank": 4,
+              "score": 51.6,
+              "signal": "中性"
+            },
+            {
+              "sector": "PCB",
+              "rank": 5,
+              "score": 33.7,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 6,
+              "score": 16.8,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-08-04",
+          "sectors": [
+            {
+              "sector": "AI伺服器",
+              "rank": 1,
+              "score": 61.4,
+              "signal": "強勢"
+            },
+            {
+              "sector": "PCB",
+              "rank": 2,
+              "score": 57.3,
+              "signal": "中性"
+            },
+            {
+              "sector": "金融",
+              "rank": 3,
+              "score": 55.2,
+              "signal": "中性"
+            },
+            {
+              "sector": "航運",
+              "rank": 4,
+              "score": 48.8,
+              "signal": "中性"
+            },
+            {
+              "sector": "半導體",
+              "rank": 5,
+              "score": 45.5,
+              "signal": "中性"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 6,
+              "score": 32.4,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-08-05",
+          "sectors": [
+            {
+              "sector": "PCB",
+              "rank": 1,
+              "score": 61.6,
+              "signal": "強勢"
+            },
+            {
+              "sector": "AI伺服器",
+              "rank": 2,
+              "score": 56.1,
+              "signal": "中性"
+            },
+            {
+              "sector": "金融",
+              "rank": 3,
+              "score": 51.8,
+              "signal": "中性"
+            },
+            {
+              "sector": "航運",
+              "rank": 4,
+              "score": 47.9,
+              "signal": "中性"
+            },
+            {
+              "sector": "半導體",
+              "rank": 5,
+              "score": 47.7,
+              "signal": "中性"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 6,
+              "score": 35.1,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-08-06",
+          "sectors": [
+            {
+              "sector": "PCB",
+              "rank": 1,
+              "score": 70.1,
+              "signal": "強勢"
+            },
+            {
+              "sector": "AI伺服器",
+              "rank": 2,
+              "score": 68.1,
+              "signal": "強勢"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 3,
+              "score": 41.3,
+              "signal": "中性"
+            },
+            {
+              "sector": "航運",
+              "rank": 4,
+              "score": 40.1,
+              "signal": "中性"
+            },
+            {
+              "sector": "金融",
+              "rank": 5,
+              "score": 40,
+              "signal": "中性"
+            },
+            {
+              "sector": "半導體",
+              "rank": 6,
+              "score": 38.9,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-08-07",
+          "sectors": [
+            {
+              "sector": "PCB",
+              "rank": 1,
+              "score": 75.3,
+              "signal": "強勢"
+            },
+            {
+              "sector": "AI伺服器",
+              "rank": 2,
+              "score": 58.2,
+              "signal": "中性"
+            },
+            {
+              "sector": "航運",
+              "rank": 3,
+              "score": 51.2,
+              "signal": "中性"
+            },
+            {
+              "sector": "金融",
+              "rank": 4,
+              "score": 47.4,
+              "signal": "中性"
+            },
+            {
+              "sector": "半導體",
+              "rank": 5,
+              "score": 34.6,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 6,
+              "score": 32,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-08-10",
+          "sectors": [
+            {
+              "sector": "PCB",
+              "rank": 1,
+              "score": 67.9,
+              "signal": "強勢"
+            },
+            {
+              "sector": "AI伺服器",
+              "rank": 2,
+              "score": 56.4,
+              "signal": "中性"
+            },
+            {
+              "sector": "航運",
+              "rank": 3,
+              "score": 54.3,
+              "signal": "中性"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 4,
+              "score": 48.4,
+              "signal": "中性"
+            },
+            {
+              "sector": "金融",
+              "rank": 5,
+              "score": 43.5,
+              "signal": "中性"
+            },
+            {
+              "sector": "半導體",
+              "rank": 6,
+              "score": 29.8,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-08-11",
+          "sectors": [
+            {
+              "sector": "PCB",
+              "rank": 1,
+              "score": 75.1,
+              "signal": "強勢"
+            },
+            {
+              "sector": "航運",
+              "rank": 2,
+              "score": 60.1,
+              "signal": "強勢"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 3,
+              "score": 48.9,
+              "signal": "中性"
+            },
+            {
+              "sector": "AI伺服器",
+              "rank": 4,
+              "score": 45.3,
+              "signal": "中性"
+            },
+            {
+              "sector": "金融",
+              "rank": 5,
+              "score": 38.4,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "半導體",
+              "rank": 6,
+              "score": 30.8,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-08-12",
+          "sectors": [
+            {
+              "sector": "PCB",
+              "rank": 1,
+              "score": 78.4,
+              "signal": "強勢"
+            },
+            {
+              "sector": "AI伺服器",
+              "rank": 2,
+              "score": 61.7,
+              "signal": "強勢"
+            },
+            {
+              "sector": "航運",
+              "rank": 3,
+              "score": 61.3,
+              "signal": "強勢"
+            },
+            {
+              "sector": "金融",
+              "rank": 4,
+              "score": 40.4,
+              "signal": "中性"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 5,
+              "score": 35.8,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "半導體",
+              "rank": 6,
+              "score": 22.2,
+              "signal": "弱勢"
+            }
+          ]
+        },
+        {
+          "date": "2026-08-13",
+          "sectors": [
+            {
+              "sector": "PCB",
+              "rank": 1,
+              "score": 74.9,
+              "signal": "強勢"
+            },
+            {
+              "sector": "航運",
+              "rank": 2,
+              "score": 52.8,
+              "signal": "中性"
+            },
+            {
+              "sector": "電子零組件",
+              "rank": 3,
+              "score": 52.7,
+              "signal": "中性"
+            },
+            {
+              "sector": "AI伺服器",
+              "rank": 4,
+              "score": 50.6,
+              "signal": "中性"
+            },
+            {
+              "sector": "金融",
+              "rank": 5,
+              "score": 36.6,
+              "signal": "弱勢"
+            },
+            {
+              "sector": "半導體",
+              "rank": 6,
+              "score": 31.3,
+              "signal": "弱勢"
+            }
+          ]
+        }
+      ]
+    }
   }
 }
