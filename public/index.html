@@ -13,7 +13,7 @@
 <body>
   <header>
     <h1>📈 台灣股票即時看板</h1>
-    <p class="subtitle">Taiwan Stock Dashboard — 即時報價 · K線圖 · 類股雷達 · AI 多智能體建議</p>
+    <p class="subtitle">Taiwan Stock Dashboard — 官方估值 · 月營收 · 重大事件 · 類股雷達</p>
     <p class="subtitle"><a href="research-dashboard.html">📡 開啟 Sector Radar / ML Challenger Research Dashboard</a></p>
   </header>
 
@@ -28,7 +28,18 @@
       <div id="quote-result" class="result-area"></div>
     </section>
 
-    <!-- Section 2: K-Line Chart + Technical Analysis -->
+    <!-- Section 2: Official investor evidence -->
+    <section class="panel" id="official-panel">
+      <h2>🏷️ 官方投資資料證據卡</h2>
+      <p class="description">整合 TWSE OpenAPI 每日行情、估值、月營收、重大訊息、除權息與含息大盤指數；各欄位分開呈現，不合成未經驗證的神祕分數。</p>
+      <div class="input-row">
+        <input type="text" id="official-input" placeholder="上市股票代碼（例: 2330）" value="2330">
+        <button id="official-btn" onclick="fetchInvestorSnapshot()">載入官方資料</button>
+      </div>
+      <div id="official-result" class="result-area"></div>
+    </section>
+
+    <!-- Section 3: K-Line Chart + Technical Analysis -->
     <section class="panel" id="kline-panel">
       <h2>📊 K線圖與技術分析</h2>
       <div class="input-row">
@@ -44,7 +55,7 @@
       <div id="ta-summary" class="result-area"></div>
     </section>
 
-    <!-- Section 3: Market Overview -->
+    <!-- Section 4: Market Overview -->
     <section class="panel" id="market-panel">
       <h2>🏛️ 大盤概況</h2>
       <button onclick="fetchMarket()">載入大盤資料</button>
@@ -54,7 +65,7 @@
       </div>
     </section>
 
-    <!-- Section 4: Sector Radar -->
+    <!-- Section 5: Sector Radar -->
     <section class="panel" id="sector-radar-panel">
       <h2>🧭 類股輪動雷達</h2>
       <p class="description">以台股代表股的 5/20 日動能、量能、MA20 廣度與波動度建立 cross-sectional baseline，先做可驗證的相對強弱排名。</p>
@@ -62,7 +73,7 @@
       <div id="sector-radar-result" class="result-area"></div>
     </section>
 
-    <!-- Section 5: Multi-Agent AI Suggestion -->
+    <!-- Section 6: Multi-Agent AI Suggestion -->
     <section class="panel" id="agent-panel">
       <h2>🤖 AI 多智能體分析建議</h2>
       <p class="description">由 Claude + Gemini 多個 AI 角色（基本面、技術面、情緒面、總經分析師 + 多空研究員 + 交易員）進行辯論後產生投資建議</p>

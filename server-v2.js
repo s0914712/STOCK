@@ -1,10 +1,16 @@
 require('dotenv').config();
 const express = require('express');
-const https = require('https');
-const http = require('http');
 const path = require('path');
 const { runMultiAgentAnalysis } = require('./agents');
 const { buildSectorRadar } = require('./sectorRadar');
+const { fetchJSON } = require('./scripts/twseData');
+const {
+  DATASET_KEYS,
+  briefMaterialEvent,
+  buildAlerts,
+  filterBySymbols,
+  getDataset,
+} = require('./scripts/twseOpenApi');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,30 +19,6 @@ let sectorRadarCache = null;
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-
-function fetchJSON(url) {
-  return new Promise((resolve, reject) => {
-    const client = url.startsWith('https') ? https : http;
-    const req = client.get(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0',
-        'Accept': 'application/json',
-      }
-    }, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try {
-          resolve(JSON.parse(data));
-        } catch {
-          reject(new Error('Failed to parse JSON response'));
-        }
-      });
-    });
-    req.on('error', reject);
-    req.setTimeout(10000, () => { req.destroy(); reject(new Error('Request timeout')); });
-  });
-}
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -78,6 +60,68 @@ async function fetchStockHistory(stock, months = 2) {
 
   allData.sort((a, b) => a.date.localeCompare(b.date));
   return allData;
+}
+
+function parseSymbols(value, max = 50) {
+  if (!value) return [];
+  const symbols = [...new Set(String(value).split(',').map(s => s.trim().toUpperCase()).filter(Boolean))];
+  if (symbols.length > max) throw new Error(`最多一次查詢 ${max} 檔證券`);
+  const invalid = symbols.filter(symbol => !/^[0-9A-Z]{4,8}$/.test(symbol));
+  if (invalid.length) throw new Error(`無效證券代碼: ${invalid.join(', ')}`);
+  return symbols;
+}
+
+function boundedLimit(value, fallback = 100, max = 2000) {
+  const parsed = Number.parseInt(value, 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) return fallback;
+  return Math.min(parsed, max);
+}
+
+function filterOfficialRows(dataset, rows, query) {
+  const symbols = parseSymbols(query.symbols || query.symbol || query.stock);
+  let filtered = filterBySymbols(rows, symbols);
+
+  if (dataset === 'marketIndex' && query.index) {
+    const needle = String(query.index).trim().toLowerCase();
+    filtered = filtered.filter(row => row.indexName.toLowerCase().includes(needle));
+  }
+  const dateField = dataset === 'materialEvents' ? 'disclosureDate'
+    : dataset === 'revenue' ? 'publishedAt'
+      : 'date';
+  if (query.from) filtered = filtered.filter(row => !row[dateField] || row[dateField] >= query.from);
+  if (query.to) filtered = filtered.filter(row => !row[dateField] || row[dateField] <= query.to);
+  if (dataset === 'materialEvents' && query.details !== '1') filtered = filtered.map(briefMaterialEvent);
+
+  const totalCount = filtered.length;
+  const limit = query.all === '1' ? 2000 : boundedLimit(query.limit);
+  return { symbols, totalCount, rows: filtered.slice(0, limit) };
+}
+
+function officialPayload(envelope, filtered) {
+  return {
+    success: true,
+    dataset: envelope.dataset,
+    source: envelope.source,
+    sourceUrl: envelope.sourceUrl,
+    fetchedAt: envelope.fetchedAt,
+    asOf: envelope.asOf,
+    stale: envelope.stale,
+    fallbackReason: envelope.fallbackReason,
+    count: filtered.rows.length,
+    totalCount: filtered.totalCount,
+    data: filtered.rows,
+  };
+}
+
+function officialDatasetHandler(dataset) {
+  return async (req, res) => {
+    try {
+      const envelope = await getDataset(dataset, { force: req.query.refresh === '1' });
+      res.json(officialPayload(envelope, filterOfficialRows(dataset, envelope.data, req.query)));
+    } catch (error) {
+      res.status(502).json({ success: false, dataset, error: error.message });
+    }
+  };
 }
 
 app.get('/api/quote', async (req, res) => {
@@ -170,6 +214,79 @@ app.get('/api/market', async (req, res) => {
     res.json({ success: true, data: rows, realtime });
   } catch (err) {
     res.json({ success: false, error: err.message });
+  }
+});
+
+// Official, normalized TWSE OpenAPI v1 datasets. Large endpoints are brief and
+// limited by default; callers opt into details/all rows explicitly.
+app.get('/api/openapi/stock-day', officialDatasetHandler('stockDay'));
+app.get('/api/openapi/market-index', officialDatasetHandler('marketIndex'));
+app.get('/api/openapi/taiex-total-return', officialDatasetHandler('taiexTotalReturn'));
+app.get('/api/openapi/valuation', officialDatasetHandler('valuation'));
+app.get('/api/openapi/revenue', officialDatasetHandler('revenue'));
+app.get('/api/openapi/material-events', officialDatasetHandler('materialEvents'));
+app.get('/api/openapi/ex-rights', officialDatasetHandler('exRights'));
+
+app.get('/api/openapi/status', async (req, res) => {
+  try {
+    const datasets = await Promise.all(DATASET_KEYS.map(key => getDataset(key, { force: req.query.refresh === '1' })));
+    res.json({
+      success: true,
+      datasets: Object.fromEntries(datasets.map(dataset => [dataset.dataset, {
+        source: dataset.source,
+        fetchedAt: dataset.fetchedAt,
+        asOf: dataset.asOf,
+        count: dataset.count,
+        stale: dataset.stale,
+        fallbackReason: dataset.fallbackReason,
+      }])),
+    });
+  } catch (error) {
+    res.status(502).json({ success: false, error: error.message });
+  }
+});
+
+app.get('/api/investor-snapshot', async (req, res) => {
+  try {
+    const [symbol] = parseSymbols(req.query.stock, 1);
+    if (!symbol) return res.status(400).json({ success: false, error: '請提供 stock 參數' });
+
+    const entries = await Promise.all(DATASET_KEYS.map(async key => [key, await getDataset(key, {
+      force: req.query.refresh === '1',
+    })]));
+    const datasets = Object.fromEntries(entries);
+    const price = datasets.stockDay.data.find(row => row.symbol === symbol) || null;
+    const valuation = datasets.valuation.data.find(row => row.symbol === symbol) || null;
+    const revenue = datasets.revenue.data.find(row => row.symbol === symbol) || null;
+    const events = datasets.materialEvents.data.filter(row => row.symbol === symbol).slice(0, 10);
+    const exRights = datasets.exRights.data.filter(row => row.symbol === symbol).slice(0, 10);
+    const taiex = datasets.marketIndex.data.find(row => row.indexName === '發行量加權股價指數') || null;
+    const totalReturn = datasets.taiexTotalReturn.data.slice().sort((a, b) => a.date.localeCompare(b.date)).at(-1) || null;
+    const alerts = buildAlerts({ materialEvents: events, exRights }, { symbols: [symbol] }).slice(0, 20);
+
+    res.json({
+      success: true,
+      symbol,
+      name: price?.name || valuation?.name || revenue?.name || symbol,
+      asOf: datasets.stockDay.asOf,
+      stale: Object.values(datasets).some(dataset => dataset.stale),
+      price,
+      valuation,
+      revenue,
+      market: { taiex, taiexTotalReturn: totalReturn },
+      alerts,
+      materialEvents: events.map(event => req.query.details === '1' ? event : briefMaterialEvent(event)),
+      exRights,
+      provenance: Object.fromEntries(DATASET_KEYS.map(key => [key, {
+        source: datasets[key].source,
+        sourceUrl: datasets[key].sourceUrl,
+        fetchedAt: datasets[key].fetchedAt,
+        asOf: datasets[key].asOf,
+        stale: datasets[key].stale,
+      }])),
+    });
+  } catch (error) {
+    res.status(502).json({ success: false, error: error.message });
   }
 });
 

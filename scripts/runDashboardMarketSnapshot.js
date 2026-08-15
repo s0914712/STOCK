@@ -1,0 +1,169 @@
+#!/usr/bin/env node
+
+/**
+ * Fetch all seven official TWSE OpenAPI datasets in one daily pass.
+ *
+ * Outputs:
+ *   data/dashboard/market_latest.json       complete normalized latest snapshot
+ *   data/dashboard/openapi_forward.jsonl    compact append-only point-in-time ledger
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { DEFAULT_SECTORS } = require('../sectorRadar');
+const { DATASET_KEYS, fetchAllDatasets } = require('./twseOpenApi');
+
+const ROOT = path.join(__dirname, '..');
+const OUT_DIR = path.join(ROOT, 'data', 'dashboard');
+const LATEST_PATH = path.join(OUT_DIR, 'market_latest.json');
+const FORWARD_PATH = path.join(OUT_DIR, 'openapi_forward.jsonl');
+const UNIVERSE = [...new Set([...Object.values(DEFAULT_SECTORS).flat(), '0050'])];
+
+function bySymbol(rows) {
+  return new Map((rows || []).map(row => [row.symbol, row]));
+}
+
+function latestOnOrBefore(rows, date, field = 'date') {
+  return (rows || [])
+    .filter(row => row[field] && (!date || row[field] <= date))
+    .slice()
+    .sort((a, b) => a[field].localeCompare(b[field]))
+    .at(-1) || null;
+}
+
+function buildForwardRecord(snapshot, universe = UNIVERSE) {
+  const datasets = snapshot.datasets;
+  const tradingDate = datasets.stockDay?.asOf;
+  if (!tradingDate) throw new Error('STOCK_DAY_ALL did not provide a trading date');
+
+  const prices = bySymbol(datasets.stockDay.data);
+  const valuations = bySymbol(datasets.valuation.data);
+  const revenues = bySymbol(datasets.revenue.data);
+  const events = datasets.materialEvents.data || [];
+  const actions = datasets.exRights.data || [];
+  const missing = universe.filter(symbol => !prices.has(symbol));
+  if (missing.length) throw new Error(`daily forward snapshot missing universe symbols: ${missing.join(', ')}`);
+
+  const stocks = {};
+  for (const symbol of universe) {
+    const price = prices.get(symbol);
+    const valuation = valuations.get(symbol) || null;
+    const revenue = revenues.get(symbol) || null;
+    const symbolEvents = events
+      .filter(row => row.symbol === symbol && row.disclosureDate <= tradingDate)
+      .slice(0, 3)
+      .map(row => ({
+        id: row.id,
+        date: row.disclosureDate,
+        subject: row.subject,
+        severity: row.severity,
+      }));
+    const nextAction = actions.find(row => row.symbol === symbol && row.date >= tradingDate) || null;
+
+    stocks[symbol] = {
+      name: price.name,
+      close: price.close,
+      change: price.change,
+      volume: price.volume,
+      tradeValue: price.tradeValue,
+      valuation: valuation ? {
+        pe: valuation.pe,
+        pb: valuation.pb,
+        dividendYield: valuation.dividendYield,
+        asOf: valuation.date,
+      } : null,
+      revenue: revenue ? {
+        dataMonth: revenue.dataMonth,
+        momPercent: revenue.momPercent,
+        yoyPercent: revenue.yoyPercent,
+        ytdPercent: revenue.ytdPercent,
+        publishedAt: revenue.publishedAt,
+      } : null,
+      recentMaterialEvents: symbolEvents,
+      nextCorporateAction: nextAction ? {
+        date: nextAction.date,
+        type: nextAction.type,
+        cashDividend: nextAction.cashDividend,
+        stockDividendRatio: nextAction.stockDividendRatio,
+      } : null,
+    };
+  }
+
+  const taiex = datasets.marketIndex.data.find(row => row.indexName === '發行量加權股價指數') || null;
+  const totalReturn = latestOnOrBefore(datasets.taiexTotalReturn.data, tradingDate);
+
+  return {
+    id: `${tradingDate}:twse-openapi-v1`,
+    tradingDate,
+    recordedAt: snapshot.generatedAt,
+    modelInputStatus: 'point-in-time-official-snapshot',
+    market: {
+      taiexClose: taiex?.close ?? null,
+      taiexChangePercent: taiex?.changePercent ?? null,
+      taiexTotalReturnIndex: totalReturn?.index ?? null,
+      taiexTotalReturnDate: totalReturn?.date ?? null,
+    },
+    stocks,
+    provenance: Object.fromEntries(DATASET_KEYS.map(key => [key, {
+      asOf: datasets[key].asOf,
+      contentHash: datasets[key].contentHash,
+    }])),
+  };
+}
+
+function writeJsonAtomic(filePath, value) {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  const tempPath = `${filePath}.${process.pid}.tmp`;
+  fs.writeFileSync(tempPath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
+  fs.renameSync(tempPath, filePath);
+}
+
+function appendForwardRecord(filePath, record) {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  if (fs.existsSync(filePath)) {
+    const exists = fs.readFileSync(filePath, 'utf8')
+      .split(/\r?\n/)
+      .filter(Boolean)
+      .some(line => {
+        try { return JSON.parse(line).id === record.id; } catch { return false; }
+      });
+    if (exists) return false;
+  }
+  fs.appendFileSync(filePath, `${JSON.stringify(record)}\n`, 'utf8');
+  return true;
+}
+
+async function main() {
+  console.log('Fetching seven TWSE OpenAPI datasets...');
+  const datasets = await fetchAllDatasets({ force: true });
+  const snapshot = {
+    schemaVersion: 1,
+    generatedAt: new Date().toISOString(),
+    source: 'TWSE OpenAPI v1',
+    baseUrl: 'https://openapi.twse.com.tw/v1',
+    datasets,
+  };
+  const forward = buildForwardRecord(snapshot);
+
+  writeJsonAtomic(LATEST_PATH, snapshot);
+  const appended = appendForwardRecord(FORWARD_PATH, forward);
+
+  console.log(`Wrote ${path.relative(ROOT, LATEST_PATH)} (${DATASET_KEYS.map(key => `${key}=${datasets[key].count}`).join(', ')})`);
+  console.log(`${appended ? 'Appended' : 'Already had'} forward snapshot ${forward.id}`);
+}
+
+if (require.main === module) {
+  main().catch(error => {
+    console.error(error.stack || error.message || error);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  FORWARD_PATH,
+  LATEST_PATH,
+  UNIVERSE,
+  appendForwardRecord,
+  buildForwardRecord,
+  writeJsonAtomic,
+};

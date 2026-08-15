@@ -220,6 +220,85 @@ button:disabled {
   font-weight: bold;
 }
 
+/* Official TWSE evidence cards */
+.official-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  color: #e6f7ff;
+}
+
+.official-heading > div:last-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #8892b0;
+  font-size: 12px;
+}
+
+.official-badge {
+  display: inline-flex;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.official-badge.live { background: #153a2b; color: #5de2a1; }
+.official-badge.stale { background: #3a2b15; color: #ffc266; }
+
+.official-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.official-card {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-height: 130px;
+  padding: 15px;
+  border: 1px solid #2a3858;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #11172a, #0d1020);
+}
+
+.official-card h3 {
+  color: #83dfff;
+  font-size: 13px;
+}
+
+.official-card strong { font-size: 21px; }
+.official-card span { color: #aab4cf; font-size: 13px; }
+
+.official-alerts {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #0f0f1a;
+}
+
+.official-alerts h3 { color: #83dfff; font-size: 14px; margin-bottom: 8px; }
+.official-alerts ul { list-style: none; margin: 0; padding: 0; }
+
+.official-alert {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid #24243d;
+  color: #cbd2e5;
+  font-size: 13px;
+}
+
+.official-alert.high { color: #ff8b8b; }
+.official-alert.medium { color: #ffd28a; }
+.official-alert-date { color: #75809f; }
+.official-empty { color: #75809f; font-size: 13px; }
+.official-footnote { margin-top: 10px; color: #68728d; font-size: 12px; }
+
 /* Agent Analysis */
 .agent-step {
   background: #0f0f1a;
@@ -347,6 +426,8 @@ button:disabled {
   header h1 { font-size: 22px; }
   .quote-cards { grid-template-columns: 1fr; }
   .market-realtime { flex-direction: column; align-items: flex-start; }
+  .official-heading { align-items: flex-start; flex-direction: column; }
+  .official-heading > div:last-child { align-items: flex-start; flex-direction: column; }
 }
 
 footer {
