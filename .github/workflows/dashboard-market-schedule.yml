@@ -9,6 +9,11 @@ on:
       - claude/taiwan-stock-dashboard-AsiJO
     paths:
       - '.github/workflows/dashboard-market-schedule.yml'
+      - 'scripts/twseOpenApi.js'
+      - 'scripts/runDashboardMarketSnapshot.js'
+      - 'test/twseOpenApi.test.js'
+      - 'package.json'
+      - 'package-lock.json'
 
 permissions:
   contents: write
@@ -23,30 +28,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: feature/leverage-5050-challenger
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - run: npm test
       - name: Build latest market snapshot
-        run: |
-          node --check scripts/runDashboardMarketSnapshot.js
-          node scripts/runDashboardMarketSnapshot.js
-      - name: Publish snapshot to challenger branch
+        run: npm run snapshot:openapi
+      - name: Publish official snapshot and forward ledger
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/dashboard/market_latest.json
+          git add data/dashboard/market_latest.json data/dashboard/openapi_forward.jsonl
           if git diff --cached --quiet; then
             echo "No market snapshot changes."
             exit 0
           fi
           git commit -m "data: update daily market dashboard"
           for attempt in 1 2 3 4; do
-            git pull --rebase origin feature/leverage-5050-challenger
-            if git push origin HEAD:feature/leverage-5050-challenger; then
+            git pull --rebase origin "$GITHUB_REF_NAME"
+            if git push origin HEAD:"$GITHUB_REF_NAME"; then
               exit 0
             fi
             sleep $((attempt * 2))

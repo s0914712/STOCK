@@ -81,7 +81,95 @@ async function fetchQuote() {
 }
 
 // ==========================================
-// Section 2: K-Line Chart + Technical Analysis
+// Section 2: Official TWSE investor evidence
+// ==========================================
+function officialValue(value, digits = 2, suffix = '') {
+  return Number.isFinite(value) ? `${value.toFixed(digits)}${suffix}` : '—';
+}
+
+function revenueValue(value) {
+  return Number.isFinite(value) ? `${Math.round(value).toLocaleString()} 仟元` : '—';
+}
+
+async function fetchInvestorSnapshot() {
+  const stock = document.getElementById('official-input').value.trim().toUpperCase();
+  const result = document.getElementById('official-result');
+  const button = document.getElementById('official-btn');
+  if (!/^[0-9A-Z]{4,8}$/.test(stock)) {
+    showError(result, '請輸入有效的上市證券代碼');
+    return;
+  }
+
+  button.disabled = true;
+  result.innerHTML = '<div class="loading"><div class="spinner"></div><span>載入 TWSE 官方資料中...</span></div>';
+  try {
+    const response = await fetch(`/api/investor-snapshot?stock=${encodeURIComponent(stock)}`);
+    const json = await response.json();
+    if (!response.ok || !json.success) throw new Error(json.error || `HTTP ${response.status}`);
+
+    const price = json.price || {};
+    const valuation = json.valuation || {};
+    const revenue = json.revenue || {};
+    const taiex = json.market?.taiex || {};
+    const totalReturn = json.market?.taiexTotalReturn || {};
+    const alerts = json.alerts || [];
+    const stale = json.stale
+      ? '<span class="official-badge stale">快照備援／可能過期</span>'
+      : '<span class="official-badge live">官方最新快照</span>';
+
+    const alertHtml = alerts.length
+      ? alerts.slice(0, 8).map(alert => `
+          <li class="official-alert ${escapeHtml(alert.severity)}">
+            <span class="official-alert-date">${escapeHtml(alert.date)}</span>
+            <span>${escapeHtml(alert.title)}</span>
+          </li>`).join('')
+      : '<li class="official-empty">目前快照沒有此股票的重大訊息或除權息事件。</li>';
+
+    result.innerHTML = `
+      <div class="official-heading">
+        <div><strong>${escapeHtml(json.name)}</strong> <span class="stock-symbol">${escapeHtml(stock)}</span></div>
+        <div>${stale}<span class="official-asof">資料日 ${escapeHtml(json.asOf || '—')}</span></div>
+      </div>
+      <div class="official-grid">
+        <article class="official-card">
+          <h3>每日行情</h3>
+          <strong>${officialValue(price.close, 2)}</strong>
+          <span>漲跌 ${officialValue(price.change, 2)}</span>
+          <span>成交量 ${Number.isFinite(price.volume) ? Math.round(price.volume).toLocaleString() : '—'}</span>
+        </article>
+        <article class="official-card">
+          <h3>估值</h3>
+          <strong>PE ${officialValue(valuation.pe, 2)}</strong>
+          <span>PB ${officialValue(valuation.pb, 2)}</span>
+          <span>殖利率 ${officialValue(valuation.dividendYield, 2, '%')}</span>
+        </article>
+        <article class="official-card">
+          <h3>月營收 ${escapeHtml(revenue.dataMonth || '—')}</h3>
+          <strong>YoY ${officialValue(revenue.yoyPercent, 1, '%')}</strong>
+          <span>MoM ${officialValue(revenue.momPercent, 1, '%')}</span>
+          <span>${revenueValue(revenue.currentMonthRevenue)}</span>
+        </article>
+        <article class="official-card">
+          <h3>市場基準</h3>
+          <strong>TAIEX ${officialValue(taiex.close, 2)}</strong>
+          <span>單日 ${officialValue(taiex.changePercent, 2, '%')}</span>
+          <span>含息指數 ${officialValue(totalReturn.index, 2)}</span>
+        </article>
+      </div>
+      <div class="official-alerts">
+        <h3>事件與除權息警報</h3>
+        <ul>${alertHtml}</ul>
+      </div>
+      <p class="official-footnote">來源：臺灣證券交易所 OpenAPI。空值代表官方資料集未提供，不以 AI 猜測補值。</p>`;
+  } catch (error) {
+    showError(result, `官方資料載入失敗: ${error.message}`);
+  } finally {
+    button.disabled = false;
+  }
+}
+
+// ==========================================
+// Section 3: K-Line Chart + Technical Analysis
 // ==========================================
 async function fetchKline() {
   const stock = document.getElementById('kline-input').value.trim();
