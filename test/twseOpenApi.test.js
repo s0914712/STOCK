@@ -5,6 +5,8 @@ const path = require('path');
 const {
   buildAlerts,
   clearMemoryCache,
+  DATASET_KEYS,
+  fetchAllDatasets,
   fetchDataset,
   getDataset,
   normalizeExRights,
@@ -19,7 +21,21 @@ const {
   rocMonthToIso,
   toNumber,
 } = require('../scripts/twseOpenApi');
-const { appendForwardRecord, buildForwardRecord } = require('../scripts/runDashboardMarketSnapshot');
+const {
+  appendForwardRecord,
+  buildForwardRecord,
+  buildSnapshot,
+  persistDailySnapshot,
+} = require('../scripts/runDashboardMarketSnapshot');
+
+function fakeResponse(contentType, body, status = 200) {
+  return {
+    ok: status >= 200 && status < 300,
+    status,
+    headers: { get: name => name.toLowerCase() === 'content-type' ? contentType : null },
+    text: async () => body,
+  };
+}
 
 function envelope(dataset, data, asOf = '2026-08-14') {
   return {
@@ -102,14 +118,10 @@ async function testFetchCacheAndFallback() {
   let calls = 0;
   const fetchImpl = async () => {
     calls += 1;
-    return {
-      ok: true,
-      status: 200,
-      text: async () => JSON.stringify([{
+    return fakeResponse('application/json; charset=utf-8', JSON.stringify([{
         Date: '1150814', Code: '2330', Name: '台積電', TradeVolume: '1', TradeValue: '2', OpeningPrice: '3',
         HighestPrice: '4', LowestPrice: '2', ClosingPrice: '3', Change: '0', Transaction: '1',
-      }]),
-    };
+      }]));
   };
   const first = await fetchDataset('stockDay', { fetchImpl, ttlMs: 60000 });
   const second = await fetchDataset('stockDay', { fetchImpl, ttlMs: 60000 });
@@ -124,11 +136,108 @@ async function testFetchCacheAndFallback() {
   clearMemoryCache();
   const fallback = await getDataset('valuation', {
     snapshotPath,
+    maxAttempts: 1,
     fetchImpl: async () => { throw new Error('offline'); },
   });
   assert.strictEqual(fallback.stale, true);
   assert.match(fallback.fallbackReason, /offline/);
   fs.unlinkSync(snapshotPath);
+  fs.rmdirSync(tempDir);
+}
+
+async function testHtmlRetryAndSequentialFetch() {
+  clearMemoryCache();
+  let calls = 0;
+  const delays = [];
+  const stockRow = {
+    Date: '1150814', Code: '2330', Name: '台積電', TradeVolume: '1', TradeValue: '2', OpeningPrice: '3',
+    HighestPrice: '4', LowestPrice: '2', ClosingPrice: '3', Change: '0', Transaction: '1',
+  };
+  const recovered = await fetchDataset('stockDay', {
+    force: true,
+    maxAttempts: 2,
+    retryDelayMs: 25,
+    sleepImpl: async ms => { delays.push(ms); },
+    fetchImpl: async () => {
+      calls += 1;
+      return calls === 1
+        ? fakeResponse('text/html; charset=utf-8', '<html><head><title>temporary block</title></head></html>')
+        : fakeResponse('application/json', JSON.stringify([stockRow]));
+    },
+  });
+  assert.strictEqual(calls, 2);
+  assert.deepStrictEqual(delays, [25]);
+  assert.strictEqual(recovered.data[0].symbol, '2330');
+
+  clearMemoryCache();
+  await assert.rejects(
+    fetchDataset('valuation', {
+      force: true,
+      maxAttempts: 1,
+      fetchImpl: async () => fakeResponse('text/html', '<html>access denied</html>'),
+    }),
+    error => /failed after 1 attempt/.test(error.message)
+      && /expected application\/json/.test(error.message)
+      && /content-type=text\/html/.test(error.message)
+      && /access denied/.test(error.message),
+  );
+
+  clearMemoryCache();
+  let active = 0;
+  let maxActive = 0;
+  const requested = [];
+  const datasets = await fetchAllDatasets({
+    force: true,
+    maxAttempts: 1,
+    fetchImpl: async url => {
+      active += 1;
+      maxActive = Math.max(maxActive, active);
+      requested.push(url);
+      await new Promise(resolve => setTimeout(resolve, 2));
+      active -= 1;
+      return fakeResponse('application/json', '[]');
+    },
+  });
+  assert.strictEqual(maxActive, 1, 'seven OpenAPI requests must default to sequential execution');
+  assert.strictEqual(requested.length, DATASET_KEYS.length);
+  assert.deepStrictEqual(Object.keys(datasets), DATASET_KEYS);
+}
+
+async function testAllFailureUsesStaleSnapshotWithoutForwardWrite() {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'twse-stale-snapshot-test-'));
+  const latestPath = path.join(tempDir, 'market_latest.json');
+  const forwardPath = path.join(tempDir, 'forward.jsonl');
+  const savedDatasets = Object.fromEntries(DATASET_KEYS.map(key => [key, envelope(key, [])]));
+  const savedSnapshot = buildSnapshot(savedDatasets, '2026-08-15T00:00:00.000Z');
+  fs.writeFileSync(latestPath, `${JSON.stringify(savedSnapshot, null, 2)}\n`, 'utf8');
+  const originalLatest = fs.readFileSync(latestPath, 'utf8');
+
+  clearMemoryCache();
+  const staleDatasets = await fetchAllDatasets({
+    force: true,
+    concurrency: 1,
+    allowSnapshotFallback: true,
+    snapshotPath: latestPath,
+    maxAttempts: 1,
+    fetchImpl: async () => fakeResponse('text/html', '<html>runner blocked</html>'),
+  });
+  assert(DATASET_KEYS.every(key => staleDatasets[key].stale));
+
+  const result = persistDailySnapshot(
+    buildSnapshot(staleDatasets, '2026-08-16T00:00:00.000Z'),
+    { latestPath, forwardPath },
+  );
+  assert.strictEqual(result.reason, 'all-datasets-stale');
+  assert.strictEqual(result.wroteLatest, false);
+  assert.strictEqual(result.appendedForward, false);
+  assert.strictEqual(fs.readFileSync(latestPath, 'utf8'), originalLatest, 'trusted snapshot must remain byte-for-byte unchanged');
+  assert.strictEqual(fs.existsSync(forwardPath), false, 'stale inputs must never create a forward OOS row');
+
+  assert.throws(
+    () => buildForwardRecord(buildSnapshot(staleDatasets, '2026-08-16T00:00:00.000Z')),
+    /refusing to build forward OOS record from stale datasets/,
+  );
+  fs.unlinkSync(latestPath);
   fs.rmdirSync(tempDir);
 }
 
@@ -169,6 +278,8 @@ function testForwardRecordAndAlerts() {
   testDatesAndNumbers();
   testNormalizers();
   await testFetchCacheAndFallback();
+  await testHtmlRetryAndSequentialFetch();
+  await testAllFailureUsesStaleSnapshotWithoutForwardWrite();
   testForwardRecordAndAlerts();
   console.log('twseOpenApi tests passed');
 })().catch(error => {

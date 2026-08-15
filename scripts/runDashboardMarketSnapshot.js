@@ -33,6 +33,10 @@ function latestOnOrBefore(rows, date, field = 'date') {
 
 function buildForwardRecord(snapshot, universe = UNIVERSE) {
   const datasets = snapshot.datasets;
+  const staleKeys = DATASET_KEYS.filter(key => datasets[key]?.stale);
+  if (staleKeys.length) {
+    throw new Error(`refusing to build forward OOS record from stale datasets: ${staleKeys.join(', ')}`);
+  }
   const tradingDate = datasets.stockDay?.asOf;
   if (!tradingDate) throw new Error('STOCK_DAY_ALL did not provide a trading date');
 
@@ -133,23 +137,80 @@ function appendForwardRecord(filePath, record) {
   return true;
 }
 
-async function main() {
-  console.log('Fetching seven TWSE OpenAPI datasets...');
-  const datasets = await fetchAllDatasets({ force: true });
-  const snapshot = {
+function buildSnapshot(datasets, generatedAt = new Date().toISOString()) {
+  const staleDatasets = DATASET_KEYS.filter(key => datasets[key]?.stale);
+  return {
     schemaVersion: 1,
-    generatedAt: new Date().toISOString(),
+    generatedAt,
     source: 'TWSE OpenAPI v1',
     baseUrl: 'https://openapi.twse.com.tw/v1',
+    freshness: {
+      complete: staleDatasets.length === 0,
+      liveDatasets: DATASET_KEYS.filter(key => !staleDatasets.includes(key)),
+      staleDatasets,
+    },
     datasets,
   };
+}
+
+function persistDailySnapshot(snapshot, {
+  latestPath = LATEST_PATH,
+  forwardPath = FORWARD_PATH,
+} = {}) {
+  const staleDatasets = DATASET_KEYS.filter(key => snapshot.datasets[key]?.stale);
+  if (staleDatasets.length === DATASET_KEYS.length) {
+    return {
+      wroteLatest: false,
+      appendedForward: false,
+      staleDatasets,
+      reason: 'all-datasets-stale',
+    };
+  }
+
+  writeJsonAtomic(latestPath, snapshot);
+  if (staleDatasets.length) {
+    return {
+      wroteLatest: true,
+      appendedForward: false,
+      staleDatasets,
+      reason: 'partial-stale-snapshot',
+    };
+  }
+
   const forward = buildForwardRecord(snapshot);
+  const appendedForward = appendForwardRecord(forwardPath, forward);
+  return {
+    wroteLatest: true,
+    appendedForward,
+    forwardId: forward.id,
+    staleDatasets: [],
+    reason: appendedForward ? 'fresh-forward-appended' : 'forward-already-recorded',
+  };
+}
 
-  writeJsonAtomic(LATEST_PATH, snapshot);
-  const appended = appendForwardRecord(FORWARD_PATH, forward);
+async function main() {
+  console.log('Fetching seven TWSE OpenAPI datasets...');
+  const datasets = await fetchAllDatasets({
+    force: true,
+    concurrency: 1,
+    allowSnapshotFallback: true,
+  });
+  const snapshot = buildSnapshot(datasets);
+  const result = persistDailySnapshot(snapshot);
 
-  console.log(`Wrote ${path.relative(ROOT, LATEST_PATH)} (${DATASET_KEYS.map(key => `${key}=${datasets[key].count}`).join(', ')})`);
-  console.log(`${appended ? 'Appended' : 'Already had'} forward snapshot ${forward.id}`);
+  if (result.wroteLatest) {
+    console.log(`Wrote ${path.relative(ROOT, LATEST_PATH)} (${DATASET_KEYS.map(key => `${key}=${datasets[key].count}`).join(', ')})`);
+  } else {
+    console.warn(`All live requests failed; kept ${path.relative(ROOT, LATEST_PATH)} unchanged.`);
+  }
+
+  if (result.reason === 'partial-stale-snapshot') {
+    console.warn(`Skipped forward OOS append because these datasets are stale: ${result.staleDatasets.join(', ')}`);
+  } else if (result.reason === 'all-datasets-stale') {
+    console.warn('Skipped forward OOS append because every dataset came from the stale snapshot fallback.');
+  } else {
+    console.log(`${result.appendedForward ? 'Appended' : 'Already had'} forward snapshot ${result.forwardId}`);
+  }
 }
 
 if (require.main === module) {
@@ -164,6 +225,8 @@ module.exports = {
   LATEST_PATH,
   UNIVERSE,
   appendForwardRecord,
+  buildSnapshot,
   buildForwardRecord,
+  persistDailySnapshot,
   writeJsonAtomic,
 };
