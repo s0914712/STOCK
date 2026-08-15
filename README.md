@@ -288,6 +288,8 @@ Dashboard 顯示：
 - 官方 Value / Growth / Momentum / Liquidity 排名
 - 5D / 20D 因子 Rank IC、五分位差、換手與回撤證據
 
+另有投資人教育頁 `time-series-guide.html`，用非技術讀者可理解的順序介紹時間序列、方法選擇、Walk-forward 與 Forward OOS。文章內容架構見 [`docs/TIME_SERIES_ANALYSIS_GUIDE.md`](docs/TIME_SERIES_ANALYSIS_GUIDE.md)。
+
 預期正式入口：`https://s0914712.github.io/STOCK/`
 
 ### 一次性 GitHub Pages 設定
@@ -330,13 +332,16 @@ STOCK/
 ├─ public/
 │  ├─ research-dashboard.html
 │  ├─ research-dashboard.css
-│  └─ research-dashboard.js
+│  ├─ research-dashboard.js
+│  ├─ time-series-guide.html
+│  └─ time-series-guide.css
 ├─ docs/
 │  ├─ SECTOR_RADAR.md
 │  ├─ CHALLENGER_V031_V04.md
 │  ├─ ROTATION_V05.md
 │  ├─ BENCHMARK_0050.md
-│  └─ FACTOR_RESEARCH.md
+│  ├─ FACTOR_RESEARCH.md
+│  └─ TIME_SERIES_ANALYSIS_GUIDE.md
 └─ .github/workflows/
 ```
 

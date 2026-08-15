@@ -50,11 +50,15 @@ with sync_playwright() as playwright:
     assert factor_as_of == expected_report["asOf"], f"unexpected factor as-of: {factor_as_of}"
     assert factor_status == expected_status, f"unexpected factor OOS status: {factor_status}"
     assert evidence_note == expected_report["forwardEvidence"]["reason"]
+    page.screenshot(path=str(screenshot_path), full_page=True)
+    guide_link = page.get_by_role("link", name="時間序列分析入門 →")
+    assert guide_link.is_visible()
+    with page.expect_navigation(wait_until="networkidle"):
+        guide_link.click()
+    assert "時間序列分析" in page.locator("h1").inner_text()
     assert not console_errors, f"browser console errors: {console_errors}"
     assert not failed_requests, f"failed browser requests: {failed_requests}"
     assert not http_errors, f"HTTP errors: {http_errors}"
-
-    page.screenshot(path=str(screenshot_path), full_page=True)
     browser.close()
 
 print(json.dumps({
