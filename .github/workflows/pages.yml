@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - claude/taiwan-stock-dashboard-AsiJO
     paths:
       - 'public/research-dashboard.html'
       - 'public/research-dashboard.css'
