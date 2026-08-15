@@ -2,6 +2,8 @@ name: Deploy Research Dashboard
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '40 8 * * 1-5' # 16:40 Asia/Taipei, after the 16:20 official snapshot refresh
   push:
     branches:
       - claude/taiwan-stock-dashboard-AsiJO
@@ -12,6 +14,7 @@ on:
       - 'data/shadow/**'
       - 'data/backtests/ml_challenger_v031.json'
       - 'data/backtests/rotation_v0.4.json'
+      - 'data/dashboard/factor_research_latest.json'
       - '.github/workflows/pages.yml'
 
 permissions:
@@ -33,13 +36,14 @@ jobs:
         run: |
           set -euo pipefail
           rm -rf _site
-          mkdir -p _site/data/shadow _site/data/backtests
+          mkdir -p _site/data/shadow _site/data/backtests _site/data/dashboard
           cp public/research-dashboard.html _site/index.html
           cp public/research-dashboard.css _site/research-dashboard.css
           cp public/research-dashboard.js _site/research-dashboard.js
           cp data/shadow/challenger_latest.json _site/data/shadow/challenger_latest.json
           cp data/backtests/ml_challenger_v031.json _site/data/backtests/ml_challenger_v031.json
           cp data/backtests/rotation_v0.4.json _site/data/backtests/rotation_v0.4.json
+          cp data/dashboard/factor_research_latest.json _site/data/dashboard/factor_research_latest.json
           if [ -f data/shadow/latest.json ]; then
             cp data/shadow/latest.json _site/data/shadow/latest.json
           fi
