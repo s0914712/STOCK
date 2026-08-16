@@ -84,6 +84,8 @@ flowchart LR
 
 這些 prediction 會等完整 5 個後續交易日成熟後，再自動計算真正 OOS 表現。
 
+研究儀表板也會在三個模型欄位列出配置權重最高兩檔。這是把模型的六產業機率正規化為 100%，再將每個產業權重等分給三檔代表股的**配置 proxy**；它不是模型內部的個股重要度、實際持倉或投資建議。同權時依股票代碼排序，且 ML 與代表股快照日期不一致時不顯示權重。
+
 ### OOS 指標
 
 - Brier score
@@ -290,7 +292,10 @@ Dashboard 顯示：
 
 另有投資人教育頁 `time-series-guide.html`，用非技術讀者可理解的順序介紹時間序列、方法選擇、Walk-forward 與 Forward OOS。文章內容架構見 [`docs/TIME_SERIES_ANALYSIS_GUIDE.md`](docs/TIME_SERIES_ANALYSIS_GUIDE.md)。
 
-預期正式入口：`https://s0914712.github.io/STOCK/`
+### 網頁入口
+
+- [Research Dashboard](https://s0914712.github.io/STOCK/)
+- [時間序列分析入門](https://s0914712.github.io/STOCK/time-series-guide.html)
 
 ### 一次性 GitHub Pages 設定
 

@@ -100,6 +100,13 @@ tr:last-child td { border-bottom: none; }
 
 .prob-cell { min-width: 145px; }
 .prob-top { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 7px; }
+.allocation-row td { background: rgba(96, 165, 250, 0.045); vertical-align: top; }
+.allocation-list { min-width: 185px; margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.allocation-list li { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.allocation-list li > span { display: grid; gap: 2px; }
+.allocation-list small { color: var(--muted); font-size: 0.7rem; }
+.allocation-list b { color: var(--accent); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.allocation-method { color: var(--muted); font-size: 0.76rem; line-height: 1.55; min-width: 140px; }
 .rank { color: var(--muted); font-size: 0.75rem; }
 .bar { height: 7px; border-radius: 999px; background: rgba(154, 167, 189, 0.13); overflow: hidden; }
 .bar > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--accent-2), var(--accent)); }
