@@ -290,7 +290,10 @@ Dashboard 顯示：
 
 另有投資人教育頁 `time-series-guide.html`，用非技術讀者可理解的順序介紹時間序列、方法選擇、Walk-forward 與 Forward OOS。文章內容架構見 [`docs/TIME_SERIES_ANALYSIS_GUIDE.md`](docs/TIME_SERIES_ANALYSIS_GUIDE.md)。
 
-預期正式入口：`https://s0914712.github.io/STOCK/`
+### 網頁入口
+
+- [Research Dashboard](https://s0914712.github.io/STOCK/)
+- [時間序列分析入門](https://s0914712.github.io/STOCK/time-series-guide.html)
 
 ### 一次性 GitHub Pages 設定
 
