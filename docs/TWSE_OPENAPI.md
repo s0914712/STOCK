@@ -48,6 +48,8 @@ The forward ledger is idempotent by `tradingDate:twse-openapi-v1`. It records th
 
 The weekday GitHub Actions workflow runs after market close, executes tests, builds the snapshot, and commits both files to its current/default branch.
 
+To avoid triggering upstream rate or bot protection, the seven datasets are fetched sequentially by default. Every response must report a JSON content type and contain a JSON array. HTML, malformed JSON, timeouts, and HTTP errors are retried with exponential backoff. The retry count and base delay can be adjusted with `TWSE_OPENAPI_MAX_ATTEMPTS` and `TWSE_OPENAPI_RETRY_DELAY_MS`.
+
 ## Data semantics and guardrails
 
 - Most OpenAPI endpoints are current snapshots, not arbitrary five-year historical queries. The daily ledger accumulates trustworthy forward history; the existing monthly TWSE fetch remains necessary for older backtests.
@@ -55,3 +57,4 @@ The weekday GitHub Actions workflow runs after market close, executes tests, bui
 - Empty valuation fields stay `null`; the application never asks an LLM to invent them.
 - Material-event severity is a keyword triage aid, not a legal or investment conclusion. The full official description is available only with `details=1` to keep default payloads small.
 - A failed live request may fall back to `market_latest.json`, but every such response is marked `stale: true` with `fallbackReason`.
+- Any stale dataset prevents a new forward OOS row. If every live request fails, the last trusted `market_latest.json` is kept byte-for-byte unchanged and the workflow exits without inventing a new observation date.

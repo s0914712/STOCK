@@ -24,9 +24,14 @@ flowchart LR
     I --> J[Rotation Backtest]
     J --> K[Fixed TP/SL vs Trailing Stop]
 
+    A --> M[TWSE official factor layer]
+    M --> N[Value / Growth / Momentum / Liquidity]
+    N --> O[5D / 20D Forward Rank IC]
+
     F --> L[Research Dashboard]
     H --> L
     K --> L
+    O --> L
 ```
 
 ## 2. v0.3.1 — Baseline vs LightGBM vs XGBoost
@@ -78,6 +83,8 @@ flowchart LR
 - XGBoost Top-1：電子零組件
 
 這些 prediction 會等完整 5 個後續交易日成熟後，再自動計算真正 OOS 表現。
+
+研究儀表板也會在三個模型欄位列出配置權重最高兩檔。這是把模型的六產業機率正規化為 100%，再將每個產業權重等分給三檔代表股的**配置 proxy**；它不是模型內部的個股重要度、實際持倉或投資建議。同權時依股票代碼排序，且 ML 與代表股快照日期不一致時不顯示權重。
 
 ### OOS 指標
 
@@ -187,6 +194,28 @@ v0.4 的參數敏感度本身就是警訊：trailing stop 從 8% 移到 12%，�
 
 執行 `Benchmark Battle vs 0050` workflow（或 `npm run battle:0050`）產生真實報告。判讀順序見 `docs/BENCHMARK_0050.md`。
 
+## 3.7 TWSE 官方因子研究層
+
+七端點每日快照現在會額外建立上市普通股的 point-in-time 因子排名：
+
+- **Value**：低 PE、低 PB、高殖利率
+- **Growth**：月營收 YoY、MoM、YTD 成長
+- **Momentum**：當日價格動能
+- **Liquidity**：成交金額可交易性控制
+- **Composite**：35% Value + 35% Growth + 20% Momentum + 10% Liquidity
+
+Universe 預設要求單日成交金額至少 2,000 萬元。缺值維持 `null`，重大訊息與 30 日內除權息另列風險提示，不用 AI 猜測，也不暗中改分數。
+
+因子層不回填上線前績效。訊號從下一個已觀察收盤開始評估，逐日累積 5D／20D Rank IC、五分位差、Top 五分位換手率、成本後報酬估計與非重疊 Max Drawdown。未滿 20 個成熟 5D snapshots 時，一律標示 `collecting-forward-oos`，不宣稱有效。
+
+資料檔：
+
+- `data/dashboard/factor_forward.jsonl`：append-only point-in-time observations
+- `data/dashboard/factor_outcomes.jsonl`：成熟後才追加的 OOS outcomes
+- `data/dashboard/factor_research_latest.json`：前端使用的精簡排名與證據摘要
+
+完整方法見 [`docs/FACTOR_RESEARCH.md`](docs/FACTOR_RESEARCH.md)。
+
 ## 4. TWSE 官方類股 proxy cross-check
 
 使用 TWSE `EFTRI_HIST` 可直接對照的產業類股：
@@ -218,6 +247,7 @@ v0.4 的參數敏感度本身就是警訊：trailing stop 從 8% 移到 12%，�
 | `sector-shadow.yml` | `30 7 * * 1-5` | 平日 15:30 | Daily Shadow inference + mature scoring |
 | `ml-challenger-train.yml` | `0 2 * * 0` | 週日 10:00 | 重新訓練 Baseline calibrator、LightGBM、XGBoost |
 | `weekly-research.yml` | `0 1 * * 6` | **週六 09:00** | 抓一次 TWSE 資料，跑 0050 對決 + v0.5 robustness sweep |
+| `dashboard-market-schedule.yml` | `20 8 * * 1-5` | 平日 16:20 | 七端點官方快照 + 因子排名 + matured OOS scoring |
 
 `weekly-research.yml` 是唯一會自動抓資料做策略比較的排程。它刻意**只抓一次**：
 
@@ -247,6 +277,7 @@ GitHub Pages 會部署一個純靜態 Dashboard，直接讀 repo 內最新資料
 - `data/shadow/challenger_latest.json`
 - `data/backtests/ml_challenger_v031.json`
 - `data/backtests/rotation_v0.4.json`
+- `data/dashboard/factor_research_latest.json`
 
 Dashboard 顯示：
 
@@ -256,8 +287,15 @@ Dashboard 顯示：
 - forward OOS 累積分數
 - 5Y rotation / trailing-stop 策略比較
 - TWSE official proxy correlation
+- 官方 Value / Growth / Momentum / Liquidity 排名
+- 5D / 20D 因子 Rank IC、五分位差、換手與回撤證據
 
-預期正式入口：`https://s0914712.github.io/STOCK/`
+另有投資人教育頁 `time-series-guide.html`，用非技術讀者可理解的順序介紹時間序列、方法選擇、Walk-forward 與 Forward OOS。文章內容架構見 [`docs/TIME_SERIES_ANALYSIS_GUIDE.md`](docs/TIME_SERIES_ANALYSIS_GUIDE.md)。
+
+### 網頁入口
+
+- [Research Dashboard](https://s0914712.github.io/STOCK/)
+- [時間序列分析入門](https://s0914712.github.io/STOCK/time-series-guide.html)
 
 ### 一次性 GitHub Pages 設定
 
@@ -279,28 +317,36 @@ STOCK/
 ├─ rotationBacktest.js            # rotation backtest engine (regime gate, vol stop, topK)
 ├─ rotationRobustness.js          # parameter sweep, family scoring, promotion gate
 ├─ coreSatellite.js               # 0050-core + sector-satellite engine and benchmark stats
+├─ factorResearch.js              # official cross-sectional factor + forward OOS scorer
 ├─ scripts/
 │  ├─ shadowRunner.js
 │  ├─ trainMlChallenger.py
 │  ├─ runMlShadow.py
 │  ├─ twseData.js                 # shared TWSE fetch + on-disk cache
+│  ├─ runDashboardMarketSnapshot.js
+│  ├─ runFactorResearch.js
 │  ├─ runRotationV04.js
 │  ├─ runRotationV05.js
 │  └─ runBenchmarkBattle.js
 ├─ data/
 │  ├─ shadow/                     # append-only OOS ledgers + latest snapshot
+│  ├─ dashboard/                  # official snapshot + factor forward ledgers
 │  ├─ models/                     # trained challenger artifacts
 │  ├─ cache/                      # TWSE price snapshot (gitignored)
 │  └─ backtests/                  # ML validation + rotation reports
 ├─ public/
 │  ├─ research-dashboard.html
 │  ├─ research-dashboard.css
-│  └─ research-dashboard.js
+│  ├─ research-dashboard.js
+│  ├─ time-series-guide.html
+│  └─ time-series-guide.css
 ├─ docs/
 │  ├─ SECTOR_RADAR.md
 │  ├─ CHALLENGER_V031_V04.md
 │  ├─ ROTATION_V05.md
-│  └─ BENCHMARK_0050.md
+│  ├─ BENCHMARK_0050.md
+│  ├─ FACTOR_RESEARCH.md
+│  └─ TIME_SERIES_ANALYSIS_GUIDE.md
 └─ .github/workflows/
 ```
 
@@ -310,4 +356,5 @@ STOCK/
 - thematic sectors 尚未完整重建 historical point-in-time constituents。
 - Backtest 不等於 live trading performance。
 - 目前 OOS live sample 很少，還不足以宣告 ML 或 trailing-stop challenger 勝出。
+- 因子研究從正式上線日起 forward 累積；未滿門檻前排名只有研究用途，不能視為已驗證 alpha。
 - 本專案為研究用途，不構成投資建議。

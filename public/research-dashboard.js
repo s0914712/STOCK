@@ -1,6 +1,8 @@
 const DATA_PATHS = {
   challenger: './data/shadow/challenger_latest.json',
+  baseline: './data/shadow/latest.json',
   rotation: './data/backtests/rotation_v0.4.json',
+  factor: './data/dashboard/factor_research_latest.json',
 };
 
 const MODEL_KEYS = ['baseline', 'lightgbm', 'xgboost'];
@@ -8,6 +10,33 @@ const MODEL_LABELS = {
   baseline: 'Baseline',
   lightgbm: 'LightGBM',
   xgboost: 'XGBoost',
+};
+const STOCK_NAMES = {
+  '2303': '聯電',
+  '2308': '台達電',
+  '2317': '鴻海',
+  '2327': '國巨',
+  '2330': '台積電',
+  '2368': '金像電',
+  '2382': '廣達',
+  '2454': '聯發科',
+  '2603': '長榮',
+  '2609': '陽明',
+  '2615': '萬海',
+  '2881': '富邦金',
+  '2882': '國泰金',
+  '2891': '中信金',
+  '3008': '大立光',
+  '3037': '欣興',
+  '3044': '健鼎',
+  '3231': '緯創',
+};
+const FACTOR_LABELS = {
+  value: '價值',
+  growth: '營收成長',
+  momentum: '一日動能',
+  liquidity: '流動性',
+  composite: '綜合',
 };
 
 function escapeHtml(value) {
@@ -46,7 +75,7 @@ function findChampion(validation = {}) {
   return candidates[0]?.key ?? 'baseline';
 }
 
-function renderStatus(challenger, rotation) {
+function renderStatus(challenger, rotation, factor) {
   const latest = challenger?.latestPrediction;
   const validation = challenger?.training?.validation ?? {};
   const champion = findChampion(validation);
@@ -57,13 +86,73 @@ function renderStatus(challenger, rotation) {
   document.getElementById('backtest-period').textContent = rotation?.period
     ? `${rotation.period.start} → ${rotation.period.end}`
     : '—';
+  document.getElementById('factor-as-of').textContent = factor?.asOf ?? '—';
+  document.getElementById('factor-oos-status').textContent = factor?.forwardEvidence?.status === 'eligible-for-research-review'
+    ? '可進一步審查'
+    : '累積中';
   document.getElementById('target-label').textContent = latest?.target ?? '5D relative outperform probability';
   document.getElementById('champion-badge').textContent = `Champion: ${MODEL_LABELS[champion]}`;
 
-  const generated = latest?.generatedAt || challenger?.training?.generatedAt || rotation?.generatedAt;
+  const generated = factor?.generatedAt || latest?.generatedAt || challenger?.training?.generatedAt || rotation?.generatedAt;
   document.getElementById('generated-at').textContent = generated
     ? `Last data generation: ${new Date(generated).toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })}`
     : 'Last data generation: —';
+}
+
+function percentile(value) {
+  return Number.isFinite(value) ? `${(value * 100).toFixed(1)}` : '—';
+}
+
+function renderFactorRankings(factor) {
+  const body = document.getElementById('factor-body');
+  const rows = factor?.rankings?.composite ?? [];
+  if (!rows.length) {
+    body.innerHTML = '<tr><td colspan="10" class="loading-cell">尚無可信的因子排名。</td></tr>';
+    return;
+  }
+  body.innerHTML = rows.map(row => {
+    const risks = row.riskFlags?.length ? row.riskFlags.join('；') : '—';
+    return `
+      <tr>
+        <td class="top-pick">#${escapeHtml(row.rank)}</td>
+        <td><strong>${escapeHtml(row.symbol)} ${escapeHtml(row.name)}</strong><br><span class="rank">${escapeHtml(row.industry || '產業未提供')} · 收盤 ${escapeHtml(row.close ?? '—')}</span></td>
+        <td class="factor-score">${percentile(row.score)}</td>
+        <td>${percentile(row.value)}</td>
+        <td>${percentile(row.growth)}</td>
+        <td>${percentile(row.momentum)}</td>
+        <td>${percentile(row.liquidity)}</td>
+        <td>${num(row.pe, 2)} / ${num(row.pb, 2)}</td>
+        <td>${Number.isFinite(row.revenueYoy) ? `${row.revenueYoy.toFixed(1)}%` : '—'}</td>
+        <td class="risk-text">${escapeHtml(risks)}</td>
+      </tr>`;
+  }).join('');
+}
+
+function renderFactorEvidence(factor) {
+  const body = document.getElementById('factor-evidence-body');
+  const evidence = factor?.forwardEvidence;
+  const summaries = evidence?.summaries ?? [];
+  const gate = document.getElementById('factor-gate');
+  gate.textContent = evidence?.status === 'eligible-for-research-review' ? 'Eligible for research review' : 'Forward OOS collecting';
+  gate.className = evidence?.status === 'eligible-for-research-review' ? 'pill good' : 'pill warning';
+  document.getElementById('factor-evidence-note').textContent = evidence?.reason
+    || '等待後續交易日資料成熟；尚無數值是正常狀態。';
+  if (!summaries.length) {
+    body.innerHTML = '<tr><td colspan="9" class="loading-cell">尚無 forward OOS 統計。</td></tr>';
+    return;
+  }
+  body.innerHTML = summaries.map(row => `
+    <tr>
+      <td>${escapeHtml(row.horizonTradingDays)}D</td>
+      <td><strong>${escapeHtml(FACTOR_LABELS[row.factor] || row.factor)}</strong></td>
+      <td>${escapeHtml(row.maturedSnapshots)}</td>
+      <td>${num(row.meanRankIc, 3)}</td>
+      <td>${pct(row.rankIcPositiveRate, 1)}</td>
+      <td>${pct(row.meanQuantileSpread, 2)}</td>
+      <td>${pct(row.meanEstimatedNetReturn, 2)}</td>
+      <td>${pct(row.meanTurnover, 1)}</td>
+      <td>${pct(row.nonOverlappingMaxDrawdown, 2)} <span class="rank">(${escapeHtml(row.nonOverlappingPeriods)} periods)</span></td>
+    </tr>`).join('');
 }
 
 function probCell(value, rank) {
@@ -79,7 +168,57 @@ function probCell(value, rank) {
     </div>`;
 }
 
-function renderPredictions(challenger) {
+function buildAllocationLeaders(challenger, baseline, limit = 2) {
+  const latestPrediction = challenger?.latestPrediction;
+  const latestBaseline = baseline?.latestPrediction ?? baseline;
+  if (!latestPrediction?.asOf || latestPrediction.asOf !== latestBaseline?.asOf) {
+    return Object.fromEntries(MODEL_KEYS.map(model => [model, []]));
+  }
+  const predictionRows = latestPrediction.sectors ?? [];
+  const anchorRows = latestBaseline.sectors ?? [];
+  const anchorsBySector = new Map(anchorRows.map(row => [
+    row.sector,
+    (row.anchors ?? row.members ?? [])
+      .map(item => String(item?.symbol ?? item ?? ''))
+      .filter(Boolean),
+  ]));
+
+  return Object.fromEntries(MODEL_KEYS.map(model => {
+    const eligible = predictionRows
+      .map(row => ({
+        sector: row.sector,
+        probability: finiteOrNull(row[model]),
+        symbols: anchorsBySector.get(row.sector) ?? [],
+      }))
+      .filter(row => row.probability !== null && row.probability >= 0 && row.symbols.length);
+    const probabilityTotal = eligible.reduce((sum, row) => sum + row.probability, 0);
+    if (!(probabilityTotal > 0)) return [model, []];
+
+    const stocks = eligible.flatMap(row => {
+      const sectorWeight = row.probability / probabilityTotal;
+      const stockWeight = sectorWeight / row.symbols.length;
+      return row.symbols.map(symbol => ({
+        symbol,
+        name: STOCK_NAMES[symbol] ?? symbol,
+        sector: row.sector,
+        weight: stockWeight,
+      }));
+    });
+    stocks.sort((a, b) => b.weight - a.weight || a.symbol.localeCompare(b.symbol));
+    return [model, stocks.slice(0, Math.max(0, limit))];
+  }));
+}
+
+function allocationCell(rows) {
+  if (!rows?.length) return '<span class="rank">代表股資料不足</span>';
+  return `<ol class="allocation-list">${rows.map(row => `
+    <li>
+      <span><strong>${escapeHtml(row.symbol)} ${escapeHtml(row.name)}</strong><small>${escapeHtml(row.sector)}</small></span>
+      <b>${pct(row.weight, 2)}</b>
+    </li>`).join('')}</ol>`;
+}
+
+function renderPredictions(challenger, baseline) {
   const body = document.getElementById('prediction-body');
   const sectors = challenger?.latestPrediction?.sectors ?? [];
   if (!sectors.length) {
@@ -87,7 +226,17 @@ function renderPredictions(challenger) {
     return;
   }
 
-  body.innerHTML = sectors.map(row => {
+  const leaders = buildAllocationLeaders(challenger, baseline);
+  const allocationRow = `
+    <tr class="allocation-row">
+      <td><strong>配置權重前二</strong><br><span class="rank">模型配置 proxy</span></td>
+      <td>${allocationCell(leaders.baseline)}</td>
+      <td>${allocationCell(leaders.lightgbm)}</td>
+      <td>${allocationCell(leaders.xgboost)}</td>
+      <td class="allocation-method">機率跨產業正規化；產業內代表股等權</td>
+    </tr>`;
+
+  body.innerHTML = allocationRow + sectors.map(row => {
     const ranks = [
       `B #${row.baselineRank ?? '—'}`,
       `L #${row.lightgbmRank ?? '—'}`,
@@ -204,16 +353,20 @@ function renderError(message) {
 
 async function boot() {
   try {
-    const [challengerResult, rotationResult] = await Promise.allSettled([
+    const [challengerResult, baselineResult, rotationResult, factorResult] = await Promise.allSettled([
       loadJson(DATA_PATHS.challenger),
+      loadJson(DATA_PATHS.baseline),
       loadJson(DATA_PATHS.rotation),
+      loadJson(DATA_PATHS.factor),
     ]);
 
     const challenger = challengerResult.status === 'fulfilled' ? challengerResult.value : null;
+    const baseline = baselineResult.status === 'fulfilled' ? baselineResult.value : null;
     const rotation = rotationResult.status === 'fulfilled' ? rotationResult.value : null;
+    const factor = factorResult.status === 'fulfilled' ? factorResult.value : null;
 
-    if (!challenger && !rotation) {
-      const reason = [challengerResult, rotationResult]
+    if (!challenger && !rotation && !factor) {
+      const reason = [challengerResult, rotationResult, factorResult]
         .filter(x => x.status === 'rejected')
         .map(x => x.reason?.message)
         .join(' | ');
@@ -221,15 +374,20 @@ async function boot() {
     }
 
     if (challenger) {
-      renderStatus(challenger, rotation);
-      renderPredictions(challenger);
+      renderStatus(challenger, rotation, factor);
+      renderPredictions(challenger, baseline);
       renderValidation(challenger);
       renderOos(challenger);
     }
     if (rotation) {
-      if (!challenger) renderStatus(null, rotation);
+      if (!challenger) renderStatus(null, rotation, factor);
       renderStrategies(rotation);
       renderProxyChecks(rotation);
+    }
+    if (factor) {
+      if (!challenger && !rotation) renderStatus(null, null, factor);
+      renderFactorRankings(factor);
+      renderFactorEvidence(factor);
     }
   } catch (error) {
     console.error(error);
@@ -237,4 +395,8 @@ async function boot() {
   }
 }
 
-boot();
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { buildAllocationLeaders };
+}
+
+if (typeof document !== 'undefined') boot();

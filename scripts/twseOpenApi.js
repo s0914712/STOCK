@@ -17,6 +17,8 @@ const SNAPSHOT_PATH = path.join(ROOT, 'data', 'dashboard', 'market_latest.json')
 const BASE_URL = process.env.TWSE_OPENAPI_BASE_URL || 'https://openapi.twse.com.tw/v1';
 const DEFAULT_TTL_MS = Number(process.env.TWSE_OPENAPI_TTL_MS || 15 * 60 * 1000);
 const DEFAULT_TIMEOUT_MS = Number(process.env.TWSE_OPENAPI_TIMEOUT_MS || 20000);
+const DEFAULT_MAX_ATTEMPTS = Number(process.env.TWSE_OPENAPI_MAX_ATTEMPTS || 3);
+const DEFAULT_RETRY_DELAY_MS = Number(process.env.TWSE_OPENAPI_RETRY_DELAY_MS || 750);
 
 const ENDPOINTS = Object.freeze({
   stockDay: '/exchangeReport/STOCK_DAY_ALL',
@@ -225,27 +227,76 @@ function assertDatasetKey(dataset) {
   if (!ENDPOINTS[dataset]) throw new Error(`unknown TWSE OpenAPI dataset: ${dataset}`);
 }
 
-async function fetchRaw(dataset, { fetchImpl = globalThis.fetch, timeoutMs = DEFAULT_TIMEOUT_MS } = {}) {
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function responseSnippet(body) {
+  const compact = String(body || '').replace(/\s+/g, ' ').trim();
+  return compact.slice(0, 160) || '(empty body)';
+}
+
+function isJsonContentType(contentType) {
+  return /application\/(?:[\w.+-]+\+)?json\b/i.test(String(contentType || ''));
+}
+
+async function fetchRaw(dataset, {
+  fetchImpl = globalThis.fetch,
+  timeoutMs = DEFAULT_TIMEOUT_MS,
+  maxAttempts = DEFAULT_MAX_ATTEMPTS,
+  retryDelayMs = DEFAULT_RETRY_DELAY_MS,
+  sleepImpl = sleep,
+} = {}) {
   assertDatasetKey(dataset);
   if (typeof fetchImpl !== 'function') throw new TypeError('fetch implementation is required');
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
   const sourceUrl = `${BASE_URL}${ENDPOINTS[dataset]}`;
-  try {
-    const response = await fetchImpl(sourceUrl, {
-      headers: { Accept: 'application/json', 'User-Agent': 'STOCK-dashboard/1.1' },
-      signal: controller.signal,
-    });
-    if (!response.ok) throw new Error(`${dataset}: HTTP ${response.status}`);
-    const raw = JSON.parse(await response.text());
-    if (!Array.isArray(raw)) throw new Error(`${dataset}: expected a JSON array`);
-    return { raw, sourceUrl };
-  } catch (error) {
-    if (error && error.name === 'AbortError') throw new Error(`${dataset}: request timed out after ${timeoutMs}ms`);
-    throw error;
-  } finally {
-    clearTimeout(timer);
+  const attempts = Math.max(1, Number.parseInt(maxAttempts, 10) || DEFAULT_MAX_ATTEMPTS);
+  let lastError = null;
+
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const response = await fetchImpl(sourceUrl, {
+        headers: {
+          Accept: 'application/json',
+          'Accept-Language': 'zh-TW,zh;q=0.9,en;q=0.8',
+          'User-Agent': 'Mozilla/5.0 (compatible; STOCK-dashboard/1.2; +https://github.com/s0914712/STOCK)',
+        },
+        signal: controller.signal,
+      });
+      const contentType = response.headers?.get?.('content-type') || '';
+      const body = await response.text();
+      const context = `HTTP ${response.status}; content-type=${contentType || 'missing'}; body=${responseSnippet(body)}`;
+
+      if (!response.ok) throw new Error(`${dataset}: request failed (${context})`);
+      if (!isJsonContentType(contentType)) {
+        throw new Error(`${dataset}: expected application/json (${context})`);
+      }
+
+      let raw;
+      try {
+        raw = JSON.parse(body);
+      } catch (error) {
+        throw new Error(`${dataset}: invalid JSON (${context})`);
+      }
+      if (!Array.isArray(raw)) throw new Error(`${dataset}: expected a JSON array (${context})`);
+      return { raw, sourceUrl, attempts: attempt };
+    } catch (error) {
+      lastError = error && error.name === 'AbortError'
+        ? new Error(`${dataset}: request timed out after ${timeoutMs}ms`)
+        : error;
+    } finally {
+      clearTimeout(timer);
+    }
+
+    if (attempt < attempts) {
+      const delayMs = Math.max(0, retryDelayMs) * (2 ** (attempt - 1));
+      await sleepImpl(delayMs);
+    }
   }
+
+  throw new Error(`${dataset}: failed after ${attempts} attempt(s): ${lastError?.message || 'unknown error'}`);
 }
 
 async function fetchDataset(dataset, {
@@ -253,12 +304,21 @@ async function fetchDataset(dataset, {
   fetchImpl = globalThis.fetch,
   ttlMs = DEFAULT_TTL_MS,
   timeoutMs = DEFAULT_TIMEOUT_MS,
+  maxAttempts = DEFAULT_MAX_ATTEMPTS,
+  retryDelayMs = DEFAULT_RETRY_DELAY_MS,
+  sleepImpl = sleep,
 } = {}) {
   assertDatasetKey(dataset);
   const cached = memoryCache.get(dataset);
   if (!force && cached && Date.now() - cached.cachedAt < ttlMs) return cached.envelope;
 
-  const { raw, sourceUrl } = await fetchRaw(dataset, { fetchImpl, timeoutMs });
+  const { raw, sourceUrl } = await fetchRaw(dataset, {
+    fetchImpl,
+    timeoutMs,
+    maxAttempts,
+    retryDelayMs,
+    sleepImpl,
+  });
   const data = NORMALIZERS[dataset](raw);
   const fetchedAt = new Date().toISOString();
   const envelope = {
@@ -293,17 +353,38 @@ async function getDataset(dataset, options = {}) {
     const snapshot = readLatestSnapshot(options.snapshotPath || SNAPSHOT_PATH);
     const saved = snapshot?.datasets?.[dataset];
     if (!saved) throw error;
+    const source = String(saved.source || 'TWSE OpenAPI v1').replace(/ \(snapshot fallback\).*$/, '');
     return {
       ...saved,
-      source: `${saved.source || 'TWSE OpenAPI v1'} (snapshot fallback)`,
+      source: `${source} (snapshot fallback)`,
       stale: true,
       fallbackReason: error.message,
     };
   }
 }
 
-async function fetchAllDatasets(options = {}) {
-  const entries = await Promise.all(DATASET_KEYS.map(async dataset => [dataset, await fetchDataset(dataset, options)]));
+async function fetchAllDatasets({
+  concurrency = 1,
+  allowSnapshotFallback = false,
+  ...options
+} = {}) {
+  const limit = Math.min(DATASET_KEYS.length, Math.max(1, Number.parseInt(concurrency, 10) || 1));
+  const entries = new Array(DATASET_KEYS.length);
+  let cursor = 0;
+
+  async function worker() {
+    while (cursor < DATASET_KEYS.length) {
+      const index = cursor;
+      cursor += 1;
+      const dataset = DATASET_KEYS[index];
+      const envelope = allowSnapshotFallback
+        ? await getDataset(dataset, options)
+        : await fetchDataset(dataset, options);
+      entries[index] = [dataset, envelope];
+    }
+  }
+
+  await Promise.all(Array.from({ length: limit }, () => worker()));
   return Object.fromEntries(entries);
 }
 

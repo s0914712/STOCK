@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark light">
+  <meta name="description" content="給投資人的時間序列分析入門：從報酬、趨勢、波動，到 ARIMA、GARCH、Walk-forward 與 Forward OOS。">
+  <title>時間序列分析入門 — Taiwan Sector Radar</title>
+  <link rel="stylesheet" href="research-dashboard.css">
+  <link rel="stylesheet" href="time-series-guide.css">
+</head>
+<body>
+  <header class="article-hero">
+    <nav class="breadcrumb" aria-label="麵包屑">
+      <a href="./">Research Dashboard</a>
+      <span aria-hidden="true">/</span>
+      <span>時間序列分析入門</span>
+    </nav>
+    <p class="eyebrow">INVESTOR LEARNING NOTE · v0.2</p>
+    <h1>時間序列分析：<br>不是預言價格，而是管理不確定性</h1>
+    <p class="hero-copy">用投資人能操作的方式，理解資料順序、趨勢、波動、預測與 Forward OOS；知道每一種方法能回答什麼，也知道它不能保證什麼。</p>
+    <div class="reading-meta">
+      <span>約 12 分鐘</span>
+      <span>基礎 → 進階方法地圖</span>
+      <span>台股研究情境</span>
+    </div>
+  </header>
+
+  <main class="article-shell">
+    <aside class="toc" aria-label="文章目錄">
+      <p class="eyebrow">CONTENTS</p>
+      <ol>
+        <li><a href="#what">什麼是時間序列？</a></li>
+        <li><a href="#layers">先拆成四個問題</a></li>
+        <li><a href="#prepare">資料怎麼準備</a></li>
+        <li><a href="#methods">分析方法地圖</a></li>
+        <li><a href="#workflow">可信的研究流程</a></li>
+        <li><a href="#project-example">本專案 5D 範例</a></li>
+        <li><a href="#metrics">結果怎麼閱讀</a></li>
+        <li><a href="#pitfalls">最常見的陷阱</a></li>
+        <li><a href="#choose">如何選方法</a></li>
+        <li><a href="#glossary">名詞快速查找</a></li>
+      </ol>
+    </aside>
+
+    <article class="article-content">
+      <section class="lead-card" aria-label="讀完後你會知道">
+        <p class="eyebrow">先記住三件事</p>
+        <div class="takeaway-grid">
+          <div><strong>順序不能打亂</strong><span>昨天、今天、明天不是可互換的樣本。</span></div>
+          <div><strong>價格不等於報酬</strong><span>短期變化模型常分析報酬、差分或波動；價格水準與共整合問題則可能保留水準資料。</span></div>
+          <div><strong>未來資料才算考試</strong><span>歷史擬合漂亮只是練習；Forward OOS 才是上線後的成績。</span></div>
+        </div>
+      </section>
+
+      <section id="what">
+        <p class="section-kicker">01 · FOUNDATION</p>
+        <h2>什麼是時間序列？</h2>
+        <p>時間序列是一串按照時間排列的觀測值，例如台積電每日收盤價、加權指數每五秒成交量，或公司每月營收。它和一般表格資料最大的不同是：<strong>資料的先後順序本身就是資訊</strong>。</p>
+
+        <div class="concept-compare">
+          <div>
+            <h3>時間序列分析</h3>
+            <p>同一個標的沿著時間觀察，例如「2330 過去 20 日動能是否延續？」</p>
+          </div>
+          <div>
+            <h3>橫斷面分析</h3>
+            <p>同一天比較許多標的，例如「今天哪一檔股票的估值／成長綜合排名較高？」</p>
+          </div>
+          <div>
+            <h3>Panel／面板資料</h3>
+            <p>同時有股票與時間兩個維度。本站的每日因子快照就是這一類。</p>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <div><span>簡單報酬</span><code>rₜ = Pₜ / Pₜ₋₁ − 1</code></div>
+          <div><span>對數報酬</span><code>gₜ = log(Pₜ / Pₜ₋₁)</code></div>
+        </div>
+        <p class="article-note">原始價格通常有趨勢且尺度不穩定；報酬比較接近「今天相對昨天發生多少變化」，也較容易跨股票比較。但共整合等問題會刻意研究非平穩的價格水準，並非所有模型都必須先改成報酬。除權息、分割與現金股利仍需正確調整。</p>
+      </section>
+
+      <section id="layers">
+        <p class="section-kicker">02 · DECOMPOSE THE QUESTION</p>
+        <h2>先把市場問題拆成四層</h2>
+        <div class="layer-list">
+          <article>
+            <span class="layer-number">1</span>
+            <div><h3>水準與趨勢</h3><p>價格或營收長期往哪裡移動？移動平均與指數平滑主要處理這一層。</p></div>
+          </article>
+          <article>
+            <span class="layer-number">2</span>
+            <div><h3>季節性與週期</h3><p>是否有每月、每季、農曆年或景氣循環的重複型態？月營收尤其容易有季節性。</p></div>
+          </article>
+          <article>
+            <span class="layer-number">3</span>
+            <div><h3>短期依賴</h3><p>今天的變化是否和過去幾天相關？ACF、PACF、ARIMA 嘗試描述這種關係。</p></div>
+          </article>
+          <article>
+            <span class="layer-number">4</span>
+            <div><h3>波動與狀態切換</h3><p>大波動常跟著大波動，且牛熊市場的規則可能不同。Rolling volatility、GARCH 與 regime 模型處理這一層。</p></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="prepare">
+        <p class="section-kicker">03 · DATA BEFORE MODEL</p>
+        <h2>模型之前，先把資料時間對齊</h2>
+        <p>時間序列研究最危險的錯誤，往往不是演算法，而是把「當時還不知道的資料」放進訊號。台股資料又同時包含每日價格、每月營收、每季財報與不定期重大訊息，不能只靠日期欄位直接合併。</p>
+
+        <div class="checklist-card">
+          <h3>最低限度檢查</h3>
+          <ul>
+            <li><strong>可得時間：</strong>月營收屬於哪一個月份，不等於市場在哪一天得知它；應以公布日對齊。</li>
+            <li><strong>交易日：</strong>週末、休市與颱風假不能當成缺失交易日任意補價。</li>
+            <li><strong>公司行動：</strong>除權息、股票分割與減資可能讓價格跳動，但不代表投資人真的損失相同比例。</li>
+            <li><strong>缺值與離群：</strong>空值不等於零；異常值應先查來源，再決定 winsorize、保留或排除。</li>
+            <li><strong>Universe：</strong>歷史研究必須避免只保留今天仍上市、今天看起來成功的公司。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="methods">
+        <p class="section-kicker">04 · METHOD MAP</p>
+        <h2>常見分析方法：它們各自回答什麼？</h2>
+        <p>沒有一個方法同時適合所有問題。先決定要描述、預測平均報酬、預測波動，還是比較多個股票，再選模型。</p>
+
+        <div class="method-table-wrap">
+          <table class="method-table">
+            <thead>
+              <tr><th>方法</th><th>主要問題</th><th>適合輸入</th><th>優點</th><th>重要限制</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Naive baseline</td><td>明天和今天差不多嗎？</td><td>價格、報酬、波動</td><td>最難被誤解，也是所有模型應擊敗的基準</td><td>不描述結構變化</td></tr>
+              <tr><td>SMA／EMA</td><td>趨勢是否持續？</td><td>價格、營收</td><td>透明、容易監控</td><td>落後且對視窗敏感</td></tr>
+              <tr><td>Rolling z-score</td><td>目前是否偏離近期常態？</td><td>價差、估值、成交量</td><td>適合異常偵測與均值回歸假說</td><td>常態水準可能突然改變</td></tr>
+              <tr><td>分解／Holt-Winters</td><td>趨勢與季節性各占多少？</td><td>月營收、需求量</td><td>可解釋季節型資料</td><td>市場價格季節性通常不穩定</td></tr>
+              <tr><td>ACF／PACF</td><td>過去多少期仍有關聯？</td><td>報酬、差分後序列</td><td>診斷時間依賴的基本工具</td><td>相關不等於可交易獲利</td></tr>
+              <tr><td>ARIMA／SARIMA</td><td>線性自我依賴能否預測？</td><td>平穩或差分後序列</td><td>統計假設清楚、有區間預測</td><td>難處理非線性與 regime 切換</td></tr>
+              <tr><td>Rolling vol／GARCH</td><td>未來風險可能多大？</td><td>日報酬</td><td>抓到波動群聚，適合部位與風控</td><td>不是方向預測器</td></tr>
+              <tr><td>VAR／共整合</td><td>多個序列是否共同移動？</td><td>指數、產業、利率、價差</td><td>分析跨市場關係</td><td>變數多時很容易過度擬合</td></tr>
+              <tr><td>Tree／Boosting</td><td>多種落後特徵是否含非線性訊號？</td><td>lag、rolling、因子特徵</td><td>能處理交互作用</td><td>切分錯誤就會嚴重洩漏未來</td></tr>
+              <tr><td>LSTM／Transformer</td><td>長短期序列模式能否自動學習？</td><td>大量且一致的序列樣本</td><td>表達能力高</td><td>資料需求大、難解釋，不保證勝過簡單基準</td></tr>
+              <tr><td>橫斷面 Rank IC</td><td>高分股票之後是否相對較強？</td><td>每日股票因子與未來報酬</td><td>直接檢驗排序能力</td><td>屬面板／因子研究，不是單一股票時間序列預測</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="workflow">
+        <p class="section-kicker">05 · TRUSTWORTHY WORKFLOW</p>
+        <h2>可信的分析流程，不從挑模型開始</h2>
+        <ol class="workflow-steps">
+          <li><strong>寫清楚問題。</strong><span>預測方向、報酬、波動，還是比較股票？預測 1D、5D 還是 20D？</span></li>
+          <li><strong>建立 point-in-time 資料。</strong><span>每筆資料必須標示市場當時何時能得知，而不只是它描述哪一期。</span></li>
+          <li><strong>保留最簡單 baseline。</strong><span>Naive、移動平均或簡單排名若已足夠，複雜模型沒有免費加分。</span></li>
+          <li><strong>按時間切分。</strong><span>訓練在前、驗證在後；不可隨機洗牌讓明天跑進昨天。</span></li>
+          <li><strong>Walk-forward。</strong><span>只用當時以前資料重新訓練，再向前測一段，重複模擬真實上線。</span></li>
+          <li><strong>計入成本與限制。</strong><span>手續費、交易稅、滑價、漲跌停、流動性與可放空性都會改變結果。</span></li>
+          <li><strong>上線後持續 OOS。</strong><span>固定訊號版本、保存 prediction，再等答案成熟；不能看到結果後改寫過去。</span></li>
+        </ol>
+
+        <div class="validation-levels">
+          <article><span>Historical holdout</span><strong>一次時間切分</strong><p>用較早資料開發、較晚一段驗證；仍是已存在的歷史資料。看過結果後若持續調參，這段資料就不再是獨立 holdout。</p></article>
+          <article><span>Historical walk-forward</span><strong>模擬逐期上線</strong><p>每一期只看當時以前資料，但研究者今天仍已擁有完整歷史；不等於真實 live 紀錄。</p></article>
+          <article><span>Live Forward OOS</span><strong>上線後才知道答案</strong><p>訊號在日期到來時永久保存，未來成熟後才評分；本站因子 ledger 採這一層。</p></article>
+        </div>
+      </section>
+
+      <section id="project-example">
+        <p class="section-kicker">06 · THIS PROJECT</p>
+        <h2>本站的 5D Forward OOS 怎麼走？</h2>
+        <p>因子層在交易日收盤資料與官方估值、營收資料都到齊後，建立當日股票排序。這裡的 <strong>snapshot</strong> 是一次帶有交易日、記錄時間、模型版本與來源雜湊的官方資料快照；同一交易日不重複追加。為了不假設能事後用訊號日收盤成交，評估固定使用下一個市場 snapshot 作 entry、再往後第 5 個市場 snapshot 作 exit。</p>
+
+        <div class="oos-timeline" role="img" aria-label="訊號日、下一交易日進場代理價與五日後評估的時間線">
+          <div><span>t₀</span><strong>固定訊號</strong><small>保存因子分數與版本</small></div>
+          <i aria-hidden="true">→</i>
+          <div><span>t₁</span><strong>Entry proxy</strong><small>下一市場 snapshot 的官方收盤；缺價即排除</small></div>
+          <i aria-hidden="true">→</i>
+          <div><span>t₁…t₆</span><strong>等待 5D</strong><small>期間不得偷看答案</small></div>
+          <i aria-hidden="true">→</i>
+          <div><span>t₆</span><strong>Outcome</strong><small>計算 Rank IC／五分位差</small></div>
+        </div>
+
+        <div class="callout warning-callout">
+          <strong>為什麼 5D 要等至少 6 個後續快照？</strong>
+          <p>第一個後續交易日只負責提供可執行的 entry proxy，之後還要完整走過 5 個交易日才有 exit。這比直接拿訊號日收盤計算更保守。</p>
+        </div>
+
+        <div class="numeric-example">
+          <h3>六個價格的簡化例子</h3>
+          <p>假設訊號在 <code>t₀</code> 固定；<code>t₁</code> 收盤為 100，經過五個完整交易期間後 <code>t₆</code> 收盤為 105，研究用 5D forward return 是 <code>105 / 100 − 1 = 5%</code>。即使 <code>t₀</code> 收盤是 90，也不拿 90 當 entry。</p>
+        </div>
+
+        <p class="article-note">Entry proxy 不是保證成交價。若個股在指定 entry 或 exit snapshot 沒有有效官方價格，該股票會從該次橫斷面 outcome 排除；系統不延後期限，也不沿用舊價，並保留實際有效樣本數。若只在 t₂–t₅ 缺價、但 t₁ 與 t₆ 有效，端點報酬仍會納入，因此仍可能帶來停牌／流動性選擇偏誤。真實策略還要指定下一日開盤、VWAP 或限價規則，並處理漲跌停、停牌、滑價與成交量限制。</p>
+      </section>
+
+      <section id="metrics">
+        <p class="section-kicker">07 · READ THE RESULT</p>
+        <h2>看到結果時，先問這些問題</h2>
+        <div class="metric-explainer">
+          <article><h3>Rank IC</h3><p>因子排名與未來報酬排名的 Spearman correlation。正值表示高分股票傾向排在較高未來報酬位置；單日正值沒有決定性。它只反映相對排序，不代表絕對正報酬、報酬幅度或扣除成本後可獲利。實作時還要固定股票池、缺值規則與並列名次算法。</p></article>
+          <article><h3>Top − Bottom</h3><p>最高與最低五分位的平均未來報酬差。它適合檢驗排序，但 Bottom 空方未必能實際放空。</p></article>
+          <article><h3>Turnover</h3><p>排名組合更換的幅度。毛報酬漂亮但每天換股，可能全部被成本吃掉。</p></article>
+          <article><h3>Max Drawdown</h3><p>從資產曲線高點到後續低點的最大跌幅。它只代表特定期間、取樣頻率與資產路徑的已實現結果，不是未來損失上限，也未說明回復時間與尾端風險。重疊持倉只有在資金分配、同期曝險與再平衡規則明確時，才形成可解讀的組合曲線；本站另列非重疊持有期來降低標籤相依性，但它受抽樣起點影響，不是較保守的損失界線或完整策略曲線。</p></article>
+          <article><h3>Prediction interval</h3><p>合理模型應提供不確定範圍，而非只有單一精確數字。區間寬度同時受信心水準、預測期限、資產波動與模型設定影響；它不是保證範圍。模型假設錯誤、厚尾或 regime 改變時，實際涵蓋率可能遠低於標示值，必須用 OOS 持續校準。</p></article>
+          <article><h3>Regime stability</h3><p>多頭、空頭、高波動與盤整期是否都可接受？只靠單一年份，通常不是可靠 edge。</p></article>
+        </div>
+
+        <div class="numeric-example">
+          <h3>三檔股票的 Rank IC 直覺</h3>
+          <p>若因子分數排序為 A ＞ B ＞ C，而未來報酬分別為 +6%、+1%、−2%，兩邊排名完全一致，Rank IC 為 +1；若未來報酬順序完全相反則為 −1。真實研究會有數百檔、缺值與並列排名，因此應跨多個日期觀察平均值與分布，而非只看單日。</p>
+        </div>
+      </section>
+
+      <section id="pitfalls">
+        <p class="section-kicker">08 · FAILURE MODES</p>
+        <h2>八個最常讓回測看起來太好的陷阱</h2>
+        <div class="pitfall-grid">
+          <div><strong>Lookahead bias</strong><span>用了當時尚未公布的財報、營收或未來價格。</span></div>
+          <div><strong>Survivorship bias</strong><span>只用今天還存在的股票回測過去。</span></div>
+          <div><strong>Random split</strong><span>把時間資料洗牌，讓未來型態進入訓練集。</span></div>
+          <div><strong>Overlapping labels</strong><span>大量 5D 樣本共享同一批報酬，卻被當成獨立證據。</span></div>
+          <div><strong>Multiple testing</strong><span>試了數百個參數，只報告最好的一個。</span></div>
+          <div><strong>Ignoring costs</strong><span>忽略標準手續費率參考值 0.1425%；依<a href="https://twse-regulation.twse.com.tw/TW/law/DOC01.aspx?FLCODE=FL007304&amp;FLNO=94" target="_blank" rel="noreferrer">證交所規則</a>，證券商可自行訂定費率、折讓與最低費用，另有賣出稅、滑價與流動性成本。</span></div>
+          <div><strong>Non-stationarity</strong><span>假設過去關係永遠不變，沒有監控 regime 或模型漂移。</span></div>
+          <div><strong>Metric shopping</strong><span>只挑勝率或總報酬，避談 drawdown、turnover 與基準。</span></div>
+        </div>
+      </section>
+
+      <section id="choose">
+        <p class="section-kicker">09 · CHOOSE A METHOD</p>
+        <h2>一分鐘方法選擇表</h2>
+        <div class="decision-list">
+          <div><span>想知道趨勢？</span><strong>先看報酬圖、SMA／EMA、rolling slope</strong></div>
+          <div><span>想知道營收季節性？</span><strong>月資料分解、YoY、Holt-Winters／SARIMA</strong></div>
+          <div><span>想預測風險？</span><strong>Rolling volatility，再考慮 GARCH</strong></div>
+          <div><span>想比較股票高低分？</span><strong>橫斷面 percentile、Rank IC、五分位差</strong></div>
+          <div><span>想加入多種資料？</span><strong>先做 lag／rolling 特徵，再用 boosting；必須 walk-forward</strong></div>
+          <div><span>樣本不多？</span><strong>停在簡單模型；不要用深度學習補足資料不足</strong></div>
+        </div>
+
+        <div class="callout final-callout">
+          <p class="eyebrow">THE PRACTICAL RULE</p>
+          <h3>先問「如何證明它錯」，再問「能賺多少」。</h3>
+          <p>可靠的投資研究不是找到一條永遠上漲的曲線，而是讓資料來源、訊號時間、驗證方式與失敗條件都能被重現。</p>
+        </div>
+      </section>
+
+      <section id="glossary">
+        <p class="section-kicker">10 · GLOSSARY</p>
+        <h2>名詞快速查找</h2>
+        <dl class="glossary-grid">
+          <div><dt>平穩 Stationarity</dt><dd>序列的平均、變異與相關結構大致不隨時間漂移；許多統計模型依賴這項假設。</dd></div>
+          <div><dt>差分 Differencing</dt><dd>用本期減前期，移除部分趨勢；報酬可視為價格變化的相對版本。</dd></div>
+          <div><dt>Lag</dt><dd>過去第幾期的值，例如 lag 1 是上一期。</dd></div>
+          <div><dt>ACF／PACF</dt><dd>描述序列與不同 lag 的相關，以及控制較短 lag 後的額外相關。</dd></div>
+          <div><dt>Regime</dt><dd>市場行為相似的一段狀態，例如多頭、空頭或高波動期。</dd></div>
+          <div><dt>Walk-forward</dt><dd>按時間逐步向前，每次只用當時以前資料訓練與驗證。</dd></div>
+          <div><dt>Universe</dt><dd>某日期允許進入研究或投資的股票集合，必須用 point-in-time 規則定義。</dd></div>
+          <div><dt>Winsorize</dt><dd>把極端值壓到指定分位邊界，而不是直接刪除；必須事先定義規則。</dd></div>
+          <div><dt>Spearman correlation</dt><dd>對排名計算的相關係數，較關心順序而非原始數值距離。</dd></div>
+          <div><dt>Snapshot</dt><dd>某一時點已知資料與版本的不可變紀錄，用來證明當時模型實際看見什麼。</dd></div>
+        </dl>
+      </section>
+
+      <section class="next-reading">
+        <p class="eyebrow">NEXT</p>
+        <h2>把概念接回目前研究</h2>
+        <p>回到 Dashboard 查看官方因子排名與逐日累積的 5D／20D Forward OOS。樣本未成熟時顯示空值，不是系統故障，而是沒有把未來答案偽裝成已知資料。</p>
+        <a class="primary-link" href="./">回到 Research Dashboard →</a>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <p>教育內容僅供研究，不構成投資建議。方法會隨資料與實證更新。</p>
+  </footer>
+</body>
+</html>

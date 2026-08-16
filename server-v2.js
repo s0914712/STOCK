@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const fs = require('fs');
 const path = require('path');
 const { runMultiAgentAnalysis } = require('./agents');
 const { buildSectorRadar } = require('./sectorRadar');
@@ -14,6 +15,7 @@ const {
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const FACTOR_REPORT_PATH = path.join(__dirname, 'data', 'dashboard', 'factor_research_latest.json');
 const SECTOR_CACHE_TTL_MS = 15 * 60 * 1000;
 let sectorRadarCache = null;
 
@@ -243,6 +245,30 @@ app.get('/api/openapi/status', async (req, res) => {
     });
   } catch (error) {
     res.status(502).json({ success: false, error: error.message });
+  }
+});
+
+app.get('/api/factor-research', (req, res) => {
+  try {
+    const report = JSON.parse(fs.readFileSync(FACTOR_REPORT_PATH, 'utf8'));
+    const factor = String(req.query.factor || '').trim();
+    const limit = boundedLimit(req.query.limit, 10, 50);
+    if (factor) {
+      const rows = report.rankings?.[factor];
+      if (!rows) return res.status(400).json({ success: false, error: `unknown factor: ${factor}` });
+      return res.json({
+        success: true,
+        modelVersion: report.modelVersion,
+        asOf: report.asOf,
+        factor,
+        count: Math.min(rows.length, limit),
+        data: rows.slice(0, limit),
+        forwardEvidence: report.forwardEvidence,
+      });
+    }
+    return res.json({ success: true, ...report });
+  } catch (error) {
+    return res.status(503).json({ success: false, error: `factor research unavailable: ${error.message}` });
   }
 });
 
