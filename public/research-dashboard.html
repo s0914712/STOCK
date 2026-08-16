@@ -14,7 +14,10 @@
       <h1>類股輪動 / ML Challenger Research Dashboard</h1>
       <p class="hero-copy">Momentum ranking → Trend confirmation → ML continuation probability → Portfolio rotation</p>
     </div>
-    <div class="hero-badge" id="champion-badge">Champion: loading…</div>
+    <div class="hero-actions">
+      <a class="hero-link" href="time-series-guide.html">時間序列分析入門 →</a>
+      <div class="hero-badge" id="champion-badge">Champion: loading…</div>
+    </div>
   </header>
 
   <main class="dashboard-shell">
@@ -38,6 +41,16 @@
         <span class="metric-label">Rotation 回測期間</span>
         <strong class="metric-value compact" id="backtest-period">—</strong>
         <small>five-year validation</small>
+      </article>
+      <article class="metric-card">
+        <span class="metric-label">因子排名資料日</span>
+        <strong class="metric-value" id="factor-as-of">—</strong>
+        <small>official point-in-time snapshot</small>
+      </article>
+      <article class="metric-card">
+        <span class="metric-label">因子 OOS 狀態</span>
+        <strong class="metric-value compact" id="factor-oos-status">—</strong>
+        <small>no historical backfill</small>
       </article>
     </section>
 
@@ -63,6 +76,69 @@
           </thead>
           <tbody id="prediction-body">
             <tr><td colspan="5" class="loading-cell">載入中…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">OFFICIAL FACTOR RESEARCH</p>
+          <h2>Value × Growth × Momentum × Liquidity</h2>
+        </div>
+        <span class="pill warning" id="factor-gate">Forward OOS collecting</span>
+      </div>
+      <p class="panel-note">綜合分數是當日上市普通股的橫斷面百分位，不是目標價。排序使用官方估值、月營收、當日動能與成交金額；缺值不由 AI 補齊，重大事件與除權息另列為風險提示。</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>排名</th>
+              <th>股票</th>
+              <th>綜合</th>
+              <th>價值</th>
+              <th>成長</th>
+              <th>動能</th>
+              <th>流動性</th>
+              <th>PE / PB</th>
+              <th>營收 YoY</th>
+              <th>事件提示</th>
+            </tr>
+          </thead>
+          <tbody id="factor-body">
+            <tr><td colspan="10" class="loading-cell">載入中…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">FACTOR FORWARD OOS</p>
+          <h2>Rank IC / 五分位差 / 換手與回撤</h2>
+        </div>
+        <span class="pill">5D + 20D</span>
+      </div>
+      <p class="panel-note" id="factor-evidence-note">等待後續交易日資料成熟；尚無數值是正常狀態。</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>期間</th>
+              <th>因子</th>
+              <th>成熟 snapshots</th>
+              <th>Mean Rank IC</th>
+              <th>IC &gt; 0</th>
+              <th>Top−Bottom</th>
+              <th>Top 淨報酬估計</th>
+              <th>平均換手</th>
+              <th>非重疊 Max DD</th>
+            </tr>
+          </thead>
+          <tbody id="factor-evidence-body">
+            <tr><td colspan="9" class="loading-cell">載入中…</td></tr>
           </tbody>
         </table>
       </div>

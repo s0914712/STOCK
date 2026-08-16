@@ -57,6 +57,9 @@ h2 { margin-bottom: 0; font-size: 1.35rem; }
   font-weight: 800;
   white-space: nowrap;
 }
+.hero-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.hero-link { border: 1px solid var(--line); background: rgba(96, 165, 250, 0.08); color: var(--accent-2); padding: 10px 14px; border-radius: 999px; font-weight: 800; text-decoration: none; white-space: nowrap; }
+.hero-link:hover { border-color: rgba(96, 165, 250, 0.45); }
 
 .dashboard-shell { max-width: 1240px; margin: 0 auto; padding: 0 28px 56px; }
 .status-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 18px; }
@@ -77,6 +80,7 @@ h2 { margin-bottom: 0; font-size: 1.35rem; }
 .panel-note { color: var(--muted); line-height: 1.7; font-size: 0.92rem; }
 .pill { border: 1px solid var(--line); background: rgba(96, 165, 250, 0.09); color: var(--accent-2); border-radius: 999px; padding: 7px 10px; font-size: 0.78rem; white-space: nowrap; }
 .pill.warning { color: var(--warn); background: rgba(251, 191, 36, 0.08); border-color: rgba(251, 191, 36, 0.25); }
+.pill.good { color: var(--accent); background: rgba(110, 231, 183, 0.08); border-color: rgba(110, 231, 183, 0.3); }
 
 .two-column { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
 .model-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
@@ -100,6 +104,8 @@ tr:last-child td { border-bottom: none; }
 .bar { height: 7px; border-radius: 999px; background: rgba(154, 167, 189, 0.13); overflow: hidden; }
 .bar > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--accent-2), var(--accent)); }
 .top-pick { color: var(--accent); font-weight: 800; }
+.factor-score { color: var(--accent); font-weight: 900; font-variant-numeric: tabular-nums; }
+.risk-text { color: var(--warn); font-size: 0.8rem; min-width: 150px; }
 
 .correlation-list { display: grid; gap: 12px; }
 .correlation-item { background: var(--panel-2); border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
@@ -114,6 +120,7 @@ tr:last-child td { border-bottom: none; }
 
 @media (max-width: 900px) {
   .hero { align-items: start; flex-direction: column; padding-top: 48px; }
+  .hero-actions { justify-content: flex-start; }
   .status-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .two-column { grid-template-columns: 1fr; }
   .model-grid { grid-template-columns: 1fr; }

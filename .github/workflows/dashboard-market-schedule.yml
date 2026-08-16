@@ -11,7 +11,10 @@ on:
       - '.github/workflows/dashboard-market-schedule.yml'
       - 'scripts/twseOpenApi.js'
       - 'scripts/runDashboardMarketSnapshot.js'
+      - 'scripts/runFactorResearch.js'
+      - 'factorResearch.js'
       - 'test/twseOpenApi.test.js'
+      - 'test/factorResearch.test.js'
       - 'package.json'
       - 'package-lock.json'
 
@@ -37,13 +40,22 @@ jobs:
       - run: npm test
       - name: Build latest market snapshot
         run: npm run snapshot:openapi
-      - name: Publish official snapshot and forward ledger
+      - name: Build point-in-time factor research
+        run: npm run research:factors
+      - name: Publish official snapshot and forward research ledgers
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/dashboard/market_latest.json data/dashboard/openapi_forward.jsonl
+          git add \
+            data/dashboard/market_latest.json \
+            data/dashboard/openapi_forward.jsonl \
+            data/dashboard/factor_research_latest.json \
+            data/dashboard/factor_forward.jsonl
+          if [ -f data/dashboard/factor_outcomes.jsonl ]; then
+            git add data/dashboard/factor_outcomes.jsonl
+          fi
           if git diff --cached --quiet; then
             echo "No market snapshot changes."
             exit 0
