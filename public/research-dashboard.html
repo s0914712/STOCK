@@ -62,12 +62,13 @@
         </div>
         <span class="pill" id="target-label">5D relative outperform probability</span>
       </div>
-      <p class="panel-note">每個數字代表「未來 5 個交易日該類股報酬高於 TAIEX」的機率。配置權重是把各模型機率跨產業正規化後，再將產業權重等分給三檔代表股的 proxy；不是模型特徵重要度、實際持倉或投資建議。同權時依股票代碼排序。</p>
+      <p class="panel-note">每個數字代表「未來 5 個交易日該類股報酬高於 TAIEX」的機率。每個產業的代表股是三檔既定 anchors 中，同日官方成交金額最高者，代表流動性而非預期報酬或買進建議。配置權重是把各模型機率跨產業正規化後，再將產業權重等分給三檔代表股的 proxy；不是模型特徵重要度或實際持倉。</p>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
               <th>類股</th>
+              <th>代表個股</th>
               <th>Baseline</th>
               <th>LightGBM</th>
               <th>XGBoost</th>
@@ -75,7 +76,7 @@
             </tr>
           </thead>
           <tbody id="prediction-body">
-            <tr><td colspan="5" class="loading-cell">載入中…</td></tr>
+            <tr><td colspan="6" class="loading-cell">載入中…</td></tr>
           </tbody>
         </table>
       </div>

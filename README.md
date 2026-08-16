@@ -86,6 +86,8 @@ flowchart LR
 
 研究儀表板也會在三個模型欄位列出配置權重最高兩檔。這是把模型的六產業機率正規化為 100%，再將每個產業權重等分給三檔代表股的**配置 proxy**；它不是模型內部的個股重要度、實際持倉或投資建議。同權時依股票代碼排序，且 ML 與代表股快照日期不一致時不顯示權重。
 
+六個產業另外各顯示一檔「流動性代表股」：只在 ML 與官方 `STOCK_DAY_ALL` 日期一致時，從該產業三檔既定 anchors 中選擇同日成交金額最高者。它代表當日可交易性，不代表模型預期報酬最高或建議買進。
+
 ### OOS 指標
 
 - Brier score
@@ -213,6 +215,7 @@ Universe 預設要求單日成交金額至少 2,000 萬元。缺值維持 `null`
 - `data/dashboard/factor_forward.jsonl`：append-only point-in-time observations
 - `data/dashboard/factor_outcomes.jsonl`：成熟後才追加的 OOS outcomes
 - `data/dashboard/factor_research_latest.json`：前端使用的精簡排名與證據摘要
+- `data/dashboard/sector_representatives_latest.json`：六產業同日成交額最高代表股
 
 完整方法見 [`docs/FACTOR_RESEARCH.md`](docs/FACTOR_RESEARCH.md)。
 
@@ -278,11 +281,13 @@ GitHub Pages 會部署一個純靜態 Dashboard，直接讀 repo 內最新資料
 - `data/backtests/ml_challenger_v031.json`
 - `data/backtests/rotation_v0.4.json`
 - `data/dashboard/factor_research_latest.json`
+- `data/dashboard/sector_representatives_latest.json`
 
 Dashboard 顯示：
 
 - 最新 as-of date / model trained-through
 - 三模型每個類股的 continuation probability 與排名
+- 六產業各一檔同日成交金額最高的流動性代表股
 - validation Brier / Log-loss / ROC-AUC
 - forward OOS 累積分數
 - 5Y rotation / trailing-stop 策略比較
