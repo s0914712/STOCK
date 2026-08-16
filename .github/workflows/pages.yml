@@ -17,6 +17,7 @@ on:
       - 'data/backtests/ml_challenger_v031.json'
       - 'data/backtests/rotation_v0.4.json'
       - 'data/dashboard/factor_research_latest.json'
+      - 'data/dashboard/sector_representatives_latest.json'
       - '.github/workflows/pages.yml'
 
 permissions:
@@ -48,6 +49,7 @@ jobs:
           cp data/backtests/ml_challenger_v031.json _site/data/backtests/ml_challenger_v031.json
           cp data/backtests/rotation_v0.4.json _site/data/backtests/rotation_v0.4.json
           cp data/dashboard/factor_research_latest.json _site/data/dashboard/factor_research_latest.json
+          cp data/dashboard/sector_representatives_latest.json _site/data/dashboard/sector_representatives_latest.json
           if [ -f data/shadow/latest.json ]; then
             cp data/shadow/latest.json _site/data/shadow/latest.json
           fi

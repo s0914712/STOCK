@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { buildAllocationLeaders } = require('../public/research-dashboard');
+const { buildAllocationLeaders, buildRepresentativeMap } = require('../public/research-dashboard');
 
 const challenger = {
   latestPrediction: {
@@ -30,5 +30,15 @@ assert.strictEqual(buildAllocationLeaders(challenger, null).baseline.length, 0);
 assert.strictEqual(buildAllocationLeaders(challenger, {
   latestPrediction: { asOf: '2026-08-13', sectors: baseline.latestPrediction.sectors },
 }).baseline.length, 0);
+
+const representatives = {
+  asOf: '2026-08-14',
+  sectors: [
+    { sector: '半導體', symbol: '2330', name: '台積電', tradeValue: 500 },
+    { sector: '航運', symbol: '2603', name: '長榮', tradeValue: 300 },
+  ],
+};
+assert.strictEqual(buildRepresentativeMap(challenger, representatives).get('半導體').symbol, '2330');
+assert.strictEqual(buildRepresentativeMap(challenger, { ...representatives, asOf: '2026-08-13' }).size, 0);
 
 console.log('researchDashboard allocation tests passed');

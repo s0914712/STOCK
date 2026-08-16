@@ -207,10 +207,13 @@ async function testAllFailureUsesStaleSnapshotWithoutForwardWrite() {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'twse-stale-snapshot-test-'));
   const latestPath = path.join(tempDir, 'market_latest.json');
   const forwardPath = path.join(tempDir, 'forward.jsonl');
+  const representativesPath = path.join(tempDir, 'sector_representatives_latest.json');
   const savedDatasets = Object.fromEntries(DATASET_KEYS.map(key => [key, envelope(key, [])]));
   const savedSnapshot = buildSnapshot(savedDatasets, '2026-08-15T00:00:00.000Z');
   fs.writeFileSync(latestPath, `${JSON.stringify(savedSnapshot, null, 2)}\n`, 'utf8');
+  fs.writeFileSync(representativesPath, '{"asOf":"2026-08-14","trusted":true}\n', 'utf8');
   const originalLatest = fs.readFileSync(latestPath, 'utf8');
+  const originalRepresentatives = fs.readFileSync(representativesPath, 'utf8');
 
   clearMemoryCache();
   const staleDatasets = await fetchAllDatasets({
@@ -225,19 +228,22 @@ async function testAllFailureUsesStaleSnapshotWithoutForwardWrite() {
 
   const result = persistDailySnapshot(
     buildSnapshot(staleDatasets, '2026-08-16T00:00:00.000Z'),
-    { latestPath, forwardPath },
+    { latestPath, forwardPath, representativesPath },
   );
   assert.strictEqual(result.reason, 'all-datasets-stale');
   assert.strictEqual(result.wroteLatest, false);
+  assert.strictEqual(result.wroteRepresentatives, false);
   assert.strictEqual(result.appendedForward, false);
   assert.strictEqual(fs.readFileSync(latestPath, 'utf8'), originalLatest, 'trusted snapshot must remain byte-for-byte unchanged');
   assert.strictEqual(fs.existsSync(forwardPath), false, 'stale inputs must never create a forward OOS row');
+  assert.strictEqual(fs.readFileSync(representativesPath, 'utf8'), originalRepresentatives, 'stale inputs must preserve trusted representatives');
 
   assert.throws(
     () => buildForwardRecord(buildSnapshot(staleDatasets, '2026-08-16T00:00:00.000Z')),
     /refusing to build forward OOS record from stale datasets/,
   );
   fs.unlinkSync(latestPath);
+  fs.unlinkSync(representativesPath);
   fs.rmdirSync(tempDir);
 }
 

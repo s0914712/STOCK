@@ -3,6 +3,7 @@ const DATA_PATHS = {
   baseline: './data/shadow/latest.json',
   rotation: './data/backtests/rotation_v0.4.json',
   factor: './data/dashboard/factor_research_latest.json',
+  representatives: './data/dashboard/sector_representatives_latest.json',
 };
 
 const MODEL_KEYS = ['baseline', 'lightgbm', 'xgboost'];
@@ -218,18 +219,36 @@ function allocationCell(rows) {
     </li>`).join('')}</ol>`;
 }
 
-function renderPredictions(challenger, baseline) {
+function buildRepresentativeMap(challenger, representatives) {
+  const asOf = challenger?.latestPrediction?.asOf;
+  if (!asOf || asOf !== representatives?.asOf) return new Map();
+  return new Map((representatives.sectors ?? []).map(row => [row.sector, row]));
+}
+
+function representativeCell(row) {
+  if (!row) return '<span class="rank">同日資料不足</span>';
+  const tradeValue = Number.isFinite(row.tradeValue) ? `${(row.tradeValue / 100_000_000).toFixed(1)} 億` : '—';
+  return `
+    <div class="representative-stock">
+      <strong>${escapeHtml(row.symbol)} ${escapeHtml(row.name)}</strong>
+      <span>成交額 ${escapeHtml(tradeValue)}</span>
+    </div>`;
+}
+
+function renderPredictions(challenger, baseline, representatives) {
   const body = document.getElementById('prediction-body');
   const sectors = challenger?.latestPrediction?.sectors ?? [];
   if (!sectors.length) {
-    body.innerHTML = '<tr><td colspan="5" class="loading-cell">尚無 Shadow prediction。</td></tr>';
+    body.innerHTML = '<tr><td colspan="6" class="loading-cell">尚無 Shadow prediction。</td></tr>';
     return;
   }
 
   const leaders = buildAllocationLeaders(challenger, baseline);
+  const representativeMap = buildRepresentativeMap(challenger, representatives);
   const allocationRow = `
     <tr class="allocation-row">
       <td><strong>配置權重前二</strong><br><span class="rank">模型配置 proxy</span></td>
+      <td class="allocation-method">各產業代表股見下列；依同日成交金額選出</td>
       <td>${allocationCell(leaders.baseline)}</td>
       <td>${allocationCell(leaders.lightgbm)}</td>
       <td>${allocationCell(leaders.xgboost)}</td>
@@ -245,6 +264,7 @@ function renderPredictions(challenger, baseline) {
     return `
       <tr>
         <td><strong>${escapeHtml(row.sector)}</strong></td>
+        <td>${representativeCell(representativeMap.get(row.sector))}</td>
         <td>${probCell(row.baseline, row.baselineRank)}</td>
         <td>${probCell(row.lightgbm, row.lightgbmRank)}</td>
         <td>${probCell(row.xgboost, row.xgboostRank)}</td>
@@ -353,17 +373,19 @@ function renderError(message) {
 
 async function boot() {
   try {
-    const [challengerResult, baselineResult, rotationResult, factorResult] = await Promise.allSettled([
+    const [challengerResult, baselineResult, rotationResult, factorResult, representativesResult] = await Promise.allSettled([
       loadJson(DATA_PATHS.challenger),
       loadJson(DATA_PATHS.baseline),
       loadJson(DATA_PATHS.rotation),
       loadJson(DATA_PATHS.factor),
+      loadJson(DATA_PATHS.representatives),
     ]);
 
     const challenger = challengerResult.status === 'fulfilled' ? challengerResult.value : null;
     const baseline = baselineResult.status === 'fulfilled' ? baselineResult.value : null;
     const rotation = rotationResult.status === 'fulfilled' ? rotationResult.value : null;
     const factor = factorResult.status === 'fulfilled' ? factorResult.value : null;
+    const representatives = representativesResult.status === 'fulfilled' ? representativesResult.value : null;
 
     if (!challenger && !rotation && !factor) {
       const reason = [challengerResult, rotationResult, factorResult]
@@ -375,7 +397,7 @@ async function boot() {
 
     if (challenger) {
       renderStatus(challenger, rotation, factor);
-      renderPredictions(challenger, baseline);
+      renderPredictions(challenger, baseline, representatives);
       renderValidation(challenger);
       renderOos(challenger);
     }
@@ -396,7 +418,7 @@ async function boot() {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { buildAllocationLeaders };
+  module.exports = { buildAllocationLeaders, buildRepresentativeMap };
 }
 
 if (typeof document !== 'undefined') boot();
