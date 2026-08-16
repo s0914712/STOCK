@@ -1,5 +1,6 @@
 const DATA_PATHS = {
   challenger: './data/shadow/challenger_latest.json',
+  baseline: './data/shadow/latest.json',
   rotation: './data/backtests/rotation_v0.4.json',
   factor: './data/dashboard/factor_research_latest.json',
 };
@@ -9,6 +10,26 @@ const MODEL_LABELS = {
   baseline: 'Baseline',
   lightgbm: 'LightGBM',
   xgboost: 'XGBoost',
+};
+const STOCK_NAMES = {
+  '2303': '聯電',
+  '2308': '台達電',
+  '2317': '鴻海',
+  '2327': '國巨',
+  '2330': '台積電',
+  '2368': '金像電',
+  '2382': '廣達',
+  '2454': '聯發科',
+  '2603': '長榮',
+  '2609': '陽明',
+  '2615': '萬海',
+  '2881': '富邦金',
+  '2882': '國泰金',
+  '2891': '中信金',
+  '3008': '大立光',
+  '3037': '欣興',
+  '3044': '健鼎',
+  '3231': '緯創',
 };
 const FACTOR_LABELS = {
   value: '價值',
@@ -147,7 +168,57 @@ function probCell(value, rank) {
     </div>`;
 }
 
-function renderPredictions(challenger) {
+function buildAllocationLeaders(challenger, baseline, limit = 2) {
+  const latestPrediction = challenger?.latestPrediction;
+  const latestBaseline = baseline?.latestPrediction ?? baseline;
+  if (!latestPrediction?.asOf || latestPrediction.asOf !== latestBaseline?.asOf) {
+    return Object.fromEntries(MODEL_KEYS.map(model => [model, []]));
+  }
+  const predictionRows = latestPrediction.sectors ?? [];
+  const anchorRows = latestBaseline.sectors ?? [];
+  const anchorsBySector = new Map(anchorRows.map(row => [
+    row.sector,
+    (row.anchors ?? row.members ?? [])
+      .map(item => String(item?.symbol ?? item ?? ''))
+      .filter(Boolean),
+  ]));
+
+  return Object.fromEntries(MODEL_KEYS.map(model => {
+    const eligible = predictionRows
+      .map(row => ({
+        sector: row.sector,
+        probability: finiteOrNull(row[model]),
+        symbols: anchorsBySector.get(row.sector) ?? [],
+      }))
+      .filter(row => row.probability !== null && row.probability >= 0 && row.symbols.length);
+    const probabilityTotal = eligible.reduce((sum, row) => sum + row.probability, 0);
+    if (!(probabilityTotal > 0)) return [model, []];
+
+    const stocks = eligible.flatMap(row => {
+      const sectorWeight = row.probability / probabilityTotal;
+      const stockWeight = sectorWeight / row.symbols.length;
+      return row.symbols.map(symbol => ({
+        symbol,
+        name: STOCK_NAMES[symbol] ?? symbol,
+        sector: row.sector,
+        weight: stockWeight,
+      }));
+    });
+    stocks.sort((a, b) => b.weight - a.weight || a.symbol.localeCompare(b.symbol));
+    return [model, stocks.slice(0, Math.max(0, limit))];
+  }));
+}
+
+function allocationCell(rows) {
+  if (!rows?.length) return '<span class="rank">代表股資料不足</span>';
+  return `<ol class="allocation-list">${rows.map(row => `
+    <li>
+      <span><strong>${escapeHtml(row.symbol)} ${escapeHtml(row.name)}</strong><small>${escapeHtml(row.sector)}</small></span>
+      <b>${pct(row.weight, 2)}</b>
+    </li>`).join('')}</ol>`;
+}
+
+function renderPredictions(challenger, baseline) {
   const body = document.getElementById('prediction-body');
   const sectors = challenger?.latestPrediction?.sectors ?? [];
   if (!sectors.length) {
@@ -155,7 +226,17 @@ function renderPredictions(challenger) {
     return;
   }
 
-  body.innerHTML = sectors.map(row => {
+  const leaders = buildAllocationLeaders(challenger, baseline);
+  const allocationRow = `
+    <tr class="allocation-row">
+      <td><strong>配置權重前二</strong><br><span class="rank">模型配置 proxy</span></td>
+      <td>${allocationCell(leaders.baseline)}</td>
+      <td>${allocationCell(leaders.lightgbm)}</td>
+      <td>${allocationCell(leaders.xgboost)}</td>
+      <td class="allocation-method">機率跨產業正規化；產業內代表股等權</td>
+    </tr>`;
+
+  body.innerHTML = allocationRow + sectors.map(row => {
     const ranks = [
       `B #${row.baselineRank ?? '—'}`,
       `L #${row.lightgbmRank ?? '—'}`,
@@ -272,13 +353,15 @@ function renderError(message) {
 
 async function boot() {
   try {
-    const [challengerResult, rotationResult, factorResult] = await Promise.allSettled([
+    const [challengerResult, baselineResult, rotationResult, factorResult] = await Promise.allSettled([
       loadJson(DATA_PATHS.challenger),
+      loadJson(DATA_PATHS.baseline),
       loadJson(DATA_PATHS.rotation),
       loadJson(DATA_PATHS.factor),
     ]);
 
     const challenger = challengerResult.status === 'fulfilled' ? challengerResult.value : null;
+    const baseline = baselineResult.status === 'fulfilled' ? baselineResult.value : null;
     const rotation = rotationResult.status === 'fulfilled' ? rotationResult.value : null;
     const factor = factorResult.status === 'fulfilled' ? factorResult.value : null;
 
@@ -292,7 +375,7 @@ async function boot() {
 
     if (challenger) {
       renderStatus(challenger, rotation, factor);
-      renderPredictions(challenger);
+      renderPredictions(challenger, baseline);
       renderValidation(challenger);
       renderOos(challenger);
     }
@@ -312,4 +395,8 @@ async function boot() {
   }
 }
 
-boot();
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { buildAllocationLeaders };
+}
+
+if (typeof document !== 'undefined') boot();
