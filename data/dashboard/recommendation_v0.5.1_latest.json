@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "version": "v0.5.1",
+  "generatedAt": "2026-08-21T09:57:00.000Z",
+  "factorAsOf": "2026-08-20",
+  "challengerAsOf": "2026-08-21",
+  "alignment": "factor-lagged",
+  "status": "data-lagged",
+  "champion": {
+    "model": "lightgbm",
+    "evidence": "forward-oos",
+    "scoredSnapshots": 4
+  },
+  "methodology": {
+    "coveredStockWeights": {
+      "factor": 0.65,
+      "sectorMl": 0.35
+    },
+    "uncoveredStockWeights": {
+      "factor": 0.85,
+      "neutralSectorPrior": 0.15000000000000002
+    },
+    "sectorProbability": "70% current champion + 30% mean of the other calibrated models.",
+    "riskPenalty": "重大事件、除權息與明顯負向 sector ML 只做扣分，不產生自動交易。",
+    "classification": "優先觀察需同日資料、ML 覆蓋、sector probability >= 55%、無事件扣分；其餘依 score 分為觀察/暫避。"
+  },
+  "recommendations": [
+    {"rank":1,"factorRank":1,"symbol":"5522","name":"遠雄","industry":"建材營造","close":64.1,"recommendationScore":0.804318,"action":"觀察","confidence":"low","factorScore":0.858021,"factorWeight":0.85,"sector":null,"sectorSource":"uncovered","sectorProbability":null,"sectorChampion":"lightgbm","modelAgreementSpread":null,"riskPenalty":0,"riskFlags":[],"rationale":["Composite 85.8","Sector ML 未覆蓋","無額外事件扣分","日期未對齊：factor-lagged"]},
+    {"rank":2,"factorRank":2,"symbol":"8112","name":"至上","industry":"電子通路業","close":93.7,"recommendationScore":0.780206,"action":"觀察","confidence":"low","factorScore":0.829654,"factorWeight":0.85,"sector":null,"sectorSource":"uncovered","sectorProbability":null,"sectorChampion":"lightgbm","modelAgreementSpread":null,"riskPenalty":0,"riskFlags":[],"rationale":["Composite 83.0","Sector ML 未覆蓋","無額外事件扣分","日期未對齊：factor-lagged"]},
+    {"rank":3,"factorRank":7,"symbol":"2348","name":"海悅","industry":"其他","close":71.8,"recommendationScore":0.728437,"action":"觀察","confidence":"low","factorScore":0.768749,"factorWeight":0.85,"sector":null,"sectorSource":"uncovered","sectorProbability":null,"sectorChampion":"lightgbm","modelAgreementSpread":null,"riskPenalty":0,"riskFlags":[],"rationale":["Composite 76.9","Sector ML 未覆蓋","無額外事件扣分","日期未對齊：factor-lagged"]},
+    {"rank":4,"factorRank":9,"symbol":"2501","name":"國建","industry":"建材營造","close":23,"recommendationScore":0.713342,"action":"觀察","confidence":"low","factorScore":0.75099,"factorWeight":0.85,"sector":null,"sectorSource":"uncovered","sectorProbability":null,"sectorChampion":"lightgbm","modelAgreementSpread":null,"riskPenalty":0,"riskFlags":[],"rationale":["Composite 75.1","Sector ML 未覆蓋","無額外事件扣分","日期未對齊：factor-lagged"]},
+    {"rank":5,"factorRank":3,"symbol":"5534","name":"長虹","industry":"建材營造","close":80.9,"recommendationScore":0.707683,"action":"觀察","confidence":"low","factorScore":0.791392,"factorWeight":0.85,"sector":null,"sectorSource":"uncovered","sectorProbability":null,"sectorChampion":"lightgbm","modelAgreementSpread":null,"riskPenalty":0.04,"riskFlags":["30日內除權息：2026-08-25"],"rationale":["Composite 79.1","Sector ML 未覆蓋","風險層級 event","日期未對齊：factor-lagged"]},
+    {"rank":6,"factorRank":10,"symbol":"6589","name":"台康生技","industry":"生技醫療業","close":51.6,"recommendationScore":0.698788,"action":"觀察","confidence":"low","factorScore":0.733868,"factorWeight":0.85,"sector":null,"sectorSource":"uncovered","sectorProbability":null,"sectorChampion":"lightgbm","modelAgreementSpread":null,"riskPenalty":0,"riskFlags":[],"rationale":["Composite 73.4","Sector ML 未覆蓋","無額外事件扣分","日期未對齊：factor-lagged"]},
+    {"rank":7,"factorRank":6,"symbol":"3135","name":"凌航","industry":"半導體業","close":168,"recommendationScore":0.630585,"action":"暫避","confidence":"low","factorScore":0.780178,"factorWeight":0.65,"sector":"半導體","sectorSource":"industry-map","sectorProbability":0.467054,"sectorChampion":"lightgbm","modelAgreementSpread":0.042292,"riskPenalty":0.04,"riskFlags":["30日內除權息：2026-09-01"],"rationale":["Composite 78.0","半導體 ML 46.7%","風險層級 event","日期未對齊：factor-lagged"]},
+    {"rank":8,"factorRank":4,"symbol":"2603","name":"長榮","industry":"航運業","close":246,"recommendationScore":0.554964,"action":"暫避","confidence":"low","factorScore":0.788972,"factorWeight":0.65,"sector":"航運","sectorSource":"anchor-membership","sectorProbability":0.348949,"sectorChampion":"lightgbm","modelAgreementSpread":0.224723,"riskPenalty":0.08,"riskFlags":[],"rationale":["Composite 78.9","航運 ML 34.9%","無額外事件扣分","日期未對齊：factor-lagged"]},
+    {"rank":9,"factorRank":5,"symbol":"2615","name":"萬海","industry":"航運業","close":113.5,"recommendationScore":0.552462,"action":"暫避","confidence":"low","factorScore":0.785123,"factorWeight":0.65,"sector":"航運","sectorSource":"anchor-membership","sectorProbability":0.348949,"sectorChampion":"lightgbm","modelAgreementSpread":0.224723,"riskPenalty":0.08,"riskFlags":[],"rationale":["Composite 78.5","航運 ML 34.9%","無額外事件扣分","日期未對齊：factor-lagged"]},
+    {"rank":10,"factorRank":8,"symbol":"2637","name":"慧洋-KY","industry":"航運業","close":94.7,"recommendationScore":0.535962,"action":"暫避","confidence":"low","factorScore":0.759738,"factorWeight":0.65,"sector":"航運","sectorSource":"industry-map","sectorProbability":0.348949,"sectorChampion":"lightgbm","modelAgreementSpread":0.224723,"riskPenalty":0.08,"riskFlags":[],"rationale":["Composite 76.0","航運 ML 34.9%","無額外事件扣分","日期未對齊：factor-lagged"]}
+  ],
+  "guardrails": [
+    "Research ranking only; not an order, target price or personalized investment recommendation.",
+    "Factor and challenger dates must align before any row can be labeled 優先觀察.",
+    "Stocks outside the six-sector ML universe use a neutral sector prior and confidence=factor-only.",
+    "Forward OOS evidence remains the promotion gate; this version does not auto-trade."
+  ]
+}
