@@ -3,7 +3,7 @@ name: Daily Market Dashboard Refresh
 on:
   workflow_dispatch:
   schedule:
-    - cron: '20 8 * * 1-5' # 16:20 Asia/Taipei
+    - cron: '45 8 * * 1-5' # 16:45 Asia/Taipei; after v0.5.1 freshness cutoff
   push:
     branches:
       - claude/taiwan-stock-dashboard-AsiJO
@@ -12,9 +12,13 @@ on:
       - 'scripts/twseOpenApi.js'
       - 'scripts/runDashboardMarketSnapshot.js'
       - 'scripts/runFactorResearch.js'
+      - 'scripts/runRecommendationV051.js'
       - 'factorResearch.js'
+      - 'recommendationV051.js'
       - 'test/twseOpenApi.test.js'
+      - 'test/marketFreshnessV051.test.js'
       - 'test/factorResearch.test.js'
+      - 'test/recommendationV051.test.js'
       - 'package.json'
       - 'package-lock.json'
 
@@ -42,7 +46,9 @@ jobs:
         run: npm run snapshot:openapi
       - name: Build point-in-time factor research
         run: npm run research:factors
-      - name: Publish official snapshot and forward research ledgers
+      - name: Build v0.5.1 recommendation research ranking
+        run: npm run recommend:v051
+      - name: Publish official snapshot, forward ledgers and v0.5.1 ranking
         shell: bash
         run: |
           set -euo pipefail
@@ -56,6 +62,9 @@ jobs:
             data/dashboard/factor_forward.jsonl
           if [ -f data/dashboard/factor_outcomes.jsonl ]; then
             git add data/dashboard/factor_outcomes.jsonl
+          fi
+          if [ -f data/dashboard/recommendation_v0.5.1_latest.json ]; then
+            git add data/dashboard/recommendation_v0.5.1_latest.json
           fi
           if git diff --cached --quiet; then
             echo "No market snapshot changes."
