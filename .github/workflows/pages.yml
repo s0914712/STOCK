@@ -3,7 +3,7 @@ name: Deploy Research Dashboard
 on:
   workflow_dispatch:
   schedule:
-    - cron: '40 8 * * 1-5' # 16:40 Asia/Taipei, after the 16:20 official snapshot refresh
+    - cron: '15 9 * * 1-5' # 17:15 Asia/Taipei, after the 16:45 official snapshot refresh
   push:
     branches:
       - claude/taiwan-stock-dashboard-AsiJO
@@ -11,6 +11,7 @@ on:
       - 'public/research-dashboard.html'
       - 'public/research-dashboard.css'
       - 'public/research-dashboard.js'
+      - 'public/recommendation-v051.js'
       - 'public/time-series-guide.html'
       - 'public/time-series-guide.css'
       - 'data/shadow/**'
@@ -18,6 +19,7 @@ on:
       - 'data/backtests/rotation_v0.4.json'
       - 'data/dashboard/factor_research_latest.json'
       - 'data/dashboard/sector_representatives_latest.json'
+      - 'data/dashboard/recommendation_v0.5.1_latest.json'
       - '.github/workflows/pages.yml'
 
 permissions:
@@ -43,6 +45,7 @@ jobs:
           cp public/research-dashboard.html _site/index.html
           cp public/research-dashboard.css _site/research-dashboard.css
           cp public/research-dashboard.js _site/research-dashboard.js
+          cp public/recommendation-v051.js _site/recommendation-v051.js
           cp public/time-series-guide.html _site/time-series-guide.html
           cp public/time-series-guide.css _site/time-series-guide.css
           cp data/shadow/challenger_latest.json _site/data/shadow/challenger_latest.json
@@ -50,6 +53,9 @@ jobs:
           cp data/backtests/rotation_v0.4.json _site/data/backtests/rotation_v0.4.json
           cp data/dashboard/factor_research_latest.json _site/data/dashboard/factor_research_latest.json
           cp data/dashboard/sector_representatives_latest.json _site/data/dashboard/sector_representatives_latest.json
+          if [ -f data/dashboard/recommendation_v0.5.1_latest.json ]; then
+            cp data/dashboard/recommendation_v0.5.1_latest.json _site/data/dashboard/recommendation_v0.5.1_latest.json
+          fi
           if [ -f data/shadow/latest.json ]; then
             cp data/shadow/latest.json _site/data/shadow/latest.json
           fi

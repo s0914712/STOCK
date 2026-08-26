@@ -16,7 +16,9 @@ jobs:
       - run: npm ci
       - run: npm test
       - name: Validate research dashboard JavaScript
-        run: node --check public/research-dashboard.js
+        run: |
+          node --check public/research-dashboard.js
+          node --check public/recommendation-v051.js
       - name: Validate dashboard JSON inputs
         run: |
           node -e "const fs=require('fs'); for (const p of ['data/shadow/challenger_latest.json','data/backtests/ml_challenger_v031.json','data/backtests/rotation_v0.4.json']) JSON.parse(fs.readFileSync(p,'utf8')); console.log('dashboard JSON inputs valid')"

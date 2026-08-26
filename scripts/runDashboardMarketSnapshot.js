@@ -33,11 +33,70 @@ function latestOnOrBefore(rows, date, field = 'date') {
     .at(-1) || null;
 }
 
+function taipeiParts(isoString) {
+  const date = new Date(isoString);
+  if (Number.isNaN(date.getTime())) return null;
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Taipei',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+    weekday: 'short',
+  }).formatToParts(date);
+  const get = type => parts.find(part => part.type === type)?.value;
+  return {
+    date: `${get('year')}-${get('month')}-${get('day')}`,
+    hour: Number(get('hour')),
+    minute: Number(get('minute')),
+    weekday: get('weekday'),
+  };
+}
+
+function detectTradingDateLag(snapshot, {
+  generatedAt = snapshot?.generatedAt,
+  expectedTradingDate = process.env.TWSE_EXPECTED_TRADING_DATE || null,
+  skipGuard = process.env.TWSE_SKIP_TRADING_DATE_GUARD === '1',
+  guardHour = Number(process.env.TWSE_TRADING_DATE_GUARD_HOUR || 16),
+  guardMinute = Number(process.env.TWSE_TRADING_DATE_GUARD_MINUTE || 30),
+} = {}) {
+  const stockDayAsOf = snapshot?.datasets?.stockDay?.asOf || null;
+  if (skipGuard || !stockDayAsOf) {
+    return { lagged: false, expectedTradingDate: expectedTradingDate || null, stockDayAsOf, reason: skipGuard ? 'guard-bypassed' : 'no-stock-date' };
+  }
+
+  let expected = expectedTradingDate;
+  let reason = expected ? 'explicit-expected-date' : 'automatic-weekday-cutoff';
+  if (!expected) {
+    const local = taipeiParts(generatedAt);
+    if (!local) return { lagged: false, expectedTradingDate: null, stockDayAsOf, reason: 'invalid-generated-at' };
+    const weekday = !['Sat', 'Sun'].includes(local.weekday);
+    const afterCutoff = local.hour > guardHour || (local.hour === guardHour && local.minute >= guardMinute);
+    if (!weekday || !afterCutoff) {
+      return { lagged: false, expectedTradingDate: null, stockDayAsOf, reason: weekday ? 'before-cutoff' : 'weekend' };
+    }
+    expected = local.date;
+  }
+
+  const lagged = stockDayAsOf < expected;
+  return {
+    lagged,
+    expectedTradingDate: expected,
+    stockDayAsOf,
+    reason: lagged ? `${reason}: stockDay ${stockDayAsOf} < expected ${expected}` : `${reason}: date satisfied`,
+  };
+}
+
 function buildForwardRecord(snapshot, universe = UNIVERSE) {
   const datasets = snapshot.datasets;
   const staleKeys = DATASET_KEYS.filter(key => datasets[key]?.stale);
   if (staleKeys.length) {
     throw new Error(`refusing to build forward OOS record from stale datasets: ${staleKeys.join(', ')}`);
+  }
+  if (snapshot.freshness?.tradingDateLag) {
+    throw new Error(`refusing to build forward OOS record from lagged trading date: ${snapshot.freshness.stockDayAsOf} < ${snapshot.freshness.expectedTradingDate}`);
   }
   const tradingDate = datasets.stockDay?.asOf;
   if (!tradingDate) throw new Error('STOCK_DAY_ALL did not provide a trading date');
@@ -122,6 +181,9 @@ function buildSectorRepresentatives(snapshot, sectors = DEFAULT_SECTORS) {
   if (!stockDay?.asOf || stockDay.stale) {
     throw new Error('refusing to select sector representatives without a fresh STOCK_DAY_ALL snapshot');
   }
+  if (snapshot.freshness?.tradingDateLag) {
+    throw new Error('refusing to select sector representatives from lagged STOCK_DAY_ALL data');
+  }
   const prices = bySymbol((stockDay.data || []).filter(row => row.date === stockDay.asOf));
   const rows = Object.entries(sectors).map(([sector, symbols]) => {
     const candidates = symbols
@@ -175,9 +237,9 @@ function appendForwardRecord(filePath, record) {
   return true;
 }
 
-function buildSnapshot(datasets, generatedAt = new Date().toISOString()) {
+function buildSnapshot(datasets, generatedAt = new Date().toISOString(), freshnessOptions = {}) {
   const staleDatasets = DATASET_KEYS.filter(key => datasets[key]?.stale);
-  return {
+  const snapshot = {
     schemaVersion: 1,
     generatedAt,
     source: 'TWSE OpenAPI v1',
@@ -186,9 +248,20 @@ function buildSnapshot(datasets, generatedAt = new Date().toISOString()) {
       complete: staleDatasets.length === 0,
       liveDatasets: DATASET_KEYS.filter(key => !staleDatasets.includes(key)),
       staleDatasets,
+      tradingDateLag: false,
+      expectedTradingDate: null,
+      stockDayAsOf: datasets.stockDay?.asOf ?? null,
+      tradingDateGuardReason: null,
     },
     datasets,
   };
+  const guard = detectTradingDateLag(snapshot, { generatedAt, ...freshnessOptions });
+  snapshot.freshness.tradingDateLag = guard.lagged;
+  snapshot.freshness.expectedTradingDate = guard.expectedTradingDate;
+  snapshot.freshness.stockDayAsOf = guard.stockDayAsOf;
+  snapshot.freshness.tradingDateGuardReason = guard.reason;
+  if (guard.lagged) snapshot.freshness.complete = false;
+  return snapshot;
 }
 
 function persistDailySnapshot(snapshot, {
@@ -207,11 +280,23 @@ function persistDailySnapshot(snapshot, {
     };
   }
 
-  const wroteRepresentatives = Boolean(snapshot.datasets.stockDay && !snapshot.datasets.stockDay.stale);
+  const tradingDateLag = Boolean(snapshot.freshness?.tradingDateLag);
+  const wroteRepresentatives = Boolean(snapshot.datasets.stockDay && !snapshot.datasets.stockDay.stale && !tradingDateLag);
   const representativeReport = wroteRepresentatives ? buildSectorRepresentatives(snapshot) : null;
   writeJsonAtomic(latestPath, snapshot);
   if (wroteRepresentatives) {
     writeJsonAtomic(representativesPath, representativeReport);
+  }
+  if (tradingDateLag) {
+    return {
+      wroteLatest: true,
+      wroteRepresentatives: false,
+      appendedForward: false,
+      staleDatasets,
+      expectedTradingDate: snapshot.freshness.expectedTradingDate,
+      stockDayAsOf: snapshot.freshness.stockDayAsOf,
+      reason: 'trading-date-lag',
+    };
   }
   if (staleDatasets.length) {
     return {
@@ -254,7 +339,9 @@ async function main() {
     console.log(`Wrote ${path.relative(ROOT, REPRESENTATIVES_PATH)} using same-day trade value.`);
   }
 
-  if (result.reason === 'partial-stale-snapshot') {
+  if (result.reason === 'trading-date-lag') {
+    console.warn(`Skipped forward OOS append: STOCK_DAY_ALL asOf=${result.stockDayAsOf}, expected=${result.expectedTradingDate}. Snapshot retained but marked incomplete.`);
+  } else if (result.reason === 'partial-stale-snapshot') {
     console.warn(`Skipped forward OOS append because these datasets are stale: ${result.staleDatasets.join(', ')}`);
   } else if (result.reason === 'all-datasets-stale') {
     console.warn('Skipped forward OOS append because every dataset came from the stale snapshot fallback.');
@@ -279,6 +366,8 @@ module.exports = {
   buildSnapshot,
   buildForwardRecord,
   buildSectorRepresentatives,
+  detectTradingDateLag,
   persistDailySnapshot,
+  taipeiParts,
   writeJsonAtomic,
 };
