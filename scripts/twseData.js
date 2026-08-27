@@ -32,6 +32,20 @@ const FETCH_CONCURRENCY = Number(process.env.TWSE_CONCURRENCY || 1);
 // Once TWSE tells us where a deprecated path now lives, reuse that mapping for
 // every later request. Otherwise each of the ~1200 calls pays a redirect hop
 // against a server that is already rate limiting us.
+//
+// KNOWN BUG -- do not route new callers through this client until it is fixed
+// and proven against live TWSE. This memo is process-global and never cleared,
+// so a single redirect (TWSE appears to 307 as a throttling signal, not only
+// for moved paths) rewrites every later request in the process onto the
+// memoized path, which then loops until the redirect budget is spent. Observed
+// live on 2026-08-27: the first few months of a symbol succeed, then every
+// subsequent request fails with "too many redirects" at ~8s each. A v0.3
+// backtest blew its 20-minute timeout after two symbols.
+//
+// scripts/shadowRunner.js was moved onto this client and moved back off for
+// exactly this reason; its own client has fetched a complete snapshot every
+// trading day. runRotationV04/V05 and runBenchmarkBattle still depend on this
+// path and are expected to be affected too.
 const redirectMemo = new Map();
 
 function applyRedirectMemo(url) {
