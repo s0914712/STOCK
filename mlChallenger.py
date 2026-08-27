@@ -25,6 +25,10 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import brier_score_loss, log_loss, roc_auc_score
 from xgboost import XGBClassifier
 
+# The champion baseline formula lives in one stdlib-only module so the parity
+# test against the JavaScript implementation stays cheap. See baselineScore.py.
+from baselineScore import baseline_columns, baseline_linear, baseline_score01
+
 DEFAULT_SECTORS = {
     "半導體": ["2330", "2454", "2303"],
     "AI伺服器": ["2317", "2382", "3231"],
@@ -54,18 +58,6 @@ def _std(xs: Iterable[float]) -> float:
 
 def _ret(a: float, b: float) -> float:
     return float(a / b - 1.0) if np.isfinite(a) and np.isfinite(b) and b != 0 else float("nan")
-
-
-def _z(value: float, values: Sequence[float]) -> float:
-    vals = [float(x) for x in values if np.isfinite(x)]
-    if not np.isfinite(value) or len(vals) < 2:
-        return 0.0
-    s = _std(vals)
-    return 0.0 if s < 1e-12 else float((value - _mean(vals)) / s)
-
-
-def _sigmoid(x: float) -> float:
-    return 1.0 / (1.0 + math.exp(-x))
 
 
 def month_keys(count: int, now: Optional[datetime] = None) -> List[str]:
@@ -237,19 +229,11 @@ def build_feature_rows(
         if len(raw) < 3:
             continue
 
-        cols = {k: [r[k] for r in raw] for k in [
-            "momentum5", "momentum20", "volume_ratio", "breadth_ma20", "volatility20"
-        ]}
+        cols = baseline_columns(raw)
         for r in raw:
-            linear = (
-                0.40 * _z(r["momentum5"], cols["momentum5"])
-                + 0.30 * _z(r["momentum20"], cols["momentum20"])
-                + 0.15 * _z(r["volume_ratio"], cols["volume_ratio"])
-                + 0.15 * _z(r["breadth_ma20"], cols["breadth_ma20"])
-                - 0.10 * _z(r["volatility20"], cols["volatility20"])
-            )
+            linear = baseline_linear(r, cols)
             r["baseline_linear"] = linear
-            r["baseline_score"] = _sigmoid(1.15 * linear)
+            r["baseline_score"] = baseline_score01(linear)
             r["relative5"] = r["momentum5"] - taiex5
             r["relative20"] = r["momentum20"] - taiex20
 
