@@ -2,7 +2,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 const { buildSectorRadar } = require('../sectorRadar');
 const {
   makePredictionSnapshot,
@@ -10,6 +9,17 @@ const {
   scorePredictionSnapshot,
   summarizeScores,
 } = require('../shadowPrediction');
+// This runner used to carry its own https client. That copy could not follow
+// the 307s TWSE returns while it migrates endpoints under /rwd/, so the one
+// job that runs every trading day was on the most fragile fetch path in the
+// repo while the hardened one sat in twseData.js. Use that one.
+const {
+  monthKeys,
+  mapLimit,
+  parseRocDate,
+  fetchStockHistory: fetchStockHistoryForMonths,
+  fetchTaiexHistory: fetchTaiexHistoryForMonths,
+} = require('./twseData');
 
 const ROOT = path.join(__dirname, '..');
 const DATA_DIR = path.join(ROOT, 'data', 'shadow');
@@ -17,124 +27,24 @@ const PREDICTIONS_PATH = path.join(DATA_DIR, 'predictions.jsonl');
 const SCORES_PATH = path.join(DATA_DIR, 'scores.jsonl');
 const LATEST_PATH = path.join(DATA_DIR, 'latest.json');
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+// twseData spaces requests to stay under the ~3 req/s TWSE starts refusing at,
+// but that budget is per process: fetching N symbols in parallel multiplies it.
+// The previous 3 workers put this job at ~7.5 req/s. One worker over 18 symbols
+// x 3 months is roughly 20 seconds, which is nothing for a daily schedule.
+const FETCH_CONCURRENCY = 1;
+
+// twseData's fetchers take an explicit list of TWSE month keys; this runner
+// thinks in "the last N months", so adapt here instead of at every call site.
+function recentMonths(count) {
+  return monthKeys(Math.min(Math.max(count, 2), 6));
 }
 
-function fetchJSON(url, attempts = 2) {
-  return new Promise((resolve, reject) => {
-    const req = https.get(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 sector-shadow-runner/0.2',
-        Accept: 'application/json',
-      },
-    }, res => {
-      let data = '';
-      res.on('data', chunk => { data += chunk; });
-      res.on('end', async () => {
-        try {
-          if (res.statusCode < 200 || res.statusCode >= 300) {
-            throw new Error(`HTTP ${res.statusCode}`);
-          }
-          resolve(JSON.parse(data));
-        } catch (error) {
-          if (attempts > 1) {
-            await sleep(750);
-            try { resolve(await fetchJSON(url, attempts - 1)); } catch (retryError) { reject(retryError); }
-          } else {
-            reject(error);
-          }
-        }
-      });
-    });
-    req.on('error', async error => {
-      if (attempts > 1) {
-        await sleep(750);
-        try { resolve(await fetchJSON(url, attempts - 1)); } catch (retryError) { reject(retryError); }
-      } else {
-        reject(error);
-      }
-    });
-    req.setTimeout(15000, () => req.destroy(new Error('request timeout')));
-  });
+function fetchStockHistory(symbol, months = 3) {
+  return fetchStockHistoryForMonths(symbol, recentMonths(months));
 }
 
-function monthStarts(months) {
-  const now = new Date();
-  return Array.from({ length: months }, (_, i) => {
-    const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1));
-    return `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, '0')}01`;
-  });
-}
-
-function parseRocDate(value) {
-  const [rocYear, month, day] = String(value).split('/');
-  if (!rocYear || !month || !day) return null;
-  return `${Number(rocYear) + 1911}-${month}-${day}`;
-}
-
-async function fetchStockHistory(stock, months = 3) {
-  const rows = [];
-  for (const dateStr of monthStarts(Math.min(Math.max(months, 2), 6))) {
-    const url = `https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&date=${dateStr}&stockNo=${stock}`;
-    try {
-      const data = await fetchJSON(url);
-      if (data.stat === 'OK' && Array.isArray(data.data)) {
-        for (const row of data.data) {
-          const date = parseRocDate(row[0]);
-          if (!date) continue;
-          rows.push({
-            date,
-            volume: Number(String(row[1]).replace(/,/g, '')),
-            open: Number(String(row[3]).replace(/,/g, '')),
-            high: Number(String(row[4]).replace(/,/g, '')),
-            low: Number(String(row[5]).replace(/,/g, '')),
-            close: Number(String(row[6]).replace(/,/g, '')),
-          });
-        }
-      }
-    } catch (error) {
-      console.warn(`[stock ${stock}] ${dateStr}: ${error.message}`);
-    }
-    await sleep(180);
-  }
-  const unique = new Map(rows.map(row => [row.date, row]));
-  return [...unique.values()].sort((a, b) => a.date.localeCompare(b.date));
-}
-
-async function fetchTaiexHistory(months = 3) {
-  const rows = [];
-  for (const dateStr of monthStarts(Math.min(Math.max(months, 2), 6))) {
-    const url = `https://www.twse.com.tw/exchangeReport/FMTQIK?response=json&date=${dateStr}`;
-    try {
-      const data = await fetchJSON(url);
-      if (data.stat === 'OK' && Array.isArray(data.data)) {
-        for (const row of data.data) {
-          const date = parseRocDate(row[0]);
-          const index = Number(String(row[4] ?? row[1]).replace(/,/g, ''));
-          if (date && Number.isFinite(index)) rows.push({ date, index });
-        }
-      }
-    } catch (error) {
-      console.warn(`[TAIEX] ${dateStr}: ${error.message}`);
-    }
-    await sleep(180);
-  }
-  const unique = new Map(rows.map(row => [row.date, row]));
-  return [...unique.values()].sort((a, b) => a.date.localeCompare(b.date));
-}
-
-async function mapLimit(items, limit, worker) {
-  const results = new Array(items.length);
-  let cursor = 0;
-  async function run() {
-    while (cursor < items.length) {
-      const index = cursor++;
-      results[index] = await worker(items[index]);
-    }
-  }
-  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, run));
-  return results;
+function fetchTaiexHistory(months = 3) {
+  return fetchTaiexHistoryForMonths(recentMonths(months));
 }
 
 function readJsonl(filePath) {
@@ -169,7 +79,7 @@ async function main() {
   const scoredIds = new Set(scores.map(row => row.id));
 
   console.log('Building sector radar snapshot...');
-  const radar = await buildSectorRadar({ fetchHistory: fetchStockHistory, months: 3, concurrency: 3 });
+  const radar = await buildSectorRadar({ fetchHistory: fetchStockHistory, months: 3, concurrency: FETCH_CONCURRENCY });
   if (!radar.asOf || radar.sectorCount < 3) {
     throw new Error(`insufficient radar coverage: asOf=${radar.asOf}, sectors=${radar.sectorCount}`);
   }
@@ -202,7 +112,7 @@ async function main() {
     if (mature.length) {
       const symbols = [...new Set(mature.flatMap(row => row.sectors.flatMap(sector =>
         (sector.anchors || []).map(anchor => anchor.symbol))))];
-      const histories = await mapLimit(symbols, 3, async symbol => [symbol, await fetchStockHistory(symbol, 4)]);
+      const histories = await mapLimit(symbols, FETCH_CONCURRENCY, async symbol => [symbol, await fetchStockHistory(symbol, 4)]);
       const stockHistoryBySymbol = new Map(histories);
 
       for (const prediction of mature) {
