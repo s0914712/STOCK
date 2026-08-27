@@ -243,6 +243,14 @@ Universe 預設要求單日成交金額至少 2,000 萬元。缺值維持 `null`
 6. 策略設定必須通過 v0.5 robustness gate：鄰近參數也要能用，且採用的是 family 的中位數參數而非最佳參數。
 7. 策略必須在**含息**的基礎上贏過 0050，而不只是贏過 TAIEX 價格指數。
 
+### Champion 的跨語言一致性
+
+Baseline 這個 champion 有兩份實作：`sectorRadar.js` 服務線上 radar，`baselineScore.py` 提供 ML challenger 的 `baseline_linear` feature。兩者若漂移，challenger 就會被拿去跟一個「已經不是實際在服務的 baseline」比較，而且不會有任何錯誤。
+
+`test/fixtures/baseline_golden.json` 用 8 組 case（含常數欄位、缺值欄位、單列、極端值）固定這份契約，`test/baselineParity.test.js` 與 `test/baselineParity.test.py` 各自對它斷言，容差 1e-12。只改一邊就會讓 CI 失敗。目前兩邊的輸出在全部 25 個 row 上是 bit-identical（最大偏差 0）。
+
+Python 那份只依賴標準函式庫，所以 parity 測試不需要安裝 numpy / LightGBM，可以留在一般的 test job 裡。
+
 ## 6. 自動化排程
 
 | 排程 | Cron (UTC) | 台北時間 | 內容 |
@@ -261,7 +269,9 @@ Universe 預設要求單日成交金額至少 2,000 萬元。缺值維持 `null`
 
 以下維持手動 (`workflow_dispatch`)，供臨時單獨執行：`rotation-v04.yml`、`rotation-v05.yml`、`benchmark-battle-0050.yml`。
 
-> **注意：** GitHub 的 scheduled workflow 只會從 **default branch** 執行。這些檔案還在 `claude/improvement-strategy-9t1zar` 上，**合併進 `main` 之前 cron 不會啟動**。
+> **注意：** GitHub 的 scheduled workflow 只會從 **default branch** 執行，`push:` trigger 也已全部指向 `main`（`pages.yml`、`dashboard-market-schedule.yml`、`rotation-backtest.yml` 先前分別綁在兩個 feature branch 與一個已不存在的 branch 上）。因此 **`main` 必須是 repository 的 default branch，cron 才會啟動**；這是 repo owner 在 `Settings` → `General` → `Default branch` 做一次的設定。
+
+> 各 data workflow 仍然 push 回 `$GITHUB_REF_NAME`（自己執行所在的 branch），而不是寫死 `main`。這是刻意的：在 feature branch 上手動 `workflow_dispatch` 產生的資料留在該 branch，不會污染 `main`。
 
 GitHub Actions：
 
@@ -317,7 +327,8 @@ GitHub App 可以建立與執行 Pages workflow，但無法替 repository 第一
 
 ```text
 STOCK/
-├─ sectorRadar.js                 # sector feature/ranking baseline
+├─ sectorRadar.js                 # sector feature/ranking baseline (champion, JS side)
+├─ baselineScore.py               # same champion formula, Python side (stdlib only)
 ├─ mlChallenger.py                # ML feature/model/scoring core
 ├─ rotationBacktest.js            # rotation backtest engine (regime gate, vol stop, topK)
 ├─ rotationRobustness.js          # parameter sweep, family scoring, promotion gate
@@ -345,6 +356,10 @@ STOCK/
 │  ├─ research-dashboard.js
 │  ├─ time-series-guide.html
 │  └─ time-series-guide.css
+├─ test/
+│  ├─ fixtures/baseline_golden.json   # cross-language contract for the champion
+│  ├─ baselineParity.test.js          # asserts the JS baseline against it
+│  └─ baselineParity.test.py          # asserts the Python baseline against it
 ├─ docs/
 │  ├─ SECTOR_RADAR.md
 │  ├─ CHALLENGER_V031_V04.md
