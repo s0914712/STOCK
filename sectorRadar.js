@@ -107,36 +107,96 @@ function sigmoid(x) {
   return 1 / (1 + Math.exp(-x));
 }
 
+/**
+ * Champion baseline scoring formula — JavaScript side.
+ *
+ * The identical formula also exists in Python (`baselineScore.py`), because the
+ * live radar ranks sectors in Node while the ML challenger consumes the same
+ * score as its `baseline_linear` feature. Two independent implementations of
+ * the champion is a drift hazard: if the weights diverge, the challenger is
+ * silently compared against a baseline that is no longer the one being served,
+ * and nothing raises an error.
+ *
+ * `test/fixtures/baseline_golden.json` pins the contract, and both
+ * `test/baselineParity.test.js` and `test/baselineParity.test.py` assert
+ * against it, so a change made on one side and not the other fails CI.
+ *
+ * Feature keys here are the canonical ML feature names (the ones persisted into
+ * the model artifacts), not the radar's display names, so the two languages
+ * read the same key set.
+ */
+const BASELINE_WEIGHTS = {
+  momentum5: 0.40,
+  momentum20: 0.30,
+  volume_ratio: 0.15,
+  breadth_ma20: 0.15,
+  volatility20: -0.10,
+};
+
+// Slope applied before the logistic squash. Not a fitted parameter: it only
+// sets how quickly the 0-100 display score saturates.
+const BASELINE_SIGMOID_SLOPE = 1.15;
+
+const BASELINE_FEATURES = Object.keys(BASELINE_WEIGHTS);
+
+/** Cross-sectional z-score of each weighted feature, for one row. */
+function baselineComponents(row, columns) {
+  const out = {};
+  for (const key of BASELINE_FEATURES) {
+    out[key] = zScore(row ? row[key] : undefined, columns[key] || []);
+  }
+  return out;
+}
+
+function baselineLinear(row, columns) {
+  const components = baselineComponents(row, columns);
+  return BASELINE_FEATURES.reduce((sum, key) => sum + (BASELINE_WEIGHTS[key] * components[key]), 0);
+}
+
+/** Calibration input for the ML challenger: the raw 0-1 logistic output. */
+function baselineScore01(linear) {
+  return sigmoid(BASELINE_SIGMOID_SLOPE * linear);
+}
+
+/** Build the cross-sectional column vectors the z-scores are taken against. */
+function baselineColumns(rows) {
+  return Object.fromEntries(BASELINE_FEATURES.map(key => [key, rows.map(row => (row ? row[key] : undefined))]));
+}
+
+function toBaselineFeatureRow(sector) {
+  return {
+    momentum5: sector.momentum5,
+    momentum20: sector.momentum20,
+    volume_ratio: sector.volumeRatio,
+    breadth_ma20: sector.breadthAboveMA20,
+    volatility20: sector.volatility20,
+  };
+}
+
 function rankSectors(rawSectors) {
   const sectors = (rawSectors || []).filter(Boolean);
   if (!sectors.length) return [];
 
-  const columns = {
-    momentum5: sectors.map(s => s.momentum5),
-    momentum20: sectors.map(s => s.momentum20),
-    volumeRatio: sectors.map(s => s.volumeRatio),
-    breadthAboveMA20: sectors.map(s => s.breadthAboveMA20),
-    volatility20: sectors.map(s => s.volatility20),
-  };
+  // Radar sector objects carry display names; the baseline formula is keyed by
+  // the canonical ML feature names so both languages agree on one key set.
+  const featureRows = sectors.map(toBaselineFeatureRow);
+  const columns = baselineColumns(featureRows);
 
-  const scored = sectors.map(sector => {
+  const scored = sectors.map((sector, index) => {
+    const raw = baselineComponents(featureRows[index], columns);
+    const linearScore = BASELINE_FEATURES.reduce((sum, key) => sum + (BASELINE_WEIGHTS[key] * raw[key]), 0);
+
+    // Emitted under the radar's original component names: these are already
+    // persisted in the shadow ledgers, so the shape must not change.
     const components = {
-      momentum5: zScore(sector.momentum5, columns.momentum5),
-      momentum20: zScore(sector.momentum20, columns.momentum20),
-      volumeRatio: zScore(sector.volumeRatio, columns.volumeRatio),
-      breadth: zScore(sector.breadthAboveMA20, columns.breadthAboveMA20),
-      volatility: zScore(sector.volatility20, columns.volatility20),
+      momentum5: raw.momentum5,
+      momentum20: raw.momentum20,
+      volumeRatio: raw.volume_ratio,
+      breadth: raw.breadth_ma20,
+      volatility: raw.volatility20,
     };
 
-    const linearScore = (
-      0.40 * components.momentum5
-      + 0.30 * components.momentum20
-      + 0.15 * components.volumeRatio
-      + 0.15 * components.breadth
-      - 0.10 * components.volatility
-    );
-
-    const score = 100 * sigmoid(1.15 * linearScore);
+    const score = 100 * baselineScore01(linearScore);
     let signal = '中性';
     if (score >= 60) signal = '強勢';
     else if (score <= 40) signal = '弱勢';
@@ -220,6 +280,12 @@ async function buildSectorRadar({
 
 module.exports = {
   DEFAULT_SECTORS,
+  BASELINE_WEIGHTS,
+  BASELINE_SIGMOID_SLOPE,
+  baselineColumns,
+  baselineComponents,
+  baselineLinear,
+  baselineScore01,
   computeStockFeatures,
   aggregateSector,
   rankSectors,

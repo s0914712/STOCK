@@ -1,0 +1,378 @@
+{
+  "$comment": "Golden contract for the champion baseline formula, shared by two languages. Generated once from sectorRadar.js; test/baselineParity.test.js and test/baselineParity.test.py both assert against it. Regenerate ONLY when the champion formula is deliberately changed, and change both implementations in the same commit.",
+  "weights": {
+    "momentum5": 0.4,
+    "momentum20": 0.3,
+    "volume_ratio": 0.15,
+    "breadth_ma20": 0.15,
+    "volatility20": -0.1
+  },
+  "sigmoidSlope": 1.15,
+  "tolerance": 1e-12,
+  "cases": [
+    {
+      "name": "typical-six-sector",
+      "why": "The ordinary cross-section the radar sees on a normal trading day.",
+      "rows": [
+        {
+          "sector": "半導體",
+          "momentum5": 0.0412,
+          "momentum20": 0.1035,
+          "volume_ratio": 1.24,
+          "breadth_ma20": 1,
+          "volatility20": 0.2871
+        },
+        {
+          "sector": "AI伺服器",
+          "momentum5": 0.0688,
+          "momentum20": 0.152,
+          "volume_ratio": 1.61,
+          "breadth_ma20": 1,
+          "volatility20": 0.4013
+        },
+        {
+          "sector": "PCB",
+          "momentum5": 0.0125,
+          "momentum20": 0.0402,
+          "volume_ratio": 0.93,
+          "breadth_ma20": 0.6666666666666666,
+          "volatility20": 0.355
+        },
+        {
+          "sector": "金融",
+          "momentum5": -0.0071,
+          "momentum20": 0.0088,
+          "volume_ratio": 0.81,
+          "breadth_ma20": 0.3333333333333333,
+          "volatility20": 0.1402
+        },
+        {
+          "sector": "航運",
+          "momentum5": -0.0339,
+          "momentum20": -0.0612,
+          "volume_ratio": 1.07,
+          "breadth_ma20": 0,
+          "volatility20": 0.4884
+        },
+        {
+          "sector": "電子零組件",
+          "momentum5": 0.0203,
+          "momentum20": 0.0771,
+          "volume_ratio": 1.15,
+          "breadth_ma20": 0.6666666666666666,
+          "volatility20": 0.3106
+        }
+      ],
+      "expected": [
+        {
+          "linear": 0.7130141108394806,
+          "score01": 0.6942291710892928
+        },
+        {
+          "linear": 1.3158540385147137,
+          "score01": 0.8195397165776844
+        },
+        {
+          "linear": -0.21229557617748962,
+          "score01": 0.4392663879515971
+        },
+        {
+          "linear": -0.5659571881962409,
+          "score01": 0.3427978446745263
+        },
+        {
+          "linear": -1.4288677263257403,
+          "score01": 0.16203039534983205
+        },
+        {
+          "linear": 0.17825234134527632,
+          "score01": 0.5510688430234235
+        }
+      ]
+    },
+    {
+      "name": "constant-column",
+      "why": "Zero cross-sectional dispersion must contribute 0, not divide by ~0.",
+      "rows": [
+        {
+          "sector": "A",
+          "momentum5": 0.03,
+          "momentum20": 0.05,
+          "volume_ratio": 1,
+          "breadth_ma20": 0.5,
+          "volatility20": 0.2
+        },
+        {
+          "sector": "B",
+          "momentum5": -0.01,
+          "momentum20": 0.02,
+          "volume_ratio": 1,
+          "breadth_ma20": 0.5,
+          "volatility20": 0.3
+        },
+        {
+          "sector": "C",
+          "momentum5": 0.07,
+          "momentum20": -0.04,
+          "volume_ratio": 1,
+          "breadth_ma20": 0.5,
+          "volatility20": 0.25
+        }
+      ],
+      "expected": [
+        {
+          "linear": 0.3618614682831909,
+          "score01": 0.6025593827033462
+        },
+        {
+          "linear": -0.43453463292920236,
+          "score01": 0.37760768764762226
+        },
+        {
+          "linear": 0.07267316464601159,
+          "score01": 0.5208813821778808
+        }
+      ]
+    },
+    {
+      "name": "null-feature",
+      "why": "A missing feature must score 0 for that row without poisoning the column.",
+      "rows": [
+        {
+          "sector": "A",
+          "momentum5": 0.03,
+          "momentum20": null,
+          "volume_ratio": 1.1,
+          "breadth_ma20": 1,
+          "volatility20": 0.2
+        },
+        {
+          "sector": "B",
+          "momentum5": -0.01,
+          "momentum20": 0.02,
+          "volume_ratio": 0.9,
+          "breadth_ma20": 0,
+          "volatility20": 0.3
+        },
+        {
+          "sector": "C",
+          "momentum5": 0.07,
+          "momentum20": -0.04,
+          "volume_ratio": 1.3,
+          "breadth_ma20": 0.5,
+          "volatility20": 0.25
+        }
+      ],
+      "expected": [
+        {
+          "linear": 0.25000000000000017,
+          "score01": 0.5713839816769324
+        },
+        {
+          "linear": -0.5878679656440357,
+          "score01": 0.3371438821703418
+        },
+        {
+          "linear": 0.33786796564403604,
+          "score01": 0.5959331496906247
+        }
+      ]
+    },
+    {
+      "name": "all-null-column",
+      "why": "An entirely missing feature must fall back to 0 in both languages.",
+      "rows": [
+        {
+          "sector": "A",
+          "momentum5": 0.03,
+          "momentum20": 0.05,
+          "volume_ratio": null,
+          "breadth_ma20": 1,
+          "volatility20": 0.2
+        },
+        {
+          "sector": "B",
+          "momentum5": -0.01,
+          "momentum20": 0.02,
+          "volume_ratio": null,
+          "breadth_ma20": 0,
+          "volatility20": 0.3
+        },
+        {
+          "sector": "C",
+          "momentum5": 0.07,
+          "momentum20": -0.04,
+          "volume_ratio": null,
+          "breadth_ma20": 0.5,
+          "volatility20": 0.25
+        }
+      ],
+      "expected": [
+        {
+          "linear": 0.5118614682831908,
+          "score01": 0.6430531957784545
+        },
+        {
+          "linear": -0.5845346329292023,
+          "score01": 0.33800108132082685
+        },
+        {
+          "linear": 0.07267316464601159,
+          "score01": 0.5208813821778808
+        }
+      ]
+    },
+    {
+      "name": "two-rows-minimum",
+      "why": "Two finite observations is the smallest cross-section a z-score accepts.",
+      "rows": [
+        {
+          "sector": "A",
+          "momentum5": 0.05,
+          "momentum20": 0.1,
+          "volume_ratio": 1.2,
+          "breadth_ma20": 0.6666666666666666,
+          "volatility20": 0.3
+        },
+        {
+          "sector": "B",
+          "momentum5": -0.02,
+          "momentum20": 0,
+          "volume_ratio": 0.9,
+          "breadth_ma20": 0.3333333333333333,
+          "volatility20": 0.5
+        }
+      ],
+      "expected": [
+        {
+          "linear": 0.7778174593052022,
+          "score01": 0.7098158972630078
+        },
+        {
+          "linear": -0.7778174593052023,
+          "score01": 0.2901841027369923
+        }
+      ]
+    },
+    {
+      "name": "single-row",
+      "why": "One row cannot be z-scored, so every component is 0 and score01 is exactly 0.5.",
+      "rows": [
+        {
+          "sector": "A",
+          "momentum5": 0.05,
+          "momentum20": 0.1,
+          "volume_ratio": 1.2,
+          "breadth_ma20": 1,
+          "volatility20": 0.3
+        }
+      ],
+      "expected": [
+        {
+          "linear": 0,
+          "score01": 0.5
+        }
+      ]
+    },
+    {
+      "name": "extreme-outlier",
+      "why": "A single dominant value must not overflow the logistic squash.",
+      "rows": [
+        {
+          "sector": "A",
+          "momentum5": 12.5,
+          "momentum20": 30,
+          "volume_ratio": 900,
+          "breadth_ma20": 1,
+          "volatility20": 0.01
+        },
+        {
+          "sector": "B",
+          "momentum5": -0.01,
+          "momentum20": 0.02,
+          "volume_ratio": 0.9,
+          "breadth_ma20": 0,
+          "volatility20": 0.3
+        },
+        {
+          "sector": "C",
+          "momentum5": 0,
+          "momentum20": 0,
+          "volume_ratio": 1,
+          "breadth_ma20": 0.5,
+          "volatility20": 0.25
+        }
+      ],
+      "expected": [
+        {
+          "linear": 1.2454540207051326,
+          "score01": 0.8072550921263779
+        },
+        {
+          "linear": -0.7139714495308298,
+          "score01": 0.30553717693382915
+        },
+        {
+          "linear": -0.5314825711743028,
+          "score01": 0.35178437999477663
+        }
+      ]
+    },
+    {
+      "name": "negative-regime",
+      "why": "An all-negative momentum cross-section still ranks relatively, not absolutely.",
+      "rows": [
+        {
+          "sector": "A",
+          "momentum5": -0.02,
+          "momentum20": -0.05,
+          "volume_ratio": 1.4,
+          "breadth_ma20": 0.3333333333333333,
+          "volatility20": 0.42
+        },
+        {
+          "sector": "B",
+          "momentum5": -0.08,
+          "momentum20": -0.14,
+          "volume_ratio": 0.7,
+          "breadth_ma20": 0,
+          "volatility20": 0.61
+        },
+        {
+          "sector": "C",
+          "momentum5": -0.11,
+          "momentum20": -0.09,
+          "volume_ratio": 1,
+          "breadth_ma20": 0,
+          "volatility20": 0.55
+        },
+        {
+          "sector": "D",
+          "momentum5": -0.005,
+          "momentum20": -0.02,
+          "volume_ratio": 1.9,
+          "breadth_ma20": 0.6666666666666666,
+          "volatility20": 0.33
+        }
+      ],
+      "expected": [
+        {
+          "linear": 0.5447173241103215,
+          "score01": 0.6516783829699054
+        },
+        {
+          "linear": -0.9683004994172475,
+          "score01": 0.24721047497113866
+        },
+        {
+          "linear": -0.7876547461187635,
+          "score01": 0.2878594490565971
+        },
+        {
+          "linear": 1.2112379214256899,
+          "score01": 0.8010585706280718
+        }
+      ]
+    }
+  ]
+}

@@ -2,122 +2,28 @@
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 const { DEFAULT_SECTORS } = require('../sectorRadar');
 const { DEFAULT_COSTS, backtestRotation } = require('../rotationBacktest');
+// This script used to carry a third copy of the TWSE client, which could not
+// follow the 307s TWSE returns while migrating endpoints under /rwd/. Use the
+// hardened one instead; the endpoints and parsing are identical, so the v0.3
+// report it regenerates is unchanged.
+const {
+  monthKeys,
+  mapLimit,
+  fetchStockHistory,
+  fetchTaiexHistory,
+} = require('./twseData');
 
 const ROOT = path.join(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'data', 'backtests');
 const JSON_PATH = path.join(OUT_DIR, 'rotation_v0.3.json');
 const MD_PATH = path.join(OUT_DIR, 'rotation_v0.3.md');
 
-function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
-function fetchJSON(url, attempts = 3) {
-  return new Promise((resolve, reject) => {
-    const req = https.get(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0 STOCK-v0.3-backtest', Accept: 'application/json' },
-    }, res => {
-      let body = '';
-      res.on('data', chunk => { body += chunk; });
-      res.on('end', async () => {
-        try {
-          if (res.statusCode < 200 || res.statusCode >= 300) throw new Error(`HTTP ${res.statusCode}`);
-          resolve(JSON.parse(body));
-        } catch (error) {
-          if (attempts > 1) {
-            await sleep(800);
-            try { resolve(await fetchJSON(url, attempts - 1)); } catch (retry) { reject(retry); }
-          } else reject(error);
-        }
-      });
-    });
-    req.on('error', async error => {
-      if (attempts > 1) {
-        await sleep(800);
-        try { resolve(await fetchJSON(url, attempts - 1)); } catch (retry) { reject(retry); }
-      } else reject(error);
-    });
-    req.setTimeout(20000, () => req.destroy(new Error('request timeout')));
-  });
-}
-
-function parseRocDate(value) {
-  const [y, m, d] = String(value).split('/');
-  return y && m && d ? `${Number(y) + 1911}-${m}-${d}` : null;
-}
-
-function monthKeys(count = 28) {
-  const now = new Date();
-  return Array.from({ length: count }, (_, i) => {
-    const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1));
-    return `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, '0')}01`;
-  }).reverse();
-}
-
-async function fetchStockHistory(symbol, months) {
-  const rows = [];
-  for (const dateKey of months) {
-    try {
-      const url = `https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&date=${dateKey}&stockNo=${symbol}`;
-      const data = await fetchJSON(url);
-      if (data.stat === 'OK' && Array.isArray(data.data)) {
-        for (const row of data.data) {
-          const date = parseRocDate(row[0]);
-          if (!date) continue;
-          rows.push({
-            date,
-            volume: Number(String(row[1]).replace(/,/g, '')),
-            open: Number(String(row[3]).replace(/,/g, '')),
-            high: Number(String(row[4]).replace(/,/g, '')),
-            low: Number(String(row[5]).replace(/,/g, '')),
-            close: Number(String(row[6]).replace(/,/g, '')),
-          });
-        }
-      }
-    } catch (error) {
-      console.warn(`[${symbol}] ${dateKey}: ${error.message}`);
-    }
-    await sleep(90);
-  }
-  const unique = new Map(rows.filter(r => Number.isFinite(r.open) && Number.isFinite(r.close)).map(r => [r.date, r]));
-  return [...unique.values()].sort((a, b) => a.date.localeCompare(b.date));
-}
-
-async function fetchTaiexHistory(months) {
-  const rows = [];
-  for (const dateKey of months) {
-    try {
-      const url = `https://www.twse.com.tw/exchangeReport/FMTQIK?response=json&date=${dateKey}`;
-      const data = await fetchJSON(url);
-      if (data.stat === 'OK' && Array.isArray(data.data)) {
-        for (const row of data.data) {
-          const date = parseRocDate(row[0]);
-          const index = Number(String(row[4]).replace(/,/g, ''));
-          if (date && Number.isFinite(index)) rows.push({ date, index });
-        }
-      }
-    } catch (error) {
-      console.warn(`[TAIEX] ${dateKey}: ${error.message}`);
-    }
-    await sleep(90);
-  }
-  const unique = new Map(rows.map(r => [r.date, r]));
-  return [...unique.values()].sort((a, b) => a.date.localeCompare(b.date));
-}
-
-async function mapLimit(items, limit, worker) {
-  const results = new Array(items.length);
-  let cursor = 0;
-  async function run() {
-    while (cursor < items.length) {
-      const i = cursor++;
-      results[i] = await worker(items[i], i);
-    }
-  }
-  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, run));
-  return results;
-}
+// Per-process rate budget, same reasoning as scripts/shadowRunner.js: twseData
+// spaces requests to stay under ~3 req/s, and running symbols in parallel
+// multiplies that. The previous 4 workers here put this at ~10 req/s.
+const FETCH_CONCURRENCY = 1;
 
 function subtractYears(isoDate, years) {
   const d = new Date(`${isoDate}T00:00:00Z`);
@@ -214,7 +120,7 @@ async function main() {
 
   const symbols = [...new Set(Object.values(DEFAULT_SECTORS).flat())];
   console.log(`Fetching ${symbols.length} stocks...`);
-  const histories = await mapLimit(symbols, 4, async symbol => {
+  const histories = await mapLimit(symbols, FETCH_CONCURRENCY, async symbol => {
     const rows = await fetchStockHistory(symbol, months);
     console.log(`${symbol}: ${rows.length} rows`);
     return [symbol, rows];

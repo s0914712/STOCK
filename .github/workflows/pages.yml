@@ -6,7 +6,7 @@ on:
     - cron: '40 8 * * 1-5' # 16:40 Asia/Taipei, after the 16:20 official snapshot refresh
   push:
     branches:
-      - claude/taiwan-stock-dashboard-AsiJO
+      - main
     paths:
       - 'public/research-dashboard.html'
       - 'public/research-dashboard.css'

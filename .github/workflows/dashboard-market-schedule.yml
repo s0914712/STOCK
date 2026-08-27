@@ -6,7 +6,7 @@ on:
     - cron: '20 8 * * 1-5' # 16:20 Asia/Taipei
   push:
     branches:
-      - claude/taiwan-stock-dashboard-AsiJO
+      - main
     paths:
       - '.github/workflows/dashboard-market-schedule.yml'
       - 'scripts/twseOpenApi.js'

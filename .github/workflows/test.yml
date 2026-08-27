@@ -13,8 +13,15 @@ jobs:
         with:
           node-version: '20'
           cache: npm
+      # The baseline parity test imports only baselineScore.py, which is
+      # stdlib-only, so this needs no pip install and adds a few seconds.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - run: npm ci
       - run: npm test
+      - name: Champion baseline parity (Python side)
+        run: python3 test/baselineParity.test.py
       - name: Validate research dashboard JavaScript
         run: node --check public/research-dashboard.js
       - name: Validate dashboard JSON inputs
