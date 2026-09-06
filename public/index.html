@@ -65,7 +65,87 @@
       </div>
     </section>
 
-    <!-- Section 5: Sector Radar -->
+    <!-- Section 5: Taiwan Fear & Greed methodology -->
+    <section class="panel sentiment-panel" id="fear-greed-panel" aria-labelledby="fear-greed-title">
+      <div class="sentiment-heading">
+        <div>
+          <p class="sentiment-kicker">MARKET SENTIMENT / 9 SIGNALS</p>
+          <h2 id="fear-greed-title">台灣恐懼與貪婪指數</h2>
+          <p class="description">以跨市場訊號的共識判讀情緒，觀察多個面向是否同時走向極端，而不是用單日漲跌替市場貼標籤。</p>
+        </div>
+        <div class="sentiment-count" aria-label="九個交叉訊號">
+          <strong>9</strong>
+          <span>交叉訊號</span>
+        </div>
+      </div>
+
+      <div class="sentiment-live" id="fear-greed-live" aria-live="polite" data-state="loading">
+        <div class="sentiment-live-score">
+          <span id="fear-greed-score">—</span>
+          <small>/ 100</small>
+        </div>
+        <div class="sentiment-live-copy">
+          <strong id="fear-greed-label">正在讀取每日快照</strong>
+          <span id="fear-greed-asof">資料日期：—</span>
+          <span id="fear-greed-coverage">訊號涵蓋：— / 9</span>
+        </div>
+        <div class="sentiment-live-meter" role="img" aria-label="恐懼與貪婪指數位置">
+          <span id="fear-greed-marker"></span>
+        </div>
+      </div>
+
+      <div class="sentiment-spectrum" aria-label="情緒由恐懼、中性到貪婪的判讀光譜">
+        <span>恐懼</span>
+        <div class="sentiment-spectrum-track" aria-hidden="true"><i></i></div>
+        <span>中性</span>
+        <div class="sentiment-spectrum-track hot" aria-hidden="true"><i></i></div>
+        <span>貪婪</span>
+      </div>
+
+      <ol class="sentiment-principles">
+        <li>
+          <span class="sentiment-number" aria-hidden="true">01</span>
+          <div>
+            <h3>透過九個訊號解讀台灣市場情緒</h3>
+            <p>綜合選擇權波動率、賣權／買權比率、美元／新台幣匯率、融資維持率代理值、境外機構期貨持倉、市場廣度、融券／融資餘額比、指數動量與有效交易帳戶，涵蓋避險需求、槓桿、資金流動、價格延伸及市場參與度。</p>
+          </div>
+        </li>
+        <li>
+          <span class="sentiment-number" aria-hidden="true">02</span>
+          <div>
+            <h3>關注極端情況，而非日常波動</h3>
+            <p>低分代表避險、空頭壓力與資金流出同步增強；高分代表追價、槓桿與市場廣度同步擴張。真正值得注意的是多個訊號同時靠近極端區，而非單一訊號短暫跳動。</p>
+          </div>
+        </li>
+        <li>
+          <span class="sentiment-number" aria-hidden="true">03</span>
+          <div>
+            <h3>利用交叉訊號共識對抗本能</h3>
+            <p>單一指標容易誤讀；把散戶槓桿、機構資金流、外匯壓力、價格動能與參與度放進同一套規則，能降低單日新聞對判斷的干擾，避免在恐慌時追殺、過熱時追高。</p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="sentiment-signal-heading">
+        <h3>九項訊號</h3>
+        <span>每項先標準化，再觀察整體共識</span>
+      </div>
+      <ul class="sentiment-signal-grid" aria-label="台灣恐懼與貪婪指數九項訊號">
+        <li data-sentiment-signal="option-volatility"><strong>選擇權波動率</strong><span>預期波動與避險需求</span></li>
+        <li data-sentiment-signal="put-call-ratio"><strong>賣權／買權比率</strong><span>Put/Call 未平倉與避險偏好</span></li>
+        <li data-sentiment-signal="usd-twd"><strong>美元／新台幣匯率</strong><span>外匯壓力與資金流向</span></li>
+        <li data-sentiment-signal="margin-maintenance"><strong>融資維持率代理值</strong><span>由公開融資餘額與市值推導</span></li>
+        <li data-sentiment-signal="foreign-futures"><strong>境外機構期貨持倉</strong><span>外資衍生性商品風險偏好</span></li>
+        <li data-sentiment-signal="market-breadth"><strong>市場廣度</strong><span>上漲參與是否擴散</span></li>
+        <li data-sentiment-signal="margin-short-ratio"><strong>融券／融資餘額比</strong><span>市場信用交易的相對空頭壓力</span></li>
+        <li data-sentiment-signal="index-momentum"><strong>指數動量</strong><span>價格趨勢與延伸程度</span></li>
+        <li data-sentiment-signal="active-accounts"><strong>有效交易帳戶</strong><span>市場參與熱度</span></li>
+      </ul>
+
+      <p class="sentiment-method-note"><strong>方法提醒</strong>：實驗版 v0.1 將九項訊號依公開且固定的恐懼／貪婪錨點轉成 0–100 分，再採等權平均。資料未齊時不發布綜合分數；每項原始值、日期、來源及公式都保留在每日快照中。</p>
+    </section>
+
+    <!-- Section 6: Sector Radar -->
     <section class="panel" id="sector-radar-panel">
       <h2>🧭 類股輪動雷達</h2>
       <p class="description">以台股代表股的 5/20 日動能、量能、MA20 廣度與波動度建立 cross-sectional baseline，先做可驗證的相對強弱排名。</p>
@@ -73,7 +153,7 @@
       <div id="sector-radar-result" class="result-area"></div>
     </section>
 
-    <!-- Section 6: Multi-Agent AI Suggestion -->
+    <!-- Section 7: Multi-Agent AI Suggestion -->
     <section class="panel" id="agent-panel">
       <h2>🤖 AI 多智能體分析建議</h2>
       <p class="description">由 Claude + Gemini 多個 AI 角色（基本面、技術面、情緒面、總經分析師 + 多空研究員 + 交易員）進行辯論後產生投資建議</p>
@@ -95,5 +175,6 @@
 
   <script src="app.js"></script>
   <script src="sector-radar.js"></script>
+  <script src="fear-greed.js"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@ name: Daily Market Dashboard Refresh
 on:
   workflow_dispatch:
   schedule:
-    - cron: '20 8 * * 1-5' # 16:20 Asia/Taipei
+    - cron: '30 10 * * 1-5' # 18:30 Asia/Taipei; allow TWSE/TAIFEX end-of-day files to settle
   push:
     branches:
       - main
@@ -12,9 +12,13 @@ on:
       - 'scripts/twseOpenApi.js'
       - 'scripts/runDashboardMarketSnapshot.js'
       - 'scripts/runFactorResearch.js'
+      - 'scripts/runFearGreedDaily.js'
+      - 'scripts/fearGreedSources.js'
+      - 'fearGreedIndex.js'
       - 'factorResearch.js'
       - 'test/twseOpenApi.test.js'
       - 'test/factorResearch.test.js'
+      - 'test/fearGreedIndex.test.js'
       - 'package.json'
       - 'package-lock.json'
 
@@ -42,6 +46,8 @@ jobs:
         run: npm run snapshot:openapi
       - name: Build point-in-time factor research
         run: npm run research:factors
+      - name: Build Taiwan Fear and Greed snapshot
+        run: npm run sentiment:daily
       - name: Publish official snapshot and forward research ledgers
         shell: bash
         run: |
@@ -53,7 +59,9 @@ jobs:
             data/dashboard/openapi_forward.jsonl \
             data/dashboard/sector_representatives_latest.json \
             data/dashboard/factor_research_latest.json \
-            data/dashboard/factor_forward.jsonl
+            data/dashboard/factor_forward.jsonl \
+            data/dashboard/fear_greed_latest.json \
+            data/dashboard/fear_greed_history.jsonl
           if [ -f data/dashboard/factor_outcomes.jsonl ]; then
             git add data/dashboard/factor_outcomes.jsonl
           fi

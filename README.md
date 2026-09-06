@@ -258,7 +258,7 @@ Python 那份只依賴標準函式庫，所以 parity 測試不需要安裝 nump
 | `sector-shadow.yml` | `30 7 * * 1-5` | 平日 15:30 | Daily Shadow inference + mature scoring |
 | `ml-challenger-train.yml` | `0 2 * * 0` | 週日 10:00 | 重新訓練 Baseline calibrator、LightGBM、XGBoost |
 | `weekly-research.yml` | `0 1 * * 6` | **週六 09:00** | 抓一次 TWSE 資料，跑 0050 對決 + v0.5 robustness sweep |
-| `dashboard-market-schedule.yml` | `20 8 * * 1-5` | 平日 16:20 | 七端點官方快照 + 因子排名 + matured OOS scoring |
+| `dashboard-market-schedule.yml` | `30 10 * * 1-5` | 平日 18:30 | 七端點官方快照 + 因子排名 + matured OOS scoring + 台灣恐懼與貪婪九訊號快照 |
 
 `weekly-research.yml` 是唯一會自動抓資料做策略比較的排程。它刻意**只抓一次**：
 
@@ -272,6 +272,8 @@ Python 那份只依賴標準函式庫，所以 parity 測試不需要安裝 nump
 > **注意：** GitHub 的 scheduled workflow 只會從 **default branch** 執行，`push:` trigger 也已全部指向 `main`（`pages.yml`、`dashboard-market-schedule.yml`、`rotation-backtest.yml` 先前分別綁在兩個 feature branch 與一個已不存在的 branch 上）。因此 **`main` 必須是 repository 的 default branch，cron 才會啟動**；這是 repo owner 在 `Settings` → `General` → `Default branch` 做一次的設定。
 
 > 各 data workflow 仍然 push 回 `$GITHUB_REF_NAME`（自己執行所在的 branch），而不是寫死 `main`。這是刻意的：在 feature branch 上手動 `workflow_dispatch` 產生的資料留在該 branch，不會污染 `main`。
+
+台灣恐懼與貪婪指數可用 `npm run sentiment:daily` 手動重跑；來源、公式、固定錨點與資料缺漏規則詳見 [`docs/FEAR_GREED_INDEX.md`](docs/FEAR_GREED_INDEX.md)。
 
 GitHub Actions：
 
