@@ -1,7 +1,7 @@
 # Sector Rotation v0.5 — parameter robustness sweep
 
-Generated: 2026-09-05T05:20:13.812Z
-Data snapshot: 2026-09-05T05:19:41.083Z (cached TWSE snapshot)
+Generated: 2026-09-12T05:30:30.537Z
+Data snapshot: 2026-09-12T05:30:01.876Z (cached TWSE snapshot)
 
 ## Why this report exists
 
@@ -31,74 +31,74 @@ changes.
 
 | Family | Members | Median CAGR | Min CAGR | Max CAGR | CAGR spread | Median Calmar | Worst Calmar | Worst DD | Both halves positive |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|:--:|
-| ma60-exit/top2/vol-scaled | 4 | 33.80% | 28.27% | 40.17% | 11.90% | 1.70 | 1.11 | -25.53% | yes |
-| ma60-exit/top1/vol-scaled | 4 | 43.00% | 32.14% | 58.97% | 26.83% | 1.54 | 1.07 | -30.03% | yes |
-| ma60-exit/top1/fixed-pct | 3 | 36.16% | 35.45% | 38.34% | 2.89% | 1.28 | 1.21 | -29.84% | yes |
-| ma60-block/top2/vol-scaled | 4 | 39.17% | 32.67% | 43.95% | 11.28% | 1.14 | 0.97 | -36.35% | yes |
-| ma120-exit/top1/vol-scaled | 4 | 43.73% | 38.99% | 65.98% | 26.99% | 1.13 | 0.76 | -51.15% | no |
-| ma60-exit/top2/fixed-pct | 3 | 27.94% | 26.91% | 28.16% | 1.25% | 1.08 | 1.05 | -26.89% | yes |
-| ma120-exit/top2/vol-scaled | 4 | 38.98% | 29.62% | 47.13% | 17.51% | 1.08 | 1.03 | -36.76% | no |
-| ma60-block/top1/vol-scaled | 4 | 41.66% | 20.78% | 50.50% | 29.71% | 0.95 | 0.49 | -49.44% | no |
-| none/top2/vol-scaled | 4 | 36.80% | 26.26% | 44.41% | 18.15% | 0.83 | 0.54 | -48.68% | no |
-| none/top1/fixed-pct | 3 | 45.61% | 9.89% | 48.94% | 39.05% | 0.83 | 0.20 | -59.27% | no |
-| ma60-block/top2/fixed-pct | 3 | 30.28% | 23.26% | 31.64% | 8.37% | 0.74 | 0.63 | -41.03% | yes |
-| ma120-exit/top1/fixed-pct | 3 | 27.78% | 18.33% | 45.60% | 27.27% | 0.69 | 0.44 | -41.51% | no |
-| ma120-exit/top2/fixed-pct | 3 | 23.59% | 22.88% | 31.98% | 9.10% | 0.67 | 0.67 | -35.44% | no |
-| ma60-block/top1/fixed-pct | 3 | 28.34% | 16.37% | 38.82% | 22.45% | 0.57 | 0.32 | -50.71% | no |
-| none/top2/fixed-pct | 3 | 28.35% | 25.51% | 46.09% | 20.58% | 0.56 | 0.53 | -50.26% | yes |
-| none/top1/vol-scaled | 4 | 28.76% | 20.20% | 41.32% | 21.12% | 0.54 | 0.36 | -66.27% | no |
+| ma60-exit/top2/vol-scaled | 4 | 36.27% | 30.63% | 42.75% | 12.12% | 1.83 | 1.20 | -25.53% | yes |
+| ma60-exit/top1/vol-scaled | 4 | 44.26% | 33.31% | 60.38% | 27.07% | 1.58 | 1.11 | -30.03% | yes |
+| ma60-exit/top1/fixed-pct | 3 | 37.36% | 36.65% | 39.56% | 2.91% | 1.33 | 1.25 | -29.84% | yes |
+| ma120-exit/top2/vol-scaled | 4 | 38.17% | 28.25% | 45.39% | 17.14% | 1.23 | 1.04 | -33.94% | no |
+| ma60-exit/top2/fixed-pct | 3 | 30.29% | 27.98% | 30.52% | 2.54% | 1.17 | 1.14 | -26.89% | yes |
+| ma60-block/top2/vol-scaled | 4 | 38.36% | 32.46% | 43.63% | 11.17% | 1.13 | 0.93 | -36.23% | yes |
+| ma120-exit/top1/vol-scaled | 4 | 43.26% | 40.01% | 67.43% | 27.42% | 1.11 | 0.78 | -51.26% | no |
+| ma60-block/top1/vol-scaled | 4 | 41.08% | 21.02% | 51.73% | 30.71% | 0.98 | 0.50 | -49.55% | no |
+| none/top1/fixed-pct | 3 | 46.80% | 10.81% | 50.45% | 39.63% | 0.92 | 0.22 | -55.11% | no |
+| none/top2/vol-scaled | 4 | 34.65% | 25.73% | 42.78% | 17.06% | 0.80 | 0.57 | -45.80% | no |
+| ma120-exit/top2/fixed-pct | 3 | 22.49% | 20.49% | 32.59% | 12.10% | 0.74 | 0.70 | -30.30% | no |
+| none/top2/fixed-pct | 3 | 30.67% | 22.39% | 42.55% | 20.16% | 0.74 | 0.49 | -45.41% | no |
+| ma60-block/top2/fixed-pct | 3 | 29.53% | 23.57% | 29.82% | 6.26% | 0.73 | 0.67 | -40.99% | yes |
+| ma120-exit/top1/fixed-pct | 3 | 27.99% | 16.40% | 48.12% | 31.71% | 0.69 | 0.39 | -41.64% | no |
+| ma60-block/top1/fixed-pct | 3 | 28.34% | 14.47% | 39.99% | 25.52% | 0.58 | 0.29 | -50.71% | yes |
+| none/top1/vol-scaled | 4 | 29.42% | 21.18% | 39.10% | 17.91% | 0.55 | 0.38 | -66.34% | no |
 
 ## Best fifteen configurations by Calmar
 
 | Config | Net return | CAGR | Max DD | Calmar | Sharpe | Trades | Exposure | Years > TAIEX |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| ma60-exit/top1/vol-3 | 833.02% | 58.97% | -27.58% | 2.14 | 1.66 | 64 | 67.13% | 5/6 |
-| ma60-exit/top2/vol-3 | 408.74% | 40.17% | -19.17% | 2.10 | 1.59 | 121 | 66.52% | 5/6 |
-| ma60-exit/top2/vol-4 | 384.32% | 38.75% | -19.06% | 2.03 | 1.55 | 107 | 66.52% | 6/6 |
-| ma120-exit/top1/vol-4 | 1048.32% | 65.98% | -37.22% | 1.77 | 1.61 | 52 | 75.37% | 3/6 |
-| ma60-exit/top1/vol-4 | 544.14% | 47.21% | -29.46% | 1.60 | 1.37 | 58 | 67.22% | 5/6 |
-| ma120-exit/top2/vol-4 | 542.45% | 47.13% | -29.98% | 1.57 | 1.59 | 94 | 74.75% | 4/6 |
-| ma60-exit/top1/vol-5 | 385.17% | 38.80% | -26.29% | 1.48 | 1.25 | 53 | 67.05% | 4/6 |
-| ma60-exit/top1/fixed-08 | 377.52% | 38.34% | -26.29% | 1.46 | 1.26 | 59 | 67.46% | 4/6 |
-| ma60-exit/top2/vol-6 | 239.26% | 28.86% | -20.99% | 1.37 | 1.30 | 94 | 66.89% | 5/6 |
-| ma60-block/top2/vol-6 | 460.69% | 43.03% | -32.29% | 1.33 | 1.45 | 48 | 83.32% | 3/6 |
-| none/top1/fixed-10 | 511.08% | 45.61% | -34.67% | 1.32 | 1.32 | 31 | 99.01% | 4/6 |
-| ma60-exit/top1/fixed-12 | 331.37% | 35.45% | -27.61% | 1.28 | 1.17 | 50 | 67.22% | 3/6 |
-| ma60-block/top1/vol-3 | 511.98% | 45.65% | -35.58% | 1.28 | 1.36 | 40 | 79.49% | 2/6 |
-| ma60-block/top2/vol-4 | 478.35% | 43.95% | -34.62% | 1.27 | 1.53 | 68 | 79.86% | 4/6 |
-| ma60-exit/top2/fixed-08 | 215.22% | 26.91% | -22.00% | 1.22 | 1.23 | 109 | 66.80% | 4/6 |
+| ma60-exit/top2/vol-3 | 455.47% | 42.75% | -19.17% | 2.23 | 1.67 | 118 | 66.60% | 5/6 |
+| ma60-exit/top1/vol-3 | 873.39% | 60.38% | -27.58% | 2.19 | 1.69 | 63 | 67.30% | 5/6 |
+| ma60-exit/top2/vol-4 | 428.80% | 41.30% | -19.06% | 2.17 | 1.63 | 104 | 66.60% | 6/6 |
+| ma120-exit/top1/vol-4 | 1097.72% | 67.43% | -37.22% | 1.81 | 1.64 | 52 | 75.37% | 3/6 |
+| ma60-exit/top1/vol-4 | 572.00% | 48.51% | -29.46% | 1.65 | 1.40 | 57 | 67.38% | 6/6 |
+| ma120-exit/top2/vol-4 | 506.72% | 45.39% | -29.21% | 1.55 | 1.55 | 94 | 74.67% | 4/6 |
+| ma60-exit/top1/vol-5 | 406.16% | 40.02% | -26.29% | 1.52 | 1.28 | 52 | 67.22% | 4/6 |
+| ma60-exit/top1/fixed-08 | 398.18% | 39.56% | -26.29% | 1.51 | 1.29 | 58 | 67.63% | 4/6 |
+| ma60-exit/top2/vol-6 | 270.42% | 31.23% | -20.99% | 1.49 | 1.38 | 91 | 66.97% | 5/6 |
+| ma120-exit/top2/vol-5 | 384.74% | 38.77% | -28.67% | 1.35 | 1.42 | 85 | 74.30% | 4/6 |
+| ma60-block/top2/vol-6 | 472.10% | 43.63% | -32.30% | 1.35 | 1.48 | 48 | 82.13% | 3/6 |
+| ma120-exit/top2/fixed-08 | 289.15% | 32.59% | -24.17% | 1.35 | 1.32 | 86 | 74.01% | 3/6 |
+| none/top1/fixed-10 | 535.58% | 46.80% | -34.81% | 1.34 | 1.35 | 31 | 99.01% | 4/6 |
+| ma60-exit/top1/fixed-12 | 350.04% | 36.65% | -27.61% | 1.33 | 1.20 | 49 | 67.38% | 3/6 |
+| ma120-exit/top1/fixed-08 | 563.53% | 48.12% | -37.46% | 1.28 | 1.34 | 49 | 75.29% | 3/6 |
 
 ## Half-sample stability
 
 A configuration that only works in one half of the window is not a strategy.
 
-Split at 2024-03-11.
+Split at 2024-03-18.
 
 | Config | H1 return | H1 excess | H2 return | H2 excess |
 |---|---:|---:|---:|---:|
-| ma60-exit/top1/vol-3 | 86.89% | 74.14% | 401.50% | 265.51% |
-| ma60-exit/top2/vol-3 | 38.26% | 25.50% | 289.82% | 153.83% |
-| ma60-exit/top2/vol-4 | 37.64% | 24.89% | 268.94% | 132.95% |
-| ma120-exit/top1/vol-4 | 57.88% | 45.13% | 654.46% | 518.48% |
-| ma60-exit/top1/vol-4 | 44.03% | 31.28% | 349.26% | 213.27% |
-| ma120-exit/top2/vol-4 | 47.52% | 34.77% | 361.86% | 225.87% |
-| ma60-exit/top1/vol-5 | 21.22% | 8.47% | 232.66% | 96.67% |
-| ma60-exit/top1/fixed-08 | 23.97% | 11.22% | 287.02% | 151.03% |
-| ma60-exit/top2/vol-6 | 16.41% | 3.66% | 189.57% | 53.59% |
-| ma60-block/top2/vol-6 | 9.06% | -3.69% | 404.85% | 268.86% |
-| none/top1/fixed-10 | 118.25% | 105.50% | 183.85% | 47.86% |
-| ma60-exit/top1/fixed-12 | 6.13% | -6.62% | 213.54% | 77.55% |
-| ma60-block/top1/vol-3 | 98.45% | 85.70% | 209.78% | 73.79% |
-| ma60-block/top2/vol-4 | 61.35% | 48.60% | 272.45% | 136.46% |
-| ma60-exit/top2/fixed-08 | 9.18% | -3.57% | 203.08% | 67.09% |
+| ma60-exit/top2/vol-3 | 47.72% | 33.77% | 284.98% | 152.66% |
+| ma60-exit/top1/vol-3 | 92.01% | 78.06% | 426.58% | 294.26% |
+| ma60-exit/top2/vol-4 | 44.88% | 30.93% | 265.20% | 132.88% |
+| ma120-exit/top1/vol-4 | 46.99% | 33.04% | 708.09% | 575.77% |
+| ma60-exit/top1/vol-4 | 47.97% | 34.03% | 366.06% | 233.74% |
+| ma120-exit/top2/vol-4 | 44.36% | 30.41% | 335.58% | 203.26% |
+| ma60-exit/top1/vol-5 | 37.54% | 23.59% | 267.03% | 134.71% |
+| ma60-exit/top1/fixed-08 | 27.37% | 13.42% | 332.20% | 199.88% |
+| ma60-exit/top2/vol-6 | 29.20% | 15.25% | 190.98% | 58.66% |
+| ma120-exit/top2/vol-5 | -2.52% | -16.47% | 388.33% | 256.01% |
+| ma60-block/top2/vol-6 | 14.79% | 0.84% | 394.58% | 262.26% |
+| ma120-exit/top2/fixed-08 | 40.55% | 26.60% | 187.48% | 55.16% |
+| none/top1/fixed-10 | 121.16% | 107.21% | 223.35% | 91.03% |
+| ma60-exit/top1/fixed-12 | 20.42% | 6.47% | 272.74% | 140.42% |
+| ma120-exit/top1/fixed-08 | 68.19% | 54.24% | 295.97% | 163.65% |
 
 ## v0.4 incumbents, same measurement
 
 | Config | Net return | CAGR | Max DD | Calmar | Years > TAIEX |
 |---|---:|---:|---:|---:|---:|
-| v0.4 fixed 20/20 | 183.84% | 24.18% | -60.29% | 0.40 | 2/6 |
-| v0.4 TP20 + trail 8% | 581.43% | 48.94% | -59.27% | 0.83 | 3/6 |
-| v0.4 TP20 + trail 10% | 511.08% | 45.61% | -34.67% | 1.32 | 4/6 |
+| v0.4 fixed 20/20 | 179.57% | 23.79% | -60.30% | 0.39 | 2/6 |
+| v0.4 TP20 + trail 8% | 615.36% | 50.45% | -55.11% | 0.92 | 3/6 |
+| v0.4 TP20 + trail 10% | 535.58% | 46.80% | -34.81% | 1.34 | 4/6 |
 
 ## Promotion decision
 
@@ -111,12 +111,12 @@ Selected as the median parameter of the most robust family. This is a forward-sh
 | Family | Reasons |
 |---|---|
 | ma60-block/top1/vol-scaled | worst-member Calmar below 0.5 |
-| none/top1/fixed-pct | CAGR spread 39.0pp exceeds 35pp; worst-member Calmar below 0.5 |
+| none/top1/fixed-pct | CAGR spread 39.6pp exceeds 35pp; worst-member Calmar below 0.5 |
+| ma120-exit/top2/fixed-pct | median Calmar below 0.8 |
+| none/top2/fixed-pct | worst-member Calmar below 0.5; median Calmar below 0.8 |
 | ma60-block/top2/fixed-pct | median Calmar below 0.8 |
 | ma120-exit/top1/fixed-pct | worst-member Calmar below 0.5; median Calmar below 0.8 |
-| ma120-exit/top2/fixed-pct | median Calmar below 0.8 |
 | ma60-block/top1/fixed-pct | worst-member Calmar below 0.5; median Calmar below 0.8 |
-| none/top2/fixed-pct | median Calmar below 0.8 |
 | none/top1/vol-scaled | worst-member Calmar below 0.5; median Calmar below 0.8 |
 
 ## Gate thresholds
