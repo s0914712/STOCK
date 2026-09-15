@@ -1,9 +1,9 @@
 {
   "version": "v0.3.1",
   "latestPrediction": {
-    "id": "2026-09-14:sector-challenger-v0.3.1",
-    "generatedAt": "2026-09-14T14:19:26.157038+00:00",
-    "asOf": "2026-09-14",
+    "id": "2026-09-15:sector-challenger-v0.3.1",
+    "generatedAt": "2026-09-15T12:48:02.685491+00:00",
+    "asOf": "2026-09-15",
     "version": "v0.3.1",
     "target": "P(5d sector return > 5d TAIEX return)",
     "models": [
@@ -16,60 +16,60 @@
     "sectors": [
       {
         "sector": "半導體",
-        "baselineRawScore": 0.6292899803652823,
-        "baseline": 0.44671595459606384,
-        "lightgbm": 0.06665232876927336,
-        "xgboost": 0.17056851089000702,
+        "baselineRawScore": 0.6135852438003548,
+        "baseline": 0.44616430760710113,
+        "lightgbm": 0.07871834463561557,
+        "xgboost": 0.19537247717380524,
         "baselineRank": 2,
         "lightgbmRank": 6,
         "xgboostRank": 6
       },
       {
         "sector": "AI伺服器",
-        "baselineRawScore": 0.4159107583710675,
-        "baseline": 0.43923253579349486,
-        "lightgbm": 0.6220382112325179,
-        "xgboost": 0.585109293460846,
-        "baselineRank": 5,
+        "baselineRawScore": 0.5459030997518095,
+        "baseline": 0.44378842772528404,
+        "lightgbm": 0.5467330646227039,
+        "xgboost": 0.48885050415992737,
+        "baselineRank": 3,
         "lightgbmRank": 1,
         "xgboostRank": 2
       },
       {
         "sector": "PCB",
-        "baselineRawScore": 0.42451416916851575,
-        "baseline": 0.4395337552412906,
-        "lightgbm": 0.5571260448215574,
-        "xgboost": 0.5294930934906006,
-        "baselineRank": 4,
-        "lightgbmRank": 3,
+        "baselineRawScore": 0.30390379452819827,
+        "baseline": 0.43531515270602944,
+        "lightgbm": 0.30671305379552866,
+        "xgboost": 0.4596444070339203,
+        "baselineRank": 5,
+        "lightgbmRank": 4,
         "xgboostRank": 3
       },
       {
         "sector": "金融",
-        "baselineRawScore": 0.7689172389582505,
-        "baseline": 0.45162613975732546,
-        "lightgbm": 0.32385515685784483,
-        "xgboost": 0.31674328446388245,
+        "baselineRawScore": 0.7521978751874173,
+        "baseline": 0.4510376644370078,
+        "lightgbm": 0.35547843704509136,
+        "xgboost": 0.40062880516052246,
         "baselineRank": 1,
-        "lightgbmRank": 4,
+        "lightgbmRank": 3,
         "xgboostRank": 4
       },
       {
         "sector": "航運",
-        "baselineRawScore": 0.5775720629543596,
-        "baseline": 0.44489980579970323,
-        "lightgbm": 0.25280394719219074,
-        "xgboost": 0.2137993723154068,
-        "baselineRank": 3,
+        "baselineRawScore": 0.5293460570474607,
+        "baseline": 0.443207604554582,
+        "lightgbm": 0.09451790932527268,
+        "xgboost": 0.23914533853530884,
+        "baselineRank": 4,
         "lightgbmRank": 5,
         "xgboostRank": 5
       },
       {
         "sector": "電子零組件",
-        "baselineRawScore": 0.19776192441476756,
-        "baseline": 0.43161032825411216,
-        "lightgbm": 0.5971763597802444,
-        "xgboost": 0.6254379749298096,
+        "baselineRawScore": 0.2600612434222544,
+        "baseline": 0.4337839519861693,
+        "lightgbm": 0.493282264593516,
+        "xgboost": 0.5340214371681213,
         "baselineRank": 6,
         "lightgbmRank": 2,
         "xgboostRank": 1
@@ -77,30 +77,30 @@
     ]
   },
   "latestScore": {
-    "id": "2026-09-07:sector-challenger-v0.3.1",
-    "asOf": "2026-09-07",
-    "targetDate": "2026-09-14",
+    "id": "2026-09-08:sector-challenger-v0.3.1",
+    "asOf": "2026-09-08",
+    "targetDate": "2026-09-15",
     "models": {
       "baseline": {
-        "brier": 0.24154442325332048,
-        "logloss": 0.676015922704441,
-        "rocAuc": 0.5,
+        "brier": 0.23565937824586877,
+        "logloss": 0.6641748139317882,
+        "rocAuc": 0.4,
         "top1Hit": 1,
         "top3HitRate": 0.6666666666666666
       },
       "lightgbm": {
-        "brier": 0.6357632542827488,
-        "logloss": 1.7770676009188675,
-        "rocAuc": 0.125,
-        "top1Hit": 0,
-        "top3HitRate": 0.3333333333333333
+        "brier": 0.43863163581346337,
+        "logloss": 1.3382180740263196,
+        "rocAuc": 0.4,
+        "top1Hit": 1,
+        "top3HitRate": 0.6666666666666666
       },
       "xgboost": {
-        "brier": 0.6061297553704675,
-        "logloss": 1.6718989458105042,
-        "rocAuc": 0.0,
-        "top1Hit": 0,
-        "top3HitRate": 0.3333333333333333
+        "brier": 0.492367824002702,
+        "logloss": 1.44752218999196,
+        "rocAuc": 0.4,
+        "top1Hit": 1,
+        "top3HitRate": 0.6666666666666666
       }
     },
     "winnerByBrier": "baseline",
@@ -108,68 +108,68 @@
       {
         "sector": "半導體",
         "outperformedTaiex": 1,
-        "sectorForward5": -0.026011211807481522,
-        "taiexForward5": -0.030928911152305005
+        "sectorForward5": -0.02763734445698666,
+        "taiexForward5": -0.033844891221416984
       },
       {
         "sector": "AI伺服器",
-        "outperformedTaiex": 0,
-        "sectorForward5": -0.051226872245858125,
-        "taiexForward5": -0.030928911152305005
+        "outperformedTaiex": 1,
+        "sectorForward5": -0.008694844815455275,
+        "taiexForward5": -0.033844891221416984
       },
       {
         "sector": "PCB",
         "outperformedTaiex": 1,
-        "sectorForward5": -0.010891466429964303,
-        "taiexForward5": -0.030928911152305005
+        "sectorForward5": -0.028509618503435547,
+        "taiexForward5": -0.033844891221416984
       },
       {
         "sector": "金融",
         "outperformedTaiex": 1,
-        "sectorForward5": 0.007672947405473751,
-        "taiexForward5": -0.030928911152305005
+        "sectorForward5": 0.0015266497613402041,
+        "taiexForward5": -0.033844891221416984
       },
       {
         "sector": "航運",
         "outperformedTaiex": 1,
-        "sectorForward5": 0.00824033001448543,
-        "taiexForward5": -0.030928911152305005
+        "sectorForward5": 0.015276221831012737,
+        "taiexForward5": -0.033844891221416984
       },
       {
         "sector": "電子零組件",
         "outperformedTaiex": 0,
-        "sectorForward5": -0.09962568680735066,
-        "taiexForward5": -0.030928911152305005
+        "sectorForward5": -0.06538794504630145,
+        "taiexForward5": -0.033844891221416984
       }
     ]
   },
   "performance": {
-    "scoredSnapshots": 20,
+    "scoredSnapshots": 21,
     "models": {
       "baseline": {
-        "meanBrier": 0.2544952774939201,
-        "meanLogloss": 0.702142607374846,
-        "meanRocAuc": 0.42319444444444443,
-        "top1HitRate": 0.3,
-        "meanTop3HitRate": 0.5333333333333334
+        "meanBrier": 0.25359832991067954,
+        "meanLogloss": 0.700334617210891,
+        "meanRocAuc": 0.42208994708994707,
+        "top1HitRate": 0.3333333333333333,
+        "meanTop3HitRate": 0.5396825396825398
       },
       "lightgbm": {
-        "meanBrier": 0.26774136791976516,
-        "meanLogloss": 0.7468923787573127,
-        "meanRocAuc": 0.5447222222222223,
-        "top1HitRate": 0.4,
-        "meanTop3HitRate": 0.55
+        "meanBrier": 0.27587899972422697,
+        "meanLogloss": 0.7750507451986939,
+        "meanRocAuc": 0.5378306878306879,
+        "top1HitRate": 0.42857142857142855,
+        "meanTop3HitRate": 0.5555555555555556
       },
       "xgboost": {
-        "meanBrier": 0.26923368056365526,
-        "meanLogloss": 0.7455673126463243,
-        "meanRocAuc": 0.5197222222222222,
-        "top1HitRate": 0.45,
-        "meanTop3HitRate": 0.5333333333333334
+        "meanBrier": 0.27985911596551466,
+        "meanLogloss": 0.7789937353770688,
+        "meanRocAuc": 0.514021164021164,
+        "top1HitRate": 0.47619047619047616,
+        "meanTop3HitRate": 0.5396825396825398
       }
     },
     "brierWins": {
-      "baseline": 10,
+      "baseline": 11,
       "lightgbm": 9,
       "xgboost": 1
     }
