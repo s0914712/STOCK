@@ -1,39 +1,41 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-23T15:08:29.001Z",
-  "tradingDate": "2026-09-22",
+  "generatedAt": "2026-09-24T15:22:13.043Z",
+  "tradingDate": "2026-09-23",
   "modelVersion": "tw-fear-greed-v0.1",
-  "status": "complete",
-  "score": 57.5,
-  "label": "貪婪",
+  "status": "partial",
+  "score": null,
+  "label": null,
   "coverage": {
-    "available": 9,
+    "available": 8,
     "total": 9,
-    "complete": true,
-    "missing": []
+    "complete": false,
+    "missing": [
+      "activeAccounts"
+    ]
   },
   "consensus": {
-    "extremeFear": 2,
+    "extremeFear": 1,
     "extremeGreed": 2
   },
   "signals": [
     {
       "key": "optionVolatility",
       "status": "ok",
-      "value": 22.05,
-      "asOf": "2026-09-22",
+      "value": 21.83,
+      "asOf": "2026-09-23",
       "source": "TAIFEX",
       "frequency": "daily",
       "sourceUrl": "https://www.taifex.com.tw/file/taifex/Dailydownload/vix/log2data_eng/202609new.txt",
       "components": {
-        "date": "2026-09-22",
-        "close": 22.05,
-        "lastMinuteAverage": 22.05
+        "date": "2026-09-23",
+        "close": 21.81,
+        "lastMinuteAverage": 21.83
       },
       "label": "選擇權波動率",
       "unit": "index",
       "description": "TAIFEX 臺指選擇權波動率最後一分鐘平均值",
-      "score": 59.8,
+      "score": 60.6,
       "anchors": {
         "fear": 40,
         "greed": 10
@@ -42,24 +44,24 @@
     {
       "key": "putCallRatio",
       "status": "ok",
-      "value": 87.33,
-      "asOf": "2026-09-22",
+      "value": 79.83,
+      "asOf": "2026-09-23",
       "source": "TAIFEX",
       "frequency": "daily",
       "sourceUrl": "https://www.taifex.com.tw/enl/eng3/pcRatio",
       "components": {
-        "date": "2026-09-22",
-        "putVolume": 244784,
-        "callVolume": 241413,
-        "volumeRatioPercent": 101.4,
-        "putOpenInterest": 76931,
-        "callOpenInterest": 88093,
-        "openInterestRatioPercent": 87.33
+        "date": "2026-09-23",
+        "putVolume": 342337,
+        "callVolume": 357206,
+        "volumeRatioPercent": 95.84,
+        "putOpenInterest": 38859,
+        "callOpenInterest": 48680,
+        "openInterestRatioPercent": 79.83
       },
       "label": "賣權／買權比率",
       "unit": "%",
       "description": "TXO 賣權／買權未平倉量比率；比率升高代表避險需求增加",
-      "score": 71.1,
+      "score": 83.6,
       "anchors": {
         "fear": 130,
         "greed": 70
@@ -68,20 +70,20 @@
     {
       "key": "usdTwd",
       "status": "ok",
-      "value": -0.5020710430525877,
-      "asOf": "2026-09-22",
+      "value": -0.3205732604186329,
+      "asOf": "2026-09-23",
       "source": "TAIFEX",
       "frequency": "daily",
       "sourceUrl": "https://www.taifex.com.tw/enl/eng3/dailyFXRate",
       "components": {
-        "usdTwd": 31.708,
-        "baseDate": "2026-08-25",
-        "baseUsdTwd": 31.868
+        "usdTwd": 31.716,
+        "baseDate": "2026-08-26",
+        "baseUsdTwd": 31.818
       },
       "label": "美元／新台幣匯率",
       "unit": "20D %",
       "description": "USD/NTD 二十個觀測日變動率；新台幣貶值為恐懼方向",
-      "score": 58.4,
+      "score": 55.3,
       "anchors": {
         "fear": 3,
         "greed": -3
@@ -90,21 +92,21 @@
     {
       "key": "marginMaintenance",
       "status": "ok",
-      "value": 193.1239920618842,
-      "asOf": "2026-09-22",
+      "value": 193.44120124030394,
+      "asOf": "2026-09-23",
       "source": "TWSE (derived)",
       "frequency": "daily",
       "sourceUrl": "https://www.twse.com.tw/exchangeReport/MI_MARGN",
       "method": "sum(margin balance trading units × close) / total margin financing amount × 100",
       "components": {
-        "financedMarketValueThousand": 1168132511.09,
-        "marginAmountThousand": 604861415,
-        "pricedPositions": 1233
+        "financedMarketValueThousand": 1172965220.09,
+        "marginAmountThousand": 606367833,
+        "pricedPositions": 1230
       },
       "label": "融資維持率代理值",
       "unit": "%",
       "description": "上市融資股票市值／上市融資金額的市場代理值",
-      "score": 70.1,
+      "score": 70.5,
       "anchors": {
         "fear": 130,
         "greed": 220
@@ -113,16 +115,16 @@
     {
       "key": "foreignFutures",
       "status": "ok",
-      "value": -76084,
-      "asOf": "2026-09-23",
+      "value": -77031,
+      "asOf": "2026-09-24",
       "source": "TAIFEX",
       "frequency": "daily",
       "sourceUrl": "https://www.taifex.com.tw/enl/eng3/futContractsDate",
       "components": {
-        "date": "2026-09-23",
-        "longOpenInterest": 10855,
-        "shortOpenInterest": 86939,
-        "netOpenInterest": -76084
+        "date": "2026-09-24",
+        "longOpenInterest": 9675,
+        "shortOpenInterest": 86706,
+        "netOpenInterest": -77031
       },
       "label": "境外機構期貨持倉",
       "unit": "contracts",
@@ -136,22 +138,22 @@
     {
       "key": "marketBreadth",
       "status": "ok",
-      "value": 34.02061855670103,
-      "asOf": "2026-09-22",
+      "value": 40.88050314465409,
+      "asOf": "2026-09-23",
       "source": "TWSE OpenAPI",
       "frequency": "daily",
       "sourceUrl": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
       "components": {
-        "advancing": 330,
-        "declining": 640,
-        "unchanged": 116,
-        "universe": 1086,
-        "advanceSharePercent": 34.02061855670103
+        "advancing": 390,
+        "declining": 564,
+        "unchanged": 131,
+        "universe": 1085,
+        "advanceSharePercent": 40.88050314465409
       },
       "label": "市場廣度",
       "unit": "%",
       "description": "上市普通股上漲家數占上漲與下跌家數合計",
-      "score": 23.4,
+      "score": 34.8,
       "anchors": {
         "fear": 20,
         "greed": 80
@@ -160,20 +162,20 @@
     {
       "key": "marginShortRatio",
       "status": "ok",
-      "value": 2.367011556377781,
-      "asOf": "2026-09-22",
+      "value": 2.295334414104145,
+      "asOf": "2026-09-23",
       "source": "TWSE",
       "frequency": "daily",
       "sourceUrl": "https://www.twse.com.tw/exchangeReport/MI_MARGN",
       "method": "short balance trading units / margin balance trading units × 100",
       "components": {
-        "shortBalanceUnits": 218839,
-        "marginBalanceUnits": 9245371
+        "shortBalanceUnits": 213059,
+        "marginBalanceUnits": 9282264
       },
       "label": "融券／融資餘額比",
       "unit": "%",
       "description": "上市融券餘額／融資餘額；空頭占比升高為恐懼方向",
-      "score": 80.5,
+      "score": 81.5,
       "anchors": {
         "fear": 8,
         "greed": 1
@@ -182,22 +184,22 @@
     {
       "key": "indexMomentum",
       "status": "ok",
-      "value": 5.072086212832683,
-      "asOf": "2026-09-23",
+      "value": 4.457575189417251,
+      "asOf": "2026-09-24",
       "source": "TWSE",
       "frequency": "daily",
       "sourceUrl": "https://www.twse.com.tw/exchangeReport/FMTQIK",
       "components": {
-        "date": "2026-09-23",
-        "close": 48157.29,
-        "baseDate": "2026-08-26",
-        "baseClose": 45832.62,
-        "returnPercent": 5.072086212832683
+        "date": "2026-09-24",
+        "close": 48024.6,
+        "baseDate": "2026-08-27",
+        "baseClose": 45975.22,
+        "returnPercent": 4.457575189417251
       },
       "label": "指數動量",
       "unit": "20D %",
       "description": "臺灣加權指數二十個交易日報酬率",
-      "score": 66.9,
+      "score": 64.9,
       "anchors": {
         "fear": -15,
         "greed": 15
@@ -205,24 +207,15 @@
     },
     {
       "key": "activeAccounts",
-      "status": "ok",
-      "value": 14.747576072110146,
-      "asOf": "2026-05-01",
+      "status": "unavailable",
+      "value": null,
+      "asOf": null,
       "source": "FSC",
-      "frequency": "monthly",
-      "publishedAt": "2026-06-22",
-      "sourceUrl": "https://stat.fsc.gov.tw/api/v1/public/datasets/103545/data",
-      "components": {
-        "date": "2026-05-01",
-        "publishedAt": "2026-06-22",
-        "traders": 5795067,
-        "previousTraders": 5050274,
-        "monthOverMonthPercent": 14.747576072110146
-      },
+      "error": "https://stat.fsc.gov.tw/api/v1/public/datasets/103545/data: fetch failed",
       "label": "有效交易帳戶",
       "unit": "MoM %",
       "description": "集中市場月交易人數月增率",
-      "score": 86.9,
+      "score": null,
       "anchors": {
         "fear": -20,
         "greed": 20
