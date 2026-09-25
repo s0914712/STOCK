@@ -1,56 +1,56 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-24T15:22:12.520Z",
-  "asOf": "2026-09-23",
+  "generatedAt": "2026-09-25T15:24:19.135Z",
+  "asOf": "2026-09-24",
   "source": "TWSE OpenAPI v1 STOCK_DAY_ALL",
   "method": "highest same-day trade value among curated sector anchors; ties resolved by stock symbol ascending",
   "sectors": [
     {
       "sector": "半導體",
-      "symbol": "2330",
-      "name": "台積電",
-      "close": 2500,
-      "tradeValue": 56893530280,
+      "symbol": "2454",
+      "name": "聯發科",
+      "close": 5285,
+      "tradeValue": 41179400531,
       "anchorCount": 3
     },
     {
       "sector": "AI伺服器",
       "symbol": "2317",
       "name": "鴻海",
-      "close": 256,
-      "tradeValue": 9154003139,
+      "close": 250.5,
+      "tradeValue": 8650715388,
       "anchorCount": 3
     },
     {
       "sector": "PCB",
       "symbol": "3037",
       "name": "欣興",
-      "close": 1160,
-      "tradeValue": 26637851315,
+      "close": 1185,
+      "tradeValue": 19426284580,
       "anchorCount": 3
     },
     {
       "sector": "金融",
-      "symbol": "2881",
-      "name": "富邦金",
-      "close": 153,
-      "tradeValue": 2289366664,
+      "symbol": "2882",
+      "name": "國泰金",
+      "close": 110.5,
+      "tradeValue": 1305441250,
       "anchorCount": 3
     },
     {
       "sector": "航運",
-      "symbol": "2609",
-      "name": "陽明",
-      "close": 59.9,
-      "tradeValue": 1656781115,
+      "symbol": "2603",
+      "name": "長榮",
+      "close": 243,
+      "tradeValue": 1194083439,
       "anchorCount": 3
     },
     {
       "sector": "電子零組件",
       "symbol": "2327",
       "name": "國巨*",
-      "close": 573,
-      "tradeValue": 24822853199,
+      "close": 580,
+      "tradeValue": 20833185197,
       "anchorCount": 3
     }
   ]
