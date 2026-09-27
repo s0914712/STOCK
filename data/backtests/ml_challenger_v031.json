@@ -4,7 +4,7 @@
   "dataSource": "TWSE STOCK_DAY + FMTQIK",
   "universe": "same six-sector / eighteen-stock proxy universe as v0.3",
   "leakageRule": "training row is eligible only after its 5-trading-day target is observable",
-  "generatedAt": "2026-09-20T07:31:58.040688+00:00",
+  "generatedAt": "2026-09-27T07:40:47.286598+00:00",
   "featureNames": [
     "momentum5",
     "momentum10",
@@ -24,27 +24,27 @@
   ],
   "label": "P(5d sector return > 5d TAIEX return)",
   "horizonTradingDays": 5,
-  "matureSamples": 3666,
-  "dateCount": 611,
-  "trainedThrough": "2026-09-11",
-  "labelThrough": "2026-09-18",
-  "validationSplitDate": "2026-03-17",
+  "matureSamples": 3690,
+  "dateCount": 615,
+  "trainedThrough": "2026-09-17",
+  "labelThrough": "2026-09-24",
+  "validationSplitDate": "2026-03-23",
   "validationSamples": 738,
   "validation": {
     "baseline": {
-      "brier": 0.24937710516875955,
-      "logloss": 0.6918972967491183,
-      "rocAuc": 0.5491424584083147
+      "brier": 0.24971806220650714,
+      "logloss": 0.6925815155991621,
+      "rocAuc": 0.5438310376492195
     },
     "lightgbm": {
-      "brier": 0.2864329626423009,
-      "logloss": 0.777387550371724,
-      "rocAuc": 0.45633699364647984
+      "brier": 0.2916823092167424,
+      "logloss": 0.792432604236228,
+      "rocAuc": 0.45857483930211207
     },
     "xgboost": {
-      "brier": 0.2721085250377655,
-      "logloss": 0.742946207523346,
-      "rocAuc": 0.4648132505784274
+      "brier": 0.2757003903388977,
+      "logloss": 0.7510045170783997,
+      "rocAuc": 0.4519963269054178
     }
   }
 }
