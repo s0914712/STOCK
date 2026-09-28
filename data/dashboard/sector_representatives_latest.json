@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-25T15:24:19.135Z",
+  "generatedAt": "2026-09-28T18:13:36.793Z",
   "asOf": "2026-09-24",
   "source": "TWSE OpenAPI v1 STOCK_DAY_ALL",
   "method": "highest same-day trade value among curated sector anchors; ties resolved by stock symbol ascending",
