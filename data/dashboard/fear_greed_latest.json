@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-28T18:13:37.241Z",
+  "generatedAt": "2026-09-29T16:35:13.354Z",
   "tradingDate": "2026-09-24",
   "modelVersion": "tw-fear-greed-v0.1",
   "status": "complete",
-  "score": 57.6,
+  "score": 57,
   "label": "貪婪",
   "coverage": {
     "available": 9,
@@ -113,16 +113,16 @@
     {
       "key": "foreignFutures",
       "status": "ok",
-      "value": -77031,
-      "asOf": "2026-09-24",
+      "value": -79029,
+      "asOf": "2026-09-29",
       "source": "TAIFEX",
       "frequency": "daily",
       "sourceUrl": "https://www.taifex.com.tw/enl/eng3/futContractsDate",
       "components": {
-        "date": "2026-09-24",
-        "longOpenInterest": 9675,
-        "shortOpenInterest": 86706,
-        "netOpenInterest": -77031
+        "date": "2026-09-29",
+        "longOpenInterest": 8788,
+        "shortOpenInterest": 87817,
+        "netOpenInterest": -79029
       },
       "label": "境外機構期貨持倉",
       "unit": "contracts",
@@ -182,22 +182,22 @@
     {
       "key": "indexMomentum",
       "status": "ok",
-      "value": 4.457575189417251,
-      "asOf": "2026-09-24",
+      "value": 2.8069702113791006,
+      "asOf": "2026-09-29",
       "source": "TWSE",
       "frequency": "daily",
       "sourceUrl": "https://www.twse.com.tw/exchangeReport/FMTQIK",
       "components": {
-        "date": "2026-09-24",
-        "close": 48024.6,
-        "baseDate": "2026-08-27",
-        "baseClose": 45975.22,
-        "returnPercent": 4.457575189417251
+        "date": "2026-09-29",
+        "close": 47631.96,
+        "baseDate": "2026-08-28",
+        "baseClose": 46331.45,
+        "returnPercent": 2.8069702113791006
       },
       "label": "指數動量",
       "unit": "20D %",
       "description": "臺灣加權指數二十個交易日報酬率",
-      "score": 64.9,
+      "score": 59.4,
       "anchors": {
         "fear": -15,
         "greed": 15
