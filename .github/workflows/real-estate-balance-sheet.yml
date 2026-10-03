@@ -1,0 +1,56 @@
+name: Real Estate Balance Sheet Refresh
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/real-estate-investor-page
+    paths:
+      - 'scripts/runRealEstateBalanceSheet.js'
+      - '.github/workflows/real-estate-balance-sheet.yml'
+  schedule:
+    - cron: '10 9 * * 1-5' # 17:10 Asia/Taipei; effective after workflow reaches default branch
+
+permissions:
+  contents: write
+
+concurrency:
+  group: real-estate-balance-sheet
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build official real-estate balance-sheet snapshot
+        run: |
+          node --check scripts/runRealEstateBalanceSheet.js
+          node scripts/runRealEstateBalanceSheet.js
+      - name: Validate JSON
+        run: node -e "const x=require('./data/dashboard/real_estate_balance_sheet_latest.json'); if(!Array.isArray(x.rows)||!x.rows.length) process.exit(1); console.log(x.marketAsOf, x.rows.length)"
+      - name: Commit refreshed snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/dashboard/real_estate_balance_sheet_latest.json
+          if git diff --cached --quiet; then
+            echo "No balance-sheet changes."
+            exit 0
+          fi
+          git commit -m "data: refresh real estate balance sheet"
+          for attempt in 1 2 3; do
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            if git push origin HEAD:"${GITHUB_REF_NAME}"; then exit 0; fi
+            sleep $((attempt * 2))
+          done
+          exit 1

@@ -7,17 +7,21 @@ on:
   push:
     branches:
       - main
+      - feature/real-estate-investor-page
     paths:
       - 'public/research-dashboard.html'
       - 'public/research-dashboard.css'
       - 'public/research-dashboard.js'
       - 'public/time-series-guide.html'
       - 'public/time-series-guide.css'
+      - 'public/real-estate.html'
+      - 'public/real-estate.js'
       - 'data/shadow/**'
       - 'data/backtests/ml_challenger_v031.json'
       - 'data/backtests/rotation_v0.4.json'
       - 'data/dashboard/factor_research_latest.json'
       - 'data/dashboard/sector_representatives_latest.json'
+      - 'data/dashboard/real_estate_balance_sheet_latest.json'
       - '.github/workflows/pages.yml'
 
 concurrency:
@@ -50,16 +54,22 @@ jobs:
           cp public/research-dashboard.js _site/research-dashboard.js
           cp public/time-series-guide.html _site/time-series-guide.html
           cp public/time-series-guide.css _site/time-series-guide.css
+          cp public/real-estate.html _site/real-estate.html
+          cp public/real-estate.js _site/real-estate.js
           cp data/shadow/challenger_latest.json _site/data/shadow/challenger_latest.json
           cp data/backtests/ml_challenger_v031.json _site/data/backtests/ml_challenger_v031.json
           cp data/backtests/rotation_v0.4.json _site/data/backtests/rotation_v0.4.json
           cp data/dashboard/factor_research_latest.json _site/data/dashboard/factor_research_latest.json
           cp data/dashboard/sector_representatives_latest.json _site/data/dashboard/sector_representatives_latest.json
+          if [ -f data/dashboard/real_estate_balance_sheet_latest.json ]; then
+            cp data/dashboard/real_estate_balance_sheet_latest.json _site/data/dashboard/real_estate_balance_sheet_latest.json
+          fi
           if [ -f data/shadow/latest.json ]; then
             cp data/shadow/latest.json _site/data/shadow/latest.json
           fi
           touch _site/.nojekyll
           test -s _site/index.html
+          test -s _site/real-estate.html
           echo "Prepared $(find _site -type f | wc -l) files for deployment"
 
       - name: Upload GitHub Pages artifact
