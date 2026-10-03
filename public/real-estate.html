@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark light">
+  <title>房地產股票｜資產負債表雷達</title>
+  <link rel="stylesheet" href="research-dashboard.css">
+  <style>
+    .bs-hero{max-width:1240px;margin:0 auto;padding:56px 28px 26px;display:flex;justify-content:space-between;gap:20px;align-items:end}.bs-nav{display:flex;gap:10px;flex-wrap:wrap}.bs-nav a{border:1px solid var(--line);padding:8px 12px;border-radius:999px;text-decoration:none}.bs-shell{max-width:1240px;margin:0 auto;padding:0 28px 56px}.bs-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.bs-card,.stock-card{background:linear-gradient(180deg,rgba(24,34,56,.96),rgba(18,26,45,.96));border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.bs-card{padding:18px}.bs-card small{color:var(--muted)}.bs-big{display:block;font-size:1.65rem;margin:7px 0}.stock-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.stock-card{padding:20px}.stock-head{display:flex;justify-content:space-between;gap:16px}.score{font-size:2rem;font-weight:900;color:var(--accent)}.metric-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:16px 0}.metric{background:rgba(11,16,32,.35);border:1px solid var(--line);border-radius:12px;padding:10px}.metric span{display:block;color:var(--muted);font-size:.75rem}.metric strong{display:block;margin-top:4px;font-size:1rem}.notes{margin:12px 0 0;padding-left:1.15rem;color:var(--muted);line-height:1.7}.warning-box{border:1px solid rgba(251,191,36,.3);background:rgba(251,191,36,.07);border-radius:14px;padding:14px 16px;color:var(--muted);line-height:1.65}.legend-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.legend-item{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:14px}.legend-item strong{display:block;margin-bottom:6px}.legend-item p{margin:0;color:var(--muted);font-size:.87rem;line-height:1.55}@media(max-width:900px){.bs-summary,.stock-grid,.legend-grid{grid-template-columns:1fr 1fr}}@media(max-width:620px){.bs-summary,.stock-grid,.legend-grid{grid-template-columns:1fr}.bs-hero{align-items:start;flex-direction:column}.bs-shell,.bs-hero{padding-left:16px;padding-right:16px}.metric-grid{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+  <header class="bs-hero">
+    <div>
+      <p class="eyebrow">REAL ESTATE BALANCE SHEET LAB</p>
+      <h1>房地產股票｜資產負債表雷達</h1>
+      <p class="hero-copy">先看資產負債表能可靠回答的事：短期償債、槓桿、權益安全墊、營運資金、保留盈餘與帳面價值。土地/房地存貨、在建工程與合約負債另以 XBRL 深化，不用流動資產代替。</p>
+    </div>
+    <nav class="bs-nav"><a href="./">← 市場 Dashboard</a><a href="#how-to-read">怎麼解讀</a></nav>
+  </header>
+
+  <main class="bs-shell">
+    <section class="bs-summary">
+      <article class="bs-card"><small>資料期別</small><strong class="bs-big" id="period">—</strong><small id="generated">—</small></article>
+      <article class="bs-card"><small>建材營造公司</small><strong class="bs-big" id="company-count">—</strong><small>上市公司官方財報摘要</small></article>
+      <article class="bs-card"><small>安全度最高</small><strong class="bs-big" id="top-safety">—</strong><small>同業橫斷面，不是買進評等</small></article>
+      <article class="bs-card"><small>頁面原則</small><strong class="bs-big">先看風險</strong><small>估值 / 動能放在第二層</small></article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading"><div><p class="eyebrow">BALANCE SHEET SAFETY</p><h2>資產負債表安全度排名</h2></div><span class="pill warning">Research only</span></div>
+      <p class="panel-note">Safety Score 只比較同業資產負債表結構，不把 PE、營收成長或短線動能混進去。高分代表相對較厚的流動性/權益緩衝與較低槓桿，不代表未來股價一定上漲。</p>
+      <div id="stock-grid" class="stock-grid"><div class="loading-cell">載入中…</div></div>
+    </section>
+
+    <section class="panel" id="how-to-read">
+      <div class="panel-heading"><div><p class="eyebrow">HOW TO READ</p><h2>營建股資產負債表可以讀什麼？</h2></div></div>
+      <div class="legend-grid">
+        <div class="legend-item"><strong>流動比率</strong><p>流動資產 ÷ 流動負債。看短期資金緩衝，但營建業流動資產常含房地/在建存貨，所以不能直接當現金。</p></div>
+        <div class="legend-item"><strong>負債比</strong><p>總負債 ÷ 總資產。看財務槓桿。營建業本來就會用負債支應土地與工程，因此要和同業、景氣與預售進度一起看。</p></div>
+        <div class="legend-item"><strong>權益比</strong><p>總權益 ÷ 總資產。越高代表股東資本緩衝越厚，但不能單獨判斷資產是否高估或低估。</p></div>
+        <div class="legend-item"><strong>營運資金 / 資產</strong><p>(流動資產－流動負債) ÷ 總資產。用來看短期資金結構；若為負值要再追借款、合約負債與交屋現金流。</p></div>
+        <div class="legend-item"><strong>保留盈餘 / 權益</strong><p>看淨值有多少是歷年累積盈餘，而非單純股本或資本公積。高比例通常代表歷史獲利累積較厚。</p></div>
+        <div class="legend-item"><strong>P/B 與每股淨值</strong><p>股價 ÷ 每股淨值。低於 1 倍可能是折價，也可能反映資產品質、推案風險或獲利疑慮；土地也未必按市價重估。</p></div>
+      </div>
+      <div class="warning-box" style="margin-top:14px"><strong>第二層要補：</strong>現金及約當現金、房地/土地存貨、在建工程、合約負債/預收款、有息短長期借款。這些才足以進一步判讀「庫存去化、預售覆蓋、淨負債、土地價值與交屋壓力」。本頁若資料源沒有，就明確留白，不推估。</div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><p>資料來源：TWSE OpenAPI / 公開財務報告摘要。僅供研究與資訊整理，不構成個別投資建議。</p></footer>
+  <script src="real-estate.js"></script>
+</body>
+</html>
