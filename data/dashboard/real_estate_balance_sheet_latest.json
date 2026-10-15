@@ -1,0 +1,2849 @@
+{
+  "schemaVersion": 1,
+  "version": "real-estate-balance-sheet-v1",
+  "generatedAt": "2026-10-03T23:19:23.940Z",
+  "source": "TWSE OpenAPI v1 t187ap07_L_ci + repository market snapshot",
+  "balanceSheetSourceUrl": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ci",
+  "marketAsOf": "2026-10-01",
+  "universe": {
+    "industry": "建材營造",
+    "companies": 55
+  },
+  "methodology": {
+    "safetyScore": "30% current ratio percentile + 25% inverse debt ratio + 20% equity ratio + 15% working-capital/assets + 10% retained-earnings/equity. P/B is shown separately and is not part of safety score.",
+    "caution": "流動資產不等於可立即變現現金。營建業通常含房地/在建存貨；本版不把流動資產誤標為存貨。",
+    "missingDetail": [
+      "現金及約當現金",
+      "房地/土地存貨",
+      "在建工程",
+      "合約負債/預收款",
+      "有息短長期借款"
+    ],
+    "nextLayer": "上述細項需由 MOPS/XBRL 財報科目深化後再做去化、預售覆蓋與淨負債判讀。"
+  },
+  "rows": [
+    {
+      "symbol": "5533",
+      "name": "皇鼎",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 13.9,
+      "valuation": {
+        "pe": 23.56,
+        "pb": 0.42,
+        "dividendYield": 4.32
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 189.42621733966746,
+        "momPercent": 182.76737313486956
+      },
+      "balanceSheet": {
+        "currentAssets": 8051538,
+        "nonCurrentAssets": 3771084,
+        "totalAssets": 11822622,
+        "currentLiabilities": 1487640,
+        "nonCurrentLiabilities": 819617,
+        "totalLiabilities": 2307257,
+        "capitalStock": 2852450,
+        "capitalSurplus": 21130,
+        "retainedEarnings": 6641785,
+        "parentEquity": 9515365,
+        "totalEquity": 9515365,
+        "bvps": 33.36,
+        "workingCapital": 6563898
+      },
+      "metrics": {
+        "currentRatio": 5.4123,
+        "debtRatio": 0.1952,
+        "equityRatio": 0.8048,
+        "workingCapitalToAssets": 0.5552,
+        "retainedToEquity": 0.698,
+        "nonCurrentLiabilityShare": 0.3552,
+        "priceToBook": 0.4167
+      },
+      "balanceSheetSafetyScore": 96.1,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比相對保守",
+        "權益中累積保留盈餘占比高",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 1
+    },
+    {
+      "symbol": "2524",
+      "name": "京城",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 34.6,
+      "valuation": {
+        "pe": 42.2,
+        "pb": 0.6,
+        "dividendYield": null
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 14.061521049334061,
+        "momPercent": -77.05879961789394
+      },
+      "balanceSheet": {
+        "currentAssets": 39686367,
+        "nonCurrentAssets": 843608,
+        "totalAssets": 40529975,
+        "currentLiabilities": 11333777,
+        "nonCurrentLiabilities": 7930187,
+        "totalLiabilities": 19263964,
+        "capitalStock": 3667927,
+        "capitalSurplus": 34228,
+        "retainedEarnings": 17563856,
+        "parentEquity": 21266011,
+        "totalEquity": 21266011,
+        "bvps": 58.11,
+        "workingCapital": 28352590
+      },
+      "metrics": {
+        "currentRatio": 3.5016,
+        "debtRatio": 0.4753,
+        "equityRatio": 0.5247,
+        "workingCapitalToAssets": 0.6995,
+        "retainedToEquity": 0.8259,
+        "nonCurrentLiabilityShare": 0.4117,
+        "priceToBook": 0.5954
+      },
+      "balanceSheetSafetyScore": 89.5,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比相對保守",
+        "權益中累積保留盈餘占比高",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 2
+    },
+    {
+      "symbol": "1805",
+      "name": "寶徠",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 10.1,
+      "valuation": {
+        "pe": 84.17,
+        "pb": 0.83,
+        "dividendYield": null
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -0.8695652173913043,
+        "momPercent": -0.8695652173913043
+      },
+      "balanceSheet": {
+        "currentAssets": 1772478,
+        "nonCurrentAssets": 231234,
+        "totalAssets": 2003712,
+        "currentLiabilities": 342373,
+        "nonCurrentLiabilities": 26902,
+        "totalLiabilities": 369275,
+        "capitalStock": 1349705,
+        "capitalSurplus": 227353,
+        "retainedEarnings": 65870,
+        "parentEquity": 1634437,
+        "totalEquity": 1634437,
+        "bvps": 12.11,
+        "workingCapital": 1430105
+      },
+      "metrics": {
+        "currentRatio": 5.177,
+        "debtRatio": 0.1843,
+        "equityRatio": 0.8157,
+        "workingCapitalToAssets": 0.7137,
+        "retainedToEquity": 0.0403,
+        "nonCurrentLiabilityShare": 0.0729,
+        "priceToBook": 0.834
+      },
+      "balanceSheetSafetyScore": 89.3,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比相對保守",
+        "權益較依賴股本/資本公積",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 3
+    },
+    {
+      "symbol": "2539",
+      "name": "櫻花建",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 34.25,
+      "valuation": {
+        "pe": 8.14,
+        "pb": 2.04,
+        "dividendYield": 8.18
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -8.693067590272417,
+        "momPercent": -16.204241293414533
+      },
+      "balanceSheet": {
+        "currentAssets": 32443598,
+        "nonCurrentAssets": 119714,
+        "totalAssets": 32563312,
+        "currentLiabilities": 10451897,
+        "nonCurrentLiabilities": 2098785,
+        "totalLiabilities": 12550682,
+        "capitalStock": 14555850,
+        "capitalSurplus": 95405,
+        "retainedEarnings": 5361375,
+        "parentEquity": 20012630,
+        "totalEquity": 20012630,
+        "bvps": 16.77,
+        "workingCapital": 21991701
+      },
+      "metrics": {
+        "currentRatio": 3.1041,
+        "debtRatio": 0.3854,
+        "equityRatio": 0.6146,
+        "workingCapitalToAssets": 0.6754,
+        "retainedToEquity": 0.2679,
+        "nonCurrentLiabilityShare": 0.1672,
+        "priceToBook": 2.0423
+      },
+      "balanceSheetSafetyScore": 86.7,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比相對保守",
+        "市價明顯高於帳面淨值，需用獲利/資產品質支持溢價"
+      ],
+      "rank": 4
+    },
+    {
+      "symbol": "1442",
+      "name": "名軒",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 26.5,
+      "valuation": {
+        "pe": 15.5,
+        "pb": 1.31,
+        "dividendYield": 9.06
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 64.5678270192552,
+        "momPercent": -2.1378608861011403
+      },
+      "balanceSheet": {
+        "currentAssets": 13711502,
+        "nonCurrentAssets": 1293336,
+        "totalAssets": 15004838,
+        "currentLiabilities": 4180854,
+        "nonCurrentLiabilities": 3436732,
+        "totalLiabilities": 7617586,
+        "capitalStock": 3662113,
+        "capitalSurplus": 991852,
+        "retainedEarnings": 2715916,
+        "parentEquity": 7387252,
+        "totalEquity": 7387252,
+        "bvps": 20.17,
+        "workingCapital": 9530648
+      },
+      "metrics": {
+        "currentRatio": 3.2796,
+        "debtRatio": 0.5077,
+        "equityRatio": 0.4923,
+        "workingCapitalToAssets": 0.6352,
+        "retainedToEquity": 0.3676,
+        "nonCurrentLiabilityShare": 0.4512,
+        "priceToBook": 1.3138
+      },
+      "balanceSheetSafetyScore": 83.3,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中"
+      ],
+      "rank": 5
+    },
+    {
+      "symbol": "3056",
+      "name": "富華新",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 13.75,
+      "valuation": {
+        "pe": null,
+        "pb": 0.78,
+        "dividendYield": 4.51
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 50.1873823746011,
+        "momPercent": 44.853602714860706
+      },
+      "balanceSheet": {
+        "currentAssets": 13752533,
+        "nonCurrentAssets": 1409076,
+        "totalAssets": 15161609,
+        "currentLiabilities": 4987313,
+        "nonCurrentLiabilities": 1796992,
+        "totalLiabilities": 6784305,
+        "capitalStock": 4805550,
+        "capitalSurplus": 1272178,
+        "retainedEarnings": 2363798,
+        "parentEquity": 8377304,
+        "totalEquity": 8377304,
+        "bvps": 17.6,
+        "workingCapital": 8765220
+      },
+      "metrics": {
+        "currentRatio": 2.7575,
+        "debtRatio": 0.4475,
+        "equityRatio": 0.5525,
+        "workingCapitalToAssets": 0.5781,
+        "retainedToEquity": 0.2822,
+        "nonCurrentLiabilityShare": 0.2649,
+        "priceToBook": 0.7812
+      },
+      "balanceSheetSafetyScore": 82.8,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比相對保守",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 6
+    },
+    {
+      "symbol": "2506",
+      "name": "太設",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 8.43,
+      "valuation": {
+        "pe": 23.42,
+        "pb": 0.38,
+        "dividendYield": 2.37
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 34.73091364205256,
+        "momPercent": 3.6962779601026
+      },
+      "balanceSheet": {
+        "currentAssets": 8817796,
+        "nonCurrentAssets": 5695064,
+        "totalAssets": 14512860,
+        "currentLiabilities": 4035889,
+        "nonCurrentLiabilities": 664452,
+        "totalLiabilities": 4700341,
+        "capitalStock": 3870000,
+        "capitalSurplus": 414998,
+        "retainedEarnings": 2950448,
+        "parentEquity": 7961574,
+        "totalEquity": 9812519,
+        "bvps": 22.02,
+        "workingCapital": 4781907
+      },
+      "metrics": {
+        "currentRatio": 2.1848,
+        "debtRatio": 0.3239,
+        "equityRatio": 0.6761,
+        "workingCapitalToAssets": 0.3295,
+        "retainedToEquity": 0.3007,
+        "nonCurrentLiabilityShare": 0.1414,
+        "priceToBook": 0.3828
+      },
+      "balanceSheetSafetyScore": 77.5,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比相對保守",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 7
+    },
+    {
+      "symbol": "2511",
+      "name": "太子",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 8.32,
+      "valuation": {
+        "pe": 23.77,
+        "pb": 0.53,
+        "dividendYield": 3.61
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 87.88742117627663,
+        "momPercent": 65.50630278478255
+      },
+      "balanceSheet": {
+        "currentAssets": 21525169,
+        "nonCurrentAssets": 25904810,
+        "totalAssets": 47429979,
+        "currentLiabilities": 8145715,
+        "nonCurrentLiabilities": 13413656,
+        "totalLiabilities": 21559371,
+        "capitalStock": 16233261,
+        "capitalSurplus": 2260513,
+        "retainedEarnings": 5376966,
+        "parentEquity": 25705451,
+        "totalEquity": 25870608,
+        "bvps": 15.84,
+        "workingCapital": 13379454
+      },
+      "metrics": {
+        "currentRatio": 2.6425,
+        "debtRatio": 0.4546,
+        "equityRatio": 0.5454,
+        "workingCapitalToAssets": 0.2821,
+        "retainedToEquity": 0.2078,
+        "nonCurrentLiabilityShare": 0.6222,
+        "priceToBook": 0.5253
+      },
+      "balanceSheetSafetyScore": 73.4,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比相對保守",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 8
+    },
+    {
+      "symbol": "5519",
+      "name": "隆大",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 25.15,
+      "valuation": {
+        "pe": 5.05,
+        "pb": 0.97,
+        "dividendYield": 15.11
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -92.5171145256551,
+        "momPercent": 2.2935451552883928
+      },
+      "balanceSheet": {
+        "currentAssets": 13109994,
+        "nonCurrentAssets": 716488,
+        "totalAssets": 13826482,
+        "currentLiabilities": 4365341,
+        "nonCurrentLiabilities": 3788548,
+        "totalLiabilities": 8153889,
+        "capitalStock": 2301570,
+        "capitalSurplus": 50614,
+        "retainedEarnings": 3305822,
+        "parentEquity": 5672593,
+        "totalEquity": 5672593,
+        "bvps": 25.88,
+        "workingCapital": 8744653
+      },
+      "metrics": {
+        "currentRatio": 3.0032,
+        "debtRatio": 0.5897,
+        "equityRatio": 0.4103,
+        "workingCapitalToAssets": 0.6325,
+        "retainedToEquity": 0.5828,
+        "nonCurrentLiabilityShare": 0.4646,
+        "priceToBook": 0.9718
+      },
+      "balanceSheetSafetyScore": 73,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "權益中累積保留盈餘占比高",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 9
+    },
+    {
+      "symbol": "1453",
+      "name": "大將",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 10.9,
+      "valuation": {
+        "pe": 15.57,
+        "pb": 0.82,
+        "dividendYield": 2.75
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 1.9047619047619047,
+        "momPercent": 0.9433962264150944
+      },
+      "balanceSheet": {
+        "currentAssets": 2938162,
+        "nonCurrentAssets": 183494,
+        "totalAssets": 3121656,
+        "currentLiabilities": 1446454,
+        "nonCurrentLiabilities": 158883,
+        "totalLiabilities": 1605337,
+        "capitalStock": 1166404,
+        "capitalSurplus": 2762,
+        "retainedEarnings": 333701,
+        "parentEquity": 1502867,
+        "totalEquity": 1516319,
+        "bvps": 13.27,
+        "workingCapital": 1491708
+      },
+      "metrics": {
+        "currentRatio": 2.0313,
+        "debtRatio": 0.5143,
+        "equityRatio": 0.4857,
+        "workingCapitalToAssets": 0.4779,
+        "retainedToEquity": 0.2201,
+        "nonCurrentLiabilityShare": 0.099,
+        "priceToBook": 0.8214
+      },
+      "balanceSheetSafetyScore": 72.8,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 10
+    },
+    {
+      "symbol": "5534",
+      "name": "長虹",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 73.3,
+      "valuation": {
+        "pe": 12.95,
+        "pb": 1.09,
+        "dividendYield": 6.9
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 88.58141426234812,
+        "momPercent": -31.21317354571691
+      },
+      "balanceSheet": {
+        "currentAssets": 48248862,
+        "nonCurrentAssets": 517030,
+        "totalAssets": 48765892,
+        "currentLiabilities": 26011188,
+        "nonCurrentLiabilities": 1419390,
+        "totalLiabilities": 27430578,
+        "capitalStock": 3153260,
+        "capitalSurplus": 2857846,
+        "retainedEarnings": 15236581,
+        "parentEquity": 21247187,
+        "totalEquity": 21335314,
+        "bvps": 67.38,
+        "workingCapital": 22237674
+      },
+      "metrics": {
+        "currentRatio": 1.8549,
+        "debtRatio": 0.5625,
+        "equityRatio": 0.4375,
+        "workingCapitalToAssets": 0.456,
+        "retainedToEquity": 0.7141,
+        "nonCurrentLiabilityShare": 0.0517,
+        "priceToBook": 1.0879
+      },
+      "balanceSheetSafetyScore": 72.8,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "權益中累積保留盈餘占比高"
+      ],
+      "rank": 11
+    },
+    {
+      "symbol": "9946",
+      "name": "三發地產",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 16.85,
+      "valuation": {
+        "pe": 3.62,
+        "pb": 0.76,
+        "dividendYield": 8.19
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 185.25724897649096,
+        "momPercent": 50.54908337602744
+      },
+      "balanceSheet": {
+        "currentAssets": 15398339,
+        "nonCurrentAssets": 1810546,
+        "totalAssets": 17208885,
+        "currentLiabilities": 6843873,
+        "nonCurrentLiabilities": 3202002,
+        "totalLiabilities": 10045875,
+        "capitalStock": 3265542,
+        "capitalSurplus": 35740,
+        "retainedEarnings": 3825495,
+        "parentEquity": 7163010,
+        "totalEquity": 7163010,
+        "bvps": 22.25,
+        "workingCapital": 8554466
+      },
+      "metrics": {
+        "currentRatio": 2.2499,
+        "debtRatio": 0.5838,
+        "equityRatio": 0.4162,
+        "workingCapitalToAssets": 0.4971,
+        "retainedToEquity": 0.5341,
+        "nonCurrentLiabilityShare": 0.3187,
+        "priceToBook": 0.7573
+      },
+      "balanceSheetSafetyScore": 70.9,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "權益中累積保留盈餘占比高",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 12
+    },
+    {
+      "symbol": "1439",
+      "name": "雋揚",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 28.95,
+      "valuation": {
+        "pe": 9.43,
+        "pb": 0.88,
+        "dividendYield": 1.73
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -70.81854291725219,
+        "momPercent": 59.7447641068967
+      },
+      "balanceSheet": {
+        "currentAssets": 3826267,
+        "nonCurrentAssets": 2452342,
+        "totalAssets": 6278609,
+        "currentLiabilities": 2304038,
+        "nonCurrentLiabilities": 487131,
+        "totalLiabilities": 2791169,
+        "capitalStock": 920000,
+        "capitalSurplus": 229264,
+        "retainedEarnings": 2024681,
+        "parentEquity": 3014098,
+        "totalEquity": 3487440,
+        "bvps": 32.76,
+        "workingCapital": 1522229
+      },
+      "metrics": {
+        "currentRatio": 1.6607,
+        "debtRatio": 0.4446,
+        "equityRatio": 0.5554,
+        "workingCapitalToAssets": 0.2424,
+        "retainedToEquity": 0.5806,
+        "nonCurrentLiabilityShare": 0.1745,
+        "priceToBook": 0.8837
+      },
+      "balanceSheetSafetyScore": 70.5,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比相對保守",
+        "權益中累積保留盈餘占比高",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 13
+    },
+    {
+      "symbol": "5522",
+      "name": "遠雄",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 60.8,
+      "valuation": {
+        "pe": 6.06,
+        "pb": 1,
+        "dividendYield": 9.05
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -46.73673080364693,
+        "momPercent": -8.695192060338902
+      },
+      "balanceSheet": {
+        "currentAssets": 97024284,
+        "nonCurrentAssets": 11974192,
+        "totalAssets": 108998476,
+        "currentLiabilities": 56347918,
+        "nonCurrentLiabilities": 4980415,
+        "totalLiabilities": 61328333,
+        "capitalStock": 7815962,
+        "capitalSurplus": 8472825,
+        "retainedEarnings": 30885031,
+        "parentEquity": 47670143,
+        "totalEquity": 47670143,
+        "bvps": 60.99,
+        "workingCapital": 40676366
+      },
+      "metrics": {
+        "currentRatio": 1.7219,
+        "debtRatio": 0.5627,
+        "equityRatio": 0.4373,
+        "workingCapitalToAssets": 0.3732,
+        "retainedToEquity": 0.6479,
+        "nonCurrentLiabilityShare": 0.0812,
+        "priceToBook": 0.9969
+      },
+      "balanceSheetSafetyScore": 69,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "權益中累積保留盈餘占比高",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 14
+    },
+    {
+      "symbol": "2548",
+      "name": "華固",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 91.8,
+      "valuation": {
+        "pe": 7.42,
+        "pb": 1.41,
+        "dividendYield": 9.26
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 139.52959372288657,
+        "momPercent": 752.4103582983179
+      },
+      "balanceSheet": {
+        "currentAssets": 51562335,
+        "nonCurrentAssets": 2312229,
+        "totalAssets": 53874564,
+        "currentLiabilities": 23129405,
+        "nonCurrentLiabilities": 9934010,
+        "totalLiabilities": 33063415,
+        "capitalStock": 3357046,
+        "capitalSurplus": 821651,
+        "retainedEarnings": 16588881,
+        "parentEquity": 20803483,
+        "totalEquity": 20811149,
+        "bvps": 65.11,
+        "workingCapital": 28432930
+      },
+      "metrics": {
+        "currentRatio": 2.2293,
+        "debtRatio": 0.6137,
+        "equityRatio": 0.3863,
+        "workingCapitalToAssets": 0.5278,
+        "retainedToEquity": 0.7971,
+        "nonCurrentLiabilityShare": 0.3005,
+        "priceToBook": 1.4099
+      },
+      "balanceSheetSafetyScore": 68.9,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "權益中累積保留盈餘占比高"
+      ],
+      "rank": 15
+    },
+    {
+      "symbol": "2505",
+      "name": "國揚",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 17.05,
+      "valuation": {
+        "pe": 8.61,
+        "pb": 0.6,
+        "dividendYield": 5.87
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 24.460051290896107,
+        "momPercent": 199.83030576028455
+      },
+      "balanceSheet": {
+        "currentAssets": 20826608,
+        "nonCurrentAssets": 2851255,
+        "totalAssets": 23677863,
+        "currentLiabilities": 12637222,
+        "nonCurrentLiabilities": 122042,
+        "totalLiabilities": 12759264,
+        "capitalStock": 3800000,
+        "capitalSurplus": 627683,
+        "retainedEarnings": 6379311,
+        "parentEquity": 10748366,
+        "totalEquity": 10918599,
+        "bvps": 28.29,
+        "workingCapital": 8189386
+      },
+      "metrics": {
+        "currentRatio": 1.648,
+        "debtRatio": 0.5389,
+        "equityRatio": 0.4611,
+        "workingCapitalToAssets": 0.3459,
+        "retainedToEquity": 0.5843,
+        "nonCurrentLiabilityShare": 0.0096,
+        "priceToBook": 0.6027
+      },
+      "balanceSheetSafetyScore": 67.5,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "權益中累積保留盈餘占比高",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 16
+    },
+    {
+      "symbol": "2923",
+      "name": "鼎固-KY",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 25.4,
+      "valuation": {
+        "pe": null,
+        "pb": 0.95,
+        "dividendYield": 0.47
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 218.9867410565063,
+        "momPercent": 20.988359626043007
+      },
+      "balanceSheet": {
+        "currentAssets": 44755397,
+        "nonCurrentAssets": 73953879,
+        "totalAssets": 118709276,
+        "currentLiabilities": 15488773,
+        "nonCurrentLiabilities": 54179232,
+        "totalLiabilities": 69668005,
+        "capitalStock": 17402970,
+        "capitalSurplus": 192146,
+        "retainedEarnings": 29406627,
+        "parentEquity": 46307063,
+        "totalEquity": 49041271,
+        "bvps": 26.61,
+        "workingCapital": 29266624
+      },
+      "metrics": {
+        "currentRatio": 2.8895,
+        "debtRatio": 0.5869,
+        "equityRatio": 0.4131,
+        "workingCapitalToAssets": 0.2465,
+        "retainedToEquity": 0.5996,
+        "nonCurrentLiabilityShare": 0.7777,
+        "priceToBook": 0.9545
+      },
+      "balanceSheetSafetyScore": 65.4,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "權益中累積保留盈餘占比高",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 17
+    },
+    {
+      "symbol": "5515",
+      "name": "建國",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 51.5,
+      "valuation": {
+        "pe": 5.22,
+        "pb": 1.78,
+        "dividendYield": 6.41
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -4.37832255975924,
+        "momPercent": -8.580066916469045
+      },
+      "balanceSheet": {
+        "currentAssets": 10280565,
+        "nonCurrentAssets": 2545285,
+        "totalAssets": 12825850,
+        "currentLiabilities": 6279507,
+        "nonCurrentLiabilities": 700984,
+        "totalLiabilities": 6980491,
+        "capitalStock": 2016001,
+        "capitalSurplus": 187308,
+        "retainedEarnings": 3492820,
+        "parentEquity": 5845359,
+        "totalEquity": 5845359,
+        "bvps": 28.99,
+        "workingCapital": 4001058
+      },
+      "metrics": {
+        "currentRatio": 1.6372,
+        "debtRatio": 0.5443,
+        "equityRatio": 0.4557,
+        "workingCapitalToAssets": 0.312,
+        "retainedToEquity": 0.5975,
+        "nonCurrentLiabilityShare": 0.1004,
+        "priceToBook": 1.7765
+      },
+      "balanceSheetSafetyScore": 64.6,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "權益中累積保留盈餘占比高"
+      ],
+      "rank": 18
+    },
+    {
+      "symbol": "2520",
+      "name": "冠德",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 36.75,
+      "valuation": {
+        "pe": 10.94,
+        "pb": 0.91,
+        "dividendYield": 4.41
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -26.50191428974837,
+        "momPercent": 1.9453574246578453
+      },
+      "balanceSheet": {
+        "currentAssets": 54839815,
+        "nonCurrentAssets": 12105953,
+        "totalAssets": 66945768,
+        "currentLiabilities": 31895824,
+        "nonCurrentLiabilities": 6597305,
+        "totalLiabilities": 38493129,
+        "capitalStock": 6094871,
+        "capitalSurplus": 1529104,
+        "retainedEarnings": 16564117,
+        "parentEquity": 23870936,
+        "totalEquity": 28452639,
+        "bvps": 40.49,
+        "workingCapital": 22943991
+      },
+      "metrics": {
+        "currentRatio": 1.7193,
+        "debtRatio": 0.575,
+        "equityRatio": 0.425,
+        "workingCapitalToAssets": 0.3427,
+        "retainedToEquity": 0.5822,
+        "nonCurrentLiabilityShare": 0.1714,
+        "priceToBook": 0.9076
+      },
+      "balanceSheetSafetyScore": 64.4,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "權益中累積保留盈餘占比高",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 19
+    },
+    {
+      "symbol": "5521",
+      "name": "工信",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 10.65,
+      "valuation": {
+        "pe": 11.21,
+        "pb": 0.9,
+        "dividendYield": 1.41
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -12.630846088894067,
+        "momPercent": -23.633650133463423
+      },
+      "balanceSheet": {
+        "currentAssets": 12149808,
+        "nonCurrentAssets": 1001447,
+        "totalAssets": 13151255,
+        "currentLiabilities": 7193092,
+        "nonCurrentLiabilities": 115337,
+        "totalLiabilities": 7308429,
+        "capitalStock": 4922802,
+        "capitalSurplus": 519,
+        "retainedEarnings": 885348,
+        "parentEquity": 5842826,
+        "totalEquity": 5842826,
+        "bvps": 11.87,
+        "workingCapital": 4956716
+      },
+      "metrics": {
+        "currentRatio": 1.6891,
+        "debtRatio": 0.5557,
+        "equityRatio": 0.4443,
+        "workingCapitalToAssets": 0.3769,
+        "retainedToEquity": 0.1515,
+        "nonCurrentLiabilityShare": 0.0158,
+        "priceToBook": 0.8972
+      },
+      "balanceSheetSafetyScore": 63.2,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "權益較依賴股本/資本公積",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 20
+    },
+    {
+      "symbol": "2515",
+      "name": "中工",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 11.95,
+      "valuation": {
+        "pe": 24.9,
+        "pb": 0.83,
+        "dividendYield": 4.18
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 28.83948243046841,
+        "momPercent": 13.272333841339274
+      },
+      "balanceSheet": {
+        "currentAssets": 56819221,
+        "nonCurrentAssets": 9334628,
+        "totalAssets": 66153849,
+        "currentLiabilities": 25227277,
+        "nonCurrentLiabilities": 17582981,
+        "totalLiabilities": 42810258,
+        "capitalStock": 16884601,
+        "capitalSurplus": 96532,
+        "retainedEarnings": 7587826,
+        "parentEquity": 23217149,
+        "totalEquity": 23343591,
+        "bvps": 14.44,
+        "workingCapital": 31591944
+      },
+      "metrics": {
+        "currentRatio": 2.2523,
+        "debtRatio": 0.6471,
+        "equityRatio": 0.3529,
+        "workingCapitalToAssets": 0.4776,
+        "retainedToEquity": 0.325,
+        "nonCurrentLiabilityShare": 0.4107,
+        "priceToBook": 0.8276
+      },
+      "balanceSheetSafetyScore": 60.8,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 21
+    },
+    {
+      "symbol": "2535",
+      "name": "達欣工",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 88.9,
+      "valuation": {
+        "pe": 8.71,
+        "pb": 2.14,
+        "dividendYield": 5.17
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 44.16751718611615,
+        "momPercent": 6.622818691464409
+      },
+      "balanceSheet": {
+        "currentAssets": 28785712,
+        "nonCurrentAssets": 2263248,
+        "totalAssets": 31048960,
+        "currentLiabilities": 15536992,
+        "nonCurrentLiabilities": 4351734,
+        "totalLiabilities": 19888726,
+        "capitalStock": 2707940,
+        "capitalSurplus": 2468152,
+        "retainedEarnings": 5760287,
+        "parentEquity": 10812625,
+        "totalEquity": 11160234,
+        "bvps": 41.6,
+        "workingCapital": 13248720
+      },
+      "metrics": {
+        "currentRatio": 1.8527,
+        "debtRatio": 0.6406,
+        "equityRatio": 0.3594,
+        "workingCapitalToAssets": 0.4267,
+        "retainedToEquity": 0.5161,
+        "nonCurrentLiabilityShare": 0.2188,
+        "priceToBook": 2.137
+      },
+      "balanceSheetSafetyScore": 58.7,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "權益中累積保留盈餘占比高",
+        "市價明顯高於帳面淨值，需用獲利/資產品質支持溢價"
+      ],
+      "rank": 22
+    },
+    {
+      "symbol": "2527",
+      "name": "宏璟",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 49.1,
+      "valuation": {
+        "pe": 8.63,
+        "pb": 0.35,
+        "dividendYield": 3.05
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 4.178486544506632,
+        "momPercent": -26.452846755714862
+      },
+      "balanceSheet": {
+        "currentAssets": 13638826,
+        "nonCurrentAssets": 36285731,
+        "totalAssets": 49924557,
+        "currentLiabilities": 9157166,
+        "nonCurrentLiabilities": 3580172,
+        "totalLiabilities": 12737338,
+        "capitalStock": 2703060,
+        "capitalSurplus": 388635,
+        "retainedEarnings": 4927438,
+        "parentEquity": 36830441,
+        "totalEquity": 37187219,
+        "bvps": 140.7,
+        "workingCapital": 4481660
+      },
+      "metrics": {
+        "currentRatio": 1.4894,
+        "debtRatio": 0.2551,
+        "equityRatio": 0.7449,
+        "workingCapitalToAssets": 0.0898,
+        "retainedToEquity": 0.1325,
+        "nonCurrentLiabilityShare": 0.2811,
+        "priceToBook": 0.349
+      },
+      "balanceSheetSafetyScore": 58.2,
+      "interpretation": [
+        "短期償債空間中性",
+        "負債比相對保守",
+        "權益較依賴股本/資本公積",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 23
+    },
+    {
+      "symbol": "1472",
+      "name": "三洋實業",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 88.8,
+      "valuation": {
+        "pe": 13.88,
+        "pb": 2.14,
+        "dividendYield": 6.76
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 7.954559176920941,
+        "momPercent": -0.717149393629781
+      },
+      "balanceSheet": {
+        "currentAssets": 4239132,
+        "nonCurrentAssets": 982782,
+        "totalAssets": 5221914,
+        "currentLiabilities": 2697901,
+        "nonCurrentLiabilities": 273729,
+        "totalLiabilities": 2971630,
+        "capitalStock": 524881,
+        "capitalSurplus": 837670,
+        "retainedEarnings": 782700,
+        "parentEquity": 2175424,
+        "totalEquity": 2250284,
+        "bvps": 41.45,
+        "workingCapital": 1541231
+      },
+      "metrics": {
+        "currentRatio": 1.5713,
+        "debtRatio": 0.5691,
+        "equityRatio": 0.4309,
+        "workingCapitalToAssets": 0.2951,
+        "retainedToEquity": 0.3478,
+        "nonCurrentLiabilityShare": 0.0921,
+        "priceToBook": 2.1423
+      },
+      "balanceSheetSafetyScore": 55.6,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "市價明顯高於帳面淨值，需用獲利/資產品質支持溢價"
+      ],
+      "rank": 24
+    },
+    {
+      "symbol": "2546",
+      "name": "根基",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 106,
+      "valuation": {
+        "pe": 7.09,
+        "pb": 2.11,
+        "dividendYield": 5.66
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -24.412633887665898,
+        "momPercent": -4.414405913768329
+      },
+      "balanceSheet": {
+        "currentAssets": 16186200,
+        "nonCurrentAssets": 922183,
+        "totalAssets": 17108383,
+        "currentLiabilities": 10241770,
+        "nonCurrentLiabilities": 296687,
+        "totalLiabilities": 10538457,
+        "capitalStock": 1461871,
+        "capitalSurplus": 519313,
+        "retainedEarnings": 4363256,
+        "parentEquity": 6569695,
+        "totalEquity": 6569926,
+        "bvps": 50.33,
+        "workingCapital": 5944430
+      },
+      "metrics": {
+        "currentRatio": 1.5804,
+        "debtRatio": 0.616,
+        "equityRatio": 0.384,
+        "workingCapitalToAssets": 0.3475,
+        "retainedToEquity": 0.6641,
+        "nonCurrentLiabilityShare": 0.0282,
+        "priceToBook": 2.1061
+      },
+      "balanceSheetSafetyScore": 54.7,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "權益中累積保留盈餘占比高",
+        "市價明顯高於帳面淨值，需用獲利/資產品質支持溢價"
+      ],
+      "rank": 25
+    },
+    {
+      "symbol": "1316",
+      "name": "上曜",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 10.5,
+      "valuation": {
+        "pe": null,
+        "pb": 0.87,
+        "dividendYield": null
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 93.04522686147229,
+        "momPercent": -0.7555780495590185
+      },
+      "balanceSheet": {
+        "currentAssets": 17716883,
+        "nonCurrentAssets": 10652365,
+        "totalAssets": 28369248,
+        "currentLiabilities": 11716689,
+        "nonCurrentLiabilities": 1729722,
+        "totalLiabilities": 13446411,
+        "capitalStock": 4016462,
+        "capitalSurplus": 1012229,
+        "retainedEarnings": -609019,
+        "parentEquity": 4361410,
+        "totalEquity": 14922837,
+        "bvps": 12.01,
+        "workingCapital": 6000194
+      },
+      "metrics": {
+        "currentRatio": 1.5121,
+        "debtRatio": 0.474,
+        "equityRatio": 0.526,
+        "workingCapitalToAssets": 0.2115,
+        "retainedToEquity": -0.0408,
+        "nonCurrentLiabilityShare": 0.1286,
+        "priceToBook": 0.8743
+      },
+      "balanceSheetSafetyScore": 54.5,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比相對保守",
+        "權益較依賴股本/資本公積",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 26
+    },
+    {
+      "symbol": "2501",
+      "name": "國建",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 21.05,
+      "valuation": {
+        "pe": 7.33,
+        "pb": 0.76,
+        "dividendYield": 5.7
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 60.17783541872381,
+        "momPercent": -34.3011027848693
+      },
+      "balanceSheet": {
+        "currentAssets": 66673145,
+        "nonCurrentAssets": 24263350,
+        "totalAssets": 90936495,
+        "currentLiabilities": 39628763,
+        "nonCurrentLiabilities": 16902148,
+        "totalLiabilities": 56530911,
+        "capitalStock": 11595611,
+        "capitalSurplus": 182206,
+        "retainedEarnings": 17089855,
+        "parentEquity": 32079540,
+        "totalEquity": 34405584,
+        "bvps": 27.67,
+        "workingCapital": 27044382
+      },
+      "metrics": {
+        "currentRatio": 1.6824,
+        "debtRatio": 0.6217,
+        "equityRatio": 0.3783,
+        "workingCapitalToAssets": 0.2974,
+        "retainedToEquity": 0.4967,
+        "nonCurrentLiabilityShare": 0.299,
+        "priceToBook": 0.7608
+      },
+      "balanceSheetSafetyScore": 53.2,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 27
+    },
+    {
+      "symbol": "2528",
+      "name": "皇普",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 19.25,
+      "valuation": {
+        "pe": 7.83,
+        "pb": 1.11,
+        "dividendYield": 15.58
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -76.39063420672002,
+        "momPercent": -67.92781827582318
+      },
+      "balanceSheet": {
+        "currentAssets": 21004657,
+        "nonCurrentAssets": 666851,
+        "totalAssets": 21671508,
+        "currentLiabilities": 11046925,
+        "nonCurrentLiabilities": 3096013,
+        "totalLiabilities": 14142938,
+        "capitalStock": 5011004,
+        "capitalSurplus": 1663874,
+        "retainedEarnings": 898033,
+        "parentEquity": null,
+        "totalEquity": 7528570,
+        "bvps": 17.27,
+        "workingCapital": 9957732
+      },
+      "metrics": {
+        "currentRatio": 1.9014,
+        "debtRatio": 0.6526,
+        "equityRatio": 0.3474,
+        "workingCapitalToAssets": 0.4595,
+        "retainedToEquity": 0.1193,
+        "nonCurrentLiabilityShare": 0.2189,
+        "priceToBook": 1.1146
+      },
+      "balanceSheetSafetyScore": 52.5,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "權益較依賴股本/資本公積"
+      ],
+      "rank": 28
+    },
+    {
+      "symbol": "1436",
+      "name": "華友聯",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 35.35,
+      "valuation": {
+        "pe": 12.54,
+        "pb": 1.24,
+        "dividendYield": 14.29
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -87.90431716806596,
+        "momPercent": -38.63708220415538
+      },
+      "balanceSheet": {
+        "currentAssets": 18824426,
+        "nonCurrentAssets": 2135871,
+        "totalAssets": 20960297,
+        "currentLiabilities": 9586845,
+        "nonCurrentLiabilities": 5091030,
+        "totalLiabilities": 14677875,
+        "capitalStock": 1941518,
+        "capitalSurplus": 1133116,
+        "retainedEarnings": 2453806,
+        "parentEquity": 5548990,
+        "totalEquity": 6282422,
+        "bvps": 28.58,
+        "workingCapital": 9237581
+      },
+      "metrics": {
+        "currentRatio": 1.9636,
+        "debtRatio": 0.7003,
+        "equityRatio": 0.2997,
+        "workingCapitalToAssets": 0.4407,
+        "retainedToEquity": 0.3906,
+        "nonCurrentLiabilityShare": 0.3469,
+        "priceToBook": 1.2369
+      },
+      "balanceSheetSafetyScore": 51.2,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "整體槓桿偏高"
+      ],
+      "rank": 29
+    },
+    {
+      "symbol": "2536",
+      "name": "宏普",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 19.1,
+      "valuation": {
+        "pe": 4.6,
+        "pb": 0.5,
+        "dividendYield": 10.47
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -68.50736064901326,
+        "momPercent": 132.35590826551888
+      },
+      "balanceSheet": {
+        "currentAssets": 35476131,
+        "nonCurrentAssets": 3347392,
+        "totalAssets": 38823523,
+        "currentLiabilities": 21594630,
+        "nonCurrentLiabilities": 3575216,
+        "totalLiabilities": 25169846,
+        "capitalStock": 3328087,
+        "capitalSurplus": 2042348,
+        "retainedEarnings": 7354908,
+        "parentEquity": 12725343,
+        "totalEquity": 13653677,
+        "bvps": 38.24,
+        "workingCapital": 13881501
+      },
+      "metrics": {
+        "currentRatio": 1.6428,
+        "debtRatio": 0.6483,
+        "equityRatio": 0.3517,
+        "workingCapitalToAssets": 0.3576,
+        "retainedToEquity": 0.5387,
+        "nonCurrentLiabilityShare": 0.142,
+        "priceToBook": 0.4995
+      },
+      "balanceSheetSafetyScore": 51.2,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "權益中累積保留盈餘占比高",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 30
+    },
+    {
+      "symbol": "3266",
+      "name": "昇陽",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 14,
+      "valuation": {
+        "pe": 29.17,
+        "pb": 0.8,
+        "dividendYield": 3.57
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 307.0065719737121,
+        "momPercent": 29.766357245854362
+      },
+      "balanceSheet": {
+        "currentAssets": 14956663,
+        "nonCurrentAssets": 1071686,
+        "totalAssets": 16028349,
+        "currentLiabilities": 9525381,
+        "nonCurrentLiabilities": 270054,
+        "totalLiabilities": 9795435,
+        "capitalStock": 3523143,
+        "capitalSurplus": 802671,
+        "retainedEarnings": 1879395,
+        "parentEquity": 6205209,
+        "totalEquity": 6232914,
+        "bvps": 17.61,
+        "workingCapital": 5431282
+      },
+      "metrics": {
+        "currentRatio": 1.5702,
+        "debtRatio": 0.6111,
+        "equityRatio": 0.3889,
+        "workingCapitalToAssets": 0.3389,
+        "retainedToEquity": 0.3015,
+        "nonCurrentLiabilityShare": 0.0276,
+        "priceToBook": 0.795
+      },
+      "balanceSheetSafetyScore": 49.4,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 31
+    },
+    {
+      "symbol": "2504",
+      "name": "國產",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 30.55,
+      "valuation": {
+        "pe": 9.58,
+        "pb": 1.39,
+        "dividendYield": 8.51
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -8.07209921701119,
+        "momPercent": -6.247545796577357
+      },
+      "balanceSheet": {
+        "currentAssets": 14662042,
+        "nonCurrentAssets": 35570608,
+        "totalAssets": 50232650,
+        "currentLiabilities": 12644028,
+        "nonCurrentLiabilities": 10501884,
+        "totalLiabilities": 23145912,
+        "capitalStock": 11800000,
+        "capitalSurplus": 1236631,
+        "retainedEarnings": 12702368,
+        "parentEquity": 25891646,
+        "totalEquity": 27086738,
+        "bvps": 22,
+        "workingCapital": 2018014
+      },
+      "metrics": {
+        "currentRatio": 1.1596,
+        "debtRatio": 0.4608,
+        "equityRatio": 0.5392,
+        "workingCapitalToAssets": 0.0402,
+        "retainedToEquity": 0.469,
+        "nonCurrentLiabilityShare": 0.4537,
+        "priceToBook": 1.3886
+      },
+      "balanceSheetSafetyScore": 49,
+      "interpretation": [
+        "短期償債空間中性",
+        "負債比相對保守"
+      ],
+      "rank": 32
+    },
+    {
+      "symbol": "2534",
+      "name": "宏盛",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 16.85,
+      "valuation": {
+        "pe": 337,
+        "pb": 0.56,
+        "dividendYield": 8.9
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 0.6101558607306136,
+        "momPercent": -13.780058431343171
+      },
+      "balanceSheet": {
+        "currentAssets": 17564416,
+        "nonCurrentAssets": 14702731,
+        "totalAssets": 32267147,
+        "currentLiabilities": 14233063,
+        "nonCurrentLiabilities": 3711807,
+        "totalLiabilities": 17944870,
+        "capitalStock": 4742280,
+        "capitalSurplus": 2344007,
+        "retainedEarnings": 7190421,
+        "parentEquity": 14322277,
+        "totalEquity": 14322277,
+        "bvps": 30.28,
+        "workingCapital": 3331353
+      },
+      "metrics": {
+        "currentRatio": 1.2341,
+        "debtRatio": 0.5561,
+        "equityRatio": 0.4439,
+        "workingCapitalToAssets": 0.1032,
+        "retainedToEquity": 0.502,
+        "nonCurrentLiabilityShare": 0.2068,
+        "priceToBook": 0.5565
+      },
+      "balanceSheetSafetyScore": 46.8,
+      "interpretation": [
+        "短期償債空間中性",
+        "負債比居中",
+        "權益中累積保留盈餘占比高",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 33
+    },
+    {
+      "symbol": "2530",
+      "name": "華建",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 20.05,
+      "valuation": {
+        "pe": 30.38,
+        "pb": 1.69,
+        "dividendYield": 11.52
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -99.86671400435164,
+        "momPercent": -20.19002375296912
+      },
+      "balanceSheet": {
+        "currentAssets": 30744777,
+        "nonCurrentAssets": 273358,
+        "totalAssets": 31018135,
+        "currentLiabilities": 18050172,
+        "nonCurrentLiabilities": 2756867,
+        "totalLiabilities": 20807039,
+        "capitalStock": 8412557,
+        "capitalSurplus": 1030704,
+        "retainedEarnings": 548531,
+        "parentEquity": 9996299,
+        "totalEquity": 10211096,
+        "bvps": 11.88,
+        "workingCapital": 12694605
+      },
+      "metrics": {
+        "currentRatio": 1.7033,
+        "debtRatio": 0.6708,
+        "equityRatio": 0.3292,
+        "workingCapitalToAssets": 0.4093,
+        "retainedToEquity": 0.0537,
+        "nonCurrentLiabilityShare": 0.1325,
+        "priceToBook": 1.6877
+      },
+      "balanceSheetSafetyScore": 46.4,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "負債比居中",
+        "權益較依賴股本/資本公積"
+      ],
+      "rank": 34
+    },
+    {
+      "symbol": "2442",
+      "name": "新美齊",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 14.3,
+      "valuation": {
+        "pe": 2.81,
+        "pb": 0.67,
+        "dividendYield": 19.16
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 19.870294519212013,
+        "momPercent": -48.767271742075316
+      },
+      "balanceSheet": {
+        "currentAssets": 20244497,
+        "nonCurrentAssets": 2429403,
+        "totalAssets": 22673900,
+        "currentLiabilities": 13803081,
+        "nonCurrentLiabilities": 1306656,
+        "totalLiabilities": 15109737,
+        "capitalStock": 3479983,
+        "capitalSurplus": 736635,
+        "retainedEarnings": 2776166,
+        "parentEquity": 6926663,
+        "totalEquity": 7564163,
+        "bvps": 21.3,
+        "workingCapital": 6441416
+      },
+      "metrics": {
+        "currentRatio": 1.4667,
+        "debtRatio": 0.6664,
+        "equityRatio": 0.3336,
+        "workingCapitalToAssets": 0.2841,
+        "retainedToEquity": 0.367,
+        "nonCurrentLiabilityShare": 0.0865,
+        "priceToBook": 0.6714
+      },
+      "balanceSheetSafetyScore": 40.3,
+      "interpretation": [
+        "短期償債空間中性",
+        "負債比居中",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 35
+    },
+    {
+      "symbol": "1808",
+      "name": "潤隆",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 31.7,
+      "valuation": {
+        "pe": 7.49,
+        "pb": 2.05,
+        "dividendYield": 4.73
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 33032.925531914894,
+        "momPercent": -43.44505427158947
+      },
+      "balanceSheet": {
+        "currentAssets": 48263631,
+        "nonCurrentAssets": 3935190,
+        "totalAssets": 52198821,
+        "currentLiabilities": 29070575,
+        "nonCurrentLiabilities": 9323112,
+        "totalLiabilities": 38393687,
+        "capitalStock": 8930317,
+        "capitalSurplus": 27220,
+        "retainedEarnings": 4507438,
+        "parentEquity": 13805134,
+        "totalEquity": 13805134,
+        "bvps": 15.46,
+        "workingCapital": 19193056
+      },
+      "metrics": {
+        "currentRatio": 1.6602,
+        "debtRatio": 0.7355,
+        "equityRatio": 0.2645,
+        "workingCapitalToAssets": 0.3677,
+        "retainedToEquity": 0.3265,
+        "nonCurrentLiabilityShare": 0.2428,
+        "priceToBook": 2.0505
+      },
+      "balanceSheetSafetyScore": 40,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "整體槓桿偏高",
+        "市價明顯高於帳面淨值，需用獲利/資產品質支持溢價"
+      ],
+      "rank": 36
+    },
+    {
+      "symbol": "3052",
+      "name": "夆典",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 10.45,
+      "valuation": {
+        "pe": 9.33,
+        "pb": 0.6,
+        "dividendYield": 5.74
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -10.79426498806199,
+        "momPercent": -44.55353130293497
+      },
+      "balanceSheet": {
+        "currentAssets": 11399261,
+        "nonCurrentAssets": 249224,
+        "totalAssets": 11648485,
+        "currentLiabilities": 8019869,
+        "nonCurrentLiabilities": 8894,
+        "totalLiabilities": 8028763,
+        "capitalStock": 2332457,
+        "capitalSurplus": 325942,
+        "retainedEarnings": 1135019,
+        "parentEquity": 3529607,
+        "totalEquity": 3619722,
+        "bvps": 17.3,
+        "workingCapital": 3379392
+      },
+      "metrics": {
+        "currentRatio": 1.4214,
+        "debtRatio": 0.6893,
+        "equityRatio": 0.3107,
+        "workingCapitalToAssets": 0.2901,
+        "retainedToEquity": 0.3136,
+        "nonCurrentLiabilityShare": 0.0011,
+        "priceToBook": 0.604
+      },
+      "balanceSheetSafetyScore": 35.6,
+      "interpretation": [
+        "短期償債空間中性",
+        "負債比居中",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 37
+    },
+    {
+      "symbol": "5546",
+      "name": "永固-KY",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 13.85,
+      "valuation": {
+        "pe": null,
+        "pb": 0.62,
+        "dividendYield": 7.22
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 32.806001600215474,
+        "momPercent": 7.520571578832599
+      },
+      "balanceSheet": {
+        "currentAssets": 2303331,
+        "nonCurrentAssets": 2135453,
+        "totalAssets": 4438784,
+        "currentLiabilities": 1952695,
+        "nonCurrentLiabilities": 640237,
+        "totalLiabilities": 2592932,
+        "capitalStock": 823534,
+        "capitalSurplus": 769597,
+        "retainedEarnings": 153535,
+        "parentEquity": 1826633,
+        "totalEquity": 1845852,
+        "bvps": 22.18,
+        "workingCapital": 350636
+      },
+      "metrics": {
+        "currentRatio": 1.1796,
+        "debtRatio": 0.5842,
+        "equityRatio": 0.4158,
+        "workingCapitalToAssets": 0.079,
+        "retainedToEquity": 0.0832,
+        "nonCurrentLiabilityShare": 0.2469,
+        "priceToBook": 0.6244
+      },
+      "balanceSheetSafetyScore": 32.5,
+      "interpretation": [
+        "短期償債空間中性",
+        "負債比居中",
+        "權益較依賴股本/資本公積",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 38
+    },
+    {
+      "symbol": "2545",
+      "name": "皇翔",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 34.2,
+      "valuation": {
+        "pe": 36,
+        "pb": 0.89,
+        "dividendYield": 8.19
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -75.63728646642173,
+        "momPercent": -94.61057824842118
+      },
+      "balanceSheet": {
+        "currentAssets": 45857347,
+        "nonCurrentAssets": 18636643,
+        "totalAssets": 64493990,
+        "currentLiabilities": 30440951,
+        "nonCurrentLiabilities": 19404703,
+        "totalLiabilities": 49845654,
+        "capitalStock": 3797348,
+        "capitalSurplus": 1532566,
+        "retainedEarnings": 9318422,
+        "parentEquity": 14648336,
+        "totalEquity": 14648336,
+        "bvps": 38.58,
+        "workingCapital": 15416396
+      },
+      "metrics": {
+        "currentRatio": 1.5064,
+        "debtRatio": 0.7729,
+        "equityRatio": 0.2271,
+        "workingCapitalToAssets": 0.239,
+        "retainedToEquity": 0.6361,
+        "nonCurrentLiabilityShare": 0.3893,
+        "priceToBook": 0.8865
+      },
+      "balanceSheetSafetyScore": 32,
+      "interpretation": [
+        "短期償債緩衝較厚",
+        "整體槓桿偏高",
+        "權益中累積保留盈餘占比高",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 39
+    },
+    {
+      "symbol": "2543",
+      "name": "皇昌",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 38.2,
+      "valuation": {
+        "pe": 13.22,
+        "pb": 2.1,
+        "dividendYield": 4.01
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 51.50921763610771,
+        "momPercent": -9.342744662966663
+      },
+      "balanceSheet": {
+        "currentAssets": 10548294,
+        "nonCurrentAssets": 12641526,
+        "totalAssets": 23189820,
+        "currentLiabilities": 10394132,
+        "nonCurrentLiabilities": 3039679,
+        "totalLiabilities": 13433811,
+        "capitalStock": 5285419,
+        "capitalSurplus": 3265459,
+        "retainedEarnings": 1472743,
+        "parentEquity": 9361994,
+        "totalEquity": 9756009,
+        "bvps": 18.2,
+        "workingCapital": 154162
+      },
+      "metrics": {
+        "currentRatio": 1.0148,
+        "debtRatio": 0.5793,
+        "equityRatio": 0.4207,
+        "workingCapitalToAssets": 0.0066,
+        "retainedToEquity": 0.151,
+        "nonCurrentLiabilityShare": 0.2263,
+        "priceToBook": 2.0989
+      },
+      "balanceSheetSafetyScore": 31.4,
+      "interpretation": [
+        "短期償債空間中性",
+        "負債比居中",
+        "權益較依賴股本/資本公積",
+        "市價明顯高於帳面淨值，需用獲利/資產品質支持溢價"
+      ],
+      "rank": 40
+    },
+    {
+      "symbol": "5525",
+      "name": "順天",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 21.9,
+      "valuation": {
+        "pe": 5.64,
+        "pb": 1.14,
+        "dividendYield": 5.48
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 1699.2086400934063,
+        "momPercent": 20.578166603271207
+      },
+      "balanceSheet": {
+        "currentAssets": 16121332,
+        "nonCurrentAssets": 3063572,
+        "totalAssets": 19184904,
+        "currentLiabilities": 12727204,
+        "nonCurrentLiabilities": 520951,
+        "totalLiabilities": 13248155,
+        "capitalStock": 3181054,
+        "capitalSurplus": 353359,
+        "retainedEarnings": 2417128,
+        "parentEquity": 5926195,
+        "totalEquity": 5936749,
+        "bvps": 19.29,
+        "workingCapital": 3394128
+      },
+      "metrics": {
+        "currentRatio": 1.2667,
+        "debtRatio": 0.6906,
+        "equityRatio": 0.3094,
+        "workingCapitalToAssets": 0.1769,
+        "retainedToEquity": 0.4071,
+        "nonCurrentLiabilityShare": 0.0393,
+        "priceToBook": 1.1353
+      },
+      "balanceSheetSafetyScore": 29.5,
+      "interpretation": [
+        "短期償債空間中性",
+        "負債比居中"
+      ],
+      "rank": 41
+    },
+    {
+      "symbol": "2538",
+      "name": "基泰",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 8.83,
+      "valuation": {
+        "pe": 14.72,
+        "pb": 0.72,
+        "dividendYield": 5.66
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 26.89925681255161,
+        "momPercent": 12.64947083886929
+      },
+      "balanceSheet": {
+        "currentAssets": 11185670,
+        "nonCurrentAssets": 6323183,
+        "totalAssets": 17508853,
+        "currentLiabilities": 8538562,
+        "nonCurrentLiabilities": 3485012,
+        "totalLiabilities": 12023574,
+        "capitalStock": 4450255,
+        "capitalSurplus": 58597,
+        "retainedEarnings": 1174880,
+        "parentEquity": 5485279,
+        "totalEquity": 5485279,
+        "bvps": 12.33,
+        "workingCapital": 2647108
+      },
+      "metrics": {
+        "currentRatio": 1.31,
+        "debtRatio": 0.6867,
+        "equityRatio": 0.3133,
+        "workingCapitalToAssets": 0.1512,
+        "retainedToEquity": 0.2142,
+        "nonCurrentLiabilityShare": 0.2898,
+        "priceToBook": 0.7161
+      },
+      "balanceSheetSafetyScore": 28.3,
+      "interpretation": [
+        "短期償債空間中性",
+        "負債比居中",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 42
+    },
+    {
+      "symbol": "6177",
+      "name": "達麗",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 46.65,
+      "valuation": {
+        "pe": 5.14,
+        "pb": 1.84,
+        "dividendYield": 6.43
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -8.722566122678671,
+        "momPercent": 0.7307978307588803
+      },
+      "balanceSheet": {
+        "currentAssets": 42017373,
+        "nonCurrentAssets": 4734573,
+        "totalAssets": 46751946,
+        "currentLiabilities": 31649343,
+        "nonCurrentLiabilities": 2816637,
+        "totalLiabilities": 34465980,
+        "capitalStock": 4723707,
+        "capitalSurplus": 1514004,
+        "retainedEarnings": 5673947,
+        "parentEquity": 11997495,
+        "totalEquity": 12285966,
+        "bvps": 25.4,
+        "workingCapital": 10368030
+      },
+      "metrics": {
+        "currentRatio": 1.3276,
+        "debtRatio": 0.7372,
+        "equityRatio": 0.2628,
+        "workingCapitalToAssets": 0.2218,
+        "retainedToEquity": 0.4618,
+        "nonCurrentLiabilityShare": 0.0817,
+        "priceToBook": 1.8366
+      },
+      "balanceSheetSafetyScore": 26.5,
+      "interpretation": [
+        "短期償債空間中性",
+        "整體槓桿偏高"
+      ],
+      "rank": 43
+    },
+    {
+      "symbol": "2537",
+      "name": "聯上發",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 11.1,
+      "valuation": {
+        "pe": 27.75,
+        "pb": 0.73,
+        "dividendYield": null
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -14.959349593495935,
+        "momPercent": -99.09030821679538
+      },
+      "balanceSheet": {
+        "currentAssets": 18127701,
+        "nonCurrentAssets": 750622,
+        "totalAssets": 18878323,
+        "currentLiabilities": 12932315,
+        "nonCurrentLiabilities": 1387755,
+        "totalLiabilities": 14320070,
+        "capitalStock": 3005579,
+        "capitalSurplus": 564882,
+        "retainedEarnings": 987792,
+        "parentEquity": null,
+        "totalEquity": 4558253,
+        "bvps": 15.17,
+        "workingCapital": 5195386
+      },
+      "metrics": {
+        "currentRatio": 1.4017,
+        "debtRatio": 0.7585,
+        "equityRatio": 0.2415,
+        "workingCapitalToAssets": 0.2752,
+        "retainedToEquity": 0.2167,
+        "nonCurrentLiabilityShare": 0.0969,
+        "priceToBook": 0.7317
+      },
+      "balanceSheetSafetyScore": 25.5,
+      "interpretation": [
+        "短期償債空間中性",
+        "整體槓桿偏高",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 44
+    },
+    {
+      "symbol": "2542",
+      "name": "興富發",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 38.4,
+      "valuation": {
+        "pe": 8.89,
+        "pb": 1.64,
+        "dividendYield": 10.42
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -20.877100359415035,
+        "momPercent": -37.09939845423766
+      },
+      "balanceSheet": {
+        "currentAssets": 247201365,
+        "nonCurrentAssets": 24151464,
+        "totalAssets": 271352829,
+        "currentLiabilities": 176317168,
+        "nonCurrentLiabilities": 34586469,
+        "totalLiabilities": 210903637,
+        "capitalStock": 21530835,
+        "capitalSurplus": 8734528,
+        "retainedEarnings": 19226966,
+        "parentEquity": 49412166,
+        "totalEquity": 60449192,
+        "bvps": 23.4,
+        "workingCapital": 70884197
+      },
+      "metrics": {
+        "currentRatio": 1.402,
+        "debtRatio": 0.7772,
+        "equityRatio": 0.2228,
+        "workingCapitalToAssets": 0.2612,
+        "retainedToEquity": 0.3181,
+        "nonCurrentLiabilityShare": 0.164,
+        "priceToBook": 1.641
+      },
+      "balanceSheetSafetyScore": 24.6,
+      "interpretation": [
+        "短期償債空間中性",
+        "整體槓桿偏高"
+      ],
+      "rank": 45
+    },
+    {
+      "symbol": "3703",
+      "name": "欣陸",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 19.55,
+      "valuation": {
+        "pe": 9.92,
+        "pb": 0.59,
+        "dividendYield": 5.37
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 15.273080235304398,
+        "momPercent": 4.99235096142531
+      },
+      "balanceSheet": {
+        "currentAssets": 61444777,
+        "nonCurrentAssets": 36382398,
+        "totalAssets": 97827175,
+        "currentLiabilities": 50595964,
+        "nonCurrentLiabilities": 18411944,
+        "totalLiabilities": 69007908,
+        "capitalStock": 8232160,
+        "capitalSurplus": 6884018,
+        "retainedEarnings": 10664920,
+        "parentEquity": 27408834,
+        "totalEquity": 28819267,
+        "bvps": 33.29,
+        "workingCapital": 10848813
+      },
+      "metrics": {
+        "currentRatio": 1.2144,
+        "debtRatio": 0.7054,
+        "equityRatio": 0.2946,
+        "workingCapitalToAssets": 0.1109,
+        "retainedToEquity": 0.3701,
+        "nonCurrentLiabilityShare": 0.2668,
+        "priceToBook": 0.5873
+      },
+      "balanceSheetSafetyScore": 24,
+      "interpretation": [
+        "短期償債空間中性",
+        "整體槓桿偏高",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 46
+    },
+    {
+      "symbol": "2509",
+      "name": "全坤建",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 14.3,
+      "valuation": {
+        "pe": null,
+        "pb": 0.83,
+        "dividendYield": null
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 510.3268226648617,
+        "momPercent": -88.25146554219245
+      },
+      "balanceSheet": {
+        "currentAssets": 11676646,
+        "nonCurrentAssets": 2803945,
+        "totalAssets": 14480591,
+        "currentLiabilities": 9265445,
+        "nonCurrentLiabilities": 1070573,
+        "totalLiabilities": 10336018,
+        "capitalStock": 2245505,
+        "capitalSurplus": 541603,
+        "retainedEarnings": 1053225,
+        "parentEquity": 3845911,
+        "totalEquity": 4144573,
+        "bvps": 17.13,
+        "workingCapital": 2411201
+      },
+      "metrics": {
+        "currentRatio": 1.2602,
+        "debtRatio": 0.7138,
+        "equityRatio": 0.2862,
+        "workingCapitalToAssets": 0.1665,
+        "retainedToEquity": 0.2541,
+        "nonCurrentLiabilityShare": 0.1036,
+        "priceToBook": 0.8348
+      },
+      "balanceSheetSafetyScore": 22.5,
+      "interpretation": [
+        "短期償債空間中性",
+        "整體槓桿偏高",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 47
+    },
+    {
+      "symbol": "2597",
+      "name": "潤弘",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 167.5,
+      "valuation": {
+        "pe": 14.37,
+        "pb": 7,
+        "dividendYield": 5.77
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 40.9086362028445,
+        "momPercent": 18.615648736382795
+      },
+      "balanceSheet": {
+        "currentAssets": 18041540,
+        "nonCurrentAssets": 11843569,
+        "totalAssets": 29885109,
+        "currentLiabilities": 15987064,
+        "nonCurrentLiabilities": 4565437,
+        "totalLiabilities": 20552501,
+        "capitalStock": 3107160,
+        "capitalSurplus": 846434,
+        "retainedEarnings": 3126024,
+        "parentEquity": 7437855,
+        "totalEquity": 9332608,
+        "bvps": 23.94,
+        "workingCapital": 2054476
+      },
+      "metrics": {
+        "currentRatio": 1.1285,
+        "debtRatio": 0.6877,
+        "equityRatio": 0.3123,
+        "workingCapitalToAssets": 0.0687,
+        "retainedToEquity": 0.335,
+        "nonCurrentLiabilityShare": 0.2221,
+        "priceToBook": 6.9967
+      },
+      "balanceSheetSafetyScore": 22.5,
+      "interpretation": [
+        "短期償債空間中性",
+        "負債比居中",
+        "市價明顯高於帳面淨值，需用獲利/資產品質支持溢價"
+      ],
+      "rank": 48
+    },
+    {
+      "symbol": "9906",
+      "name": "欣巴巴",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 40.25,
+      "valuation": {
+        "pe": 11.73,
+        "pb": 2.4,
+        "dividendYield": 0.2
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -56.33325661017925,
+        "momPercent": 10.492501456027956
+      },
+      "balanceSheet": {
+        "currentAssets": 8783846,
+        "nonCurrentAssets": 51230,
+        "totalAssets": 8835076,
+        "currentLiabilities": 6321112,
+        "nonCurrentLiabilities": 996100,
+        "totalLiabilities": 7317212,
+        "capitalStock": 911432,
+        "capitalSurplus": 215153,
+        "retainedEarnings": 391279,
+        "parentEquity": 1517864,
+        "totalEquity": 1517864,
+        "bvps": 16.79,
+        "workingCapital": 2462734
+      },
+      "metrics": {
+        "currentRatio": 1.3896,
+        "debtRatio": 0.8282,
+        "equityRatio": 0.1718,
+        "workingCapitalToAssets": 0.2787,
+        "retainedToEquity": 0.2578,
+        "nonCurrentLiabilityShare": 0.1361,
+        "priceToBook": 2.3973
+      },
+      "balanceSheetSafetyScore": 20.8,
+      "interpretation": [
+        "短期償債空間中性",
+        "整體槓桿偏高",
+        "市價明顯高於帳面淨值，需用獲利/資產品質支持溢價"
+      ],
+      "rank": 49
+    },
+    {
+      "symbol": "1438",
+      "name": "三地開發",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 21.8,
+      "valuation": {
+        "pe": 8.42,
+        "pb": 0.77,
+        "dividendYield": 0.92
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 41420.552147239265,
+        "momPercent": 920.6122602860231
+      },
+      "balanceSheet": {
+        "currentAssets": 14220774,
+        "nonCurrentAssets": 485018,
+        "totalAssets": 14705792,
+        "currentLiabilities": 10325324,
+        "nonCurrentLiabilities": 1238857,
+        "totalLiabilities": 11564181,
+        "capitalStock": 1201022,
+        "capitalSurplus": 1621262,
+        "retainedEarnings": 326713,
+        "parentEquity": null,
+        "totalEquity": 3141611,
+        "bvps": 28.25,
+        "workingCapital": 3895450
+      },
+      "metrics": {
+        "currentRatio": 1.3773,
+        "debtRatio": 0.7864,
+        "equityRatio": 0.2136,
+        "workingCapitalToAssets": 0.2649,
+        "retainedToEquity": 0.104,
+        "nonCurrentLiabilityShare": 0.1071,
+        "priceToBook": 0.7717
+      },
+      "balanceSheetSafetyScore": 19.4,
+      "interpretation": [
+        "短期償債空間中性",
+        "整體槓桿偏高",
+        "權益較依賴股本/資本公積",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 50
+    },
+    {
+      "symbol": "2516",
+      "name": "新建",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 15.15,
+      "valuation": {
+        "pe": 10.1,
+        "pb": 1.55,
+        "dividendYield": null
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -16.46010144951327,
+        "momPercent": 0.7705668362064576
+      },
+      "balanceSheet": {
+        "currentAssets": 5841171,
+        "nonCurrentAssets": 1603527,
+        "totalAssets": 7444698,
+        "currentLiabilities": 5116553,
+        "nonCurrentLiabilities": 118962,
+        "totalLiabilities": 5235515,
+        "capitalStock": 2262785,
+        "capitalSurplus": 13156,
+        "retainedEarnings": -165398,
+        "parentEquity": 2209183,
+        "totalEquity": 2209183,
+        "bvps": 9.76,
+        "workingCapital": 724618
+      },
+      "metrics": {
+        "currentRatio": 1.1416,
+        "debtRatio": 0.7033,
+        "equityRatio": 0.2967,
+        "workingCapitalToAssets": 0.0973,
+        "retainedToEquity": -0.0749,
+        "nonCurrentLiabilityShare": 0.0227,
+        "priceToBook": 1.5523
+      },
+      "balanceSheetSafetyScore": 15.9,
+      "interpretation": [
+        "短期償債空間中性",
+        "整體槓桿偏高",
+        "權益較依賴股本/資本公積"
+      ],
+      "rank": 51
+    },
+    {
+      "symbol": "1456",
+      "name": "怡華",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 14.8,
+      "valuation": {
+        "pe": 5.1,
+        "pb": 0.76,
+        "dividendYield": null
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 6526.080375163244,
+        "momPercent": 2356.031552196442
+      },
+      "balanceSheet": {
+        "currentAssets": 10464710,
+        "nonCurrentAssets": 3049318,
+        "totalAssets": 13514028,
+        "currentLiabilities": 9158478,
+        "nonCurrentLiabilities": 2519189,
+        "totalLiabilities": 11677667,
+        "capitalStock": 937200,
+        "capitalSurplus": 18377,
+        "retainedEarnings": 880784,
+        "parentEquity": 1836361,
+        "totalEquity": 1836361,
+        "bvps": 19.59,
+        "workingCapital": 1306232
+      },
+      "metrics": {
+        "currentRatio": 1.1426,
+        "debtRatio": 0.8641,
+        "equityRatio": 0.1359,
+        "workingCapitalToAssets": 0.0967,
+        "retainedToEquity": 0.4796,
+        "nonCurrentLiabilityShare": 0.2157,
+        "priceToBook": 0.7555
+      },
+      "balanceSheetSafetyScore": 12.1,
+      "interpretation": [
+        "短期償債空間中性",
+        "整體槓桿偏高",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 52
+    },
+    {
+      "symbol": "2540",
+      "name": "愛山林",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 48.85,
+      "valuation": {
+        "pe": null,
+        "pb": 4.29,
+        "dividendYield": 12.28
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 98.38295459889332,
+        "momPercent": 39.00230742265192
+      },
+      "balanceSheet": {
+        "currentAssets": 56803470,
+        "nonCurrentAssets": 6405992,
+        "totalAssets": 63209462,
+        "currentLiabilities": 46887656,
+        "nonCurrentLiabilities": 5549214,
+        "totalLiabilities": 52436870,
+        "capitalStock": 9448741,
+        "capitalSurplus": 495174,
+        "retainedEarnings": 828677,
+        "parentEquity": 10772592,
+        "totalEquity": 10772592,
+        "bvps": 11.4,
+        "workingCapital": 9915814
+      },
+      "metrics": {
+        "currentRatio": 1.2115,
+        "debtRatio": 0.8296,
+        "equityRatio": 0.1704,
+        "workingCapitalToAssets": 0.1569,
+        "retainedToEquity": 0.0769,
+        "nonCurrentLiabilityShare": 0.1058,
+        "priceToBook": 4.2851
+      },
+      "balanceSheetSafetyScore": 10.3,
+      "interpretation": [
+        "短期償債空間中性",
+        "整體槓桿偏高",
+        "權益較依賴股本/資本公積",
+        "市價明顯高於帳面淨值，需用獲利/資產品質支持溢價"
+      ],
+      "rank": 53
+    },
+    {
+      "symbol": "2547",
+      "name": "日勝生",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 9.78,
+      "valuation": {
+        "pe": 81.5,
+        "pb": 0.75,
+        "dividendYield": 8.18
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": 81.22955024989892,
+        "momPercent": -12.653603290844066
+      },
+      "balanceSheet": {
+        "currentAssets": 20516372,
+        "nonCurrentAssets": 44001812,
+        "totalAssets": 64518184,
+        "currentLiabilities": 26347254,
+        "nonCurrentLiabilities": 23606984,
+        "totalLiabilities": 49954238,
+        "capitalStock": 10350946,
+        "capitalSurplus": 396180,
+        "retainedEarnings": 2720031,
+        "parentEquity": 13463173,
+        "totalEquity": 14563946,
+        "bvps": 13.01,
+        "workingCapital": -5830882
+      },
+      "metrics": {
+        "currentRatio": 0.7787,
+        "debtRatio": 0.7743,
+        "equityRatio": 0.2257,
+        "workingCapitalToAssets": -0.0904,
+        "retainedToEquity": 0.1868,
+        "nonCurrentLiabilityShare": 0.4726,
+        "priceToBook": 0.7517
+      },
+      "balanceSheetSafetyScore": 8,
+      "interpretation": [
+        "流動負債高於流動資產，需追蹤資金調度",
+        "整體槓桿偏高",
+        "權益較依賴股本/資本公積",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 54
+    },
+    {
+      "symbol": "5531",
+      "name": "鄉林",
+      "industry": "建材營造",
+      "fiscalYear": "115",
+      "quarter": "2",
+      "publishedAt": "1151004",
+      "priceAsOf": "2026-10-01",
+      "close": 6.91,
+      "valuation": {
+        "pe": 62.82,
+        "pb": 0.69,
+        "dividendYield": null
+      },
+      "revenue": {
+        "dataMonth": "2026-08",
+        "yoyPercent": -14.068064215002709,
+        "momPercent": 18.26357277672921
+      },
+      "balanceSheet": {
+        "currentAssets": 22975348,
+        "nonCurrentAssets": 23831663,
+        "totalAssets": 46807011,
+        "currentLiabilities": 23557244,
+        "nonCurrentLiabilities": 13531847,
+        "totalLiabilities": 37089091,
+        "capitalStock": 9775892,
+        "capitalSurplus": 8591,
+        "retainedEarnings": 322885,
+        "parentEquity": 9838122,
+        "totalEquity": 9717920,
+        "bvps": 10.06,
+        "workingCapital": -581896
+      },
+      "metrics": {
+        "currentRatio": 0.9753,
+        "debtRatio": 0.7924,
+        "equityRatio": 0.2076,
+        "workingCapitalToAssets": -0.0124,
+        "retainedToEquity": 0.0332,
+        "nonCurrentLiabilityShare": 0.3648,
+        "priceToBook": 0.6869
+      },
+      "balanceSheetSafetyScore": 4.5,
+      "interpretation": [
+        "流動負債高於流動資產，需追蹤資金調度",
+        "整體槓桿偏高",
+        "權益較依賴股本/資本公積",
+        "市價低於每股淨值，但不代表土地已按市價重估"
+      ],
+      "rank": 55
+    }
+  ]
+}
