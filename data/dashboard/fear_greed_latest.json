@@ -1,39 +1,38 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-23T15:20:13.929Z",
+  "generatedAt": "2026-10-26T16:51:55.066Z",
   "tradingDate": "2026-10-22",
   "modelVersion": "tw-fear-greed-v0.1",
-  "status": "complete",
-  "score": 45.5,
-  "label": "中性",
+  "status": "partial",
+  "score": null,
+  "label": null,
   "coverage": {
-    "available": 9,
+    "available": 5,
     "total": 9,
-    "complete": true,
-    "missing": []
+    "complete": false,
+    "missing": [
+      "optionVolatility",
+      "putCallRatio",
+      "usdTwd",
+      "foreignFutures"
+    ]
   },
   "consensus": {
-    "extremeFear": 3,
-    "extremeGreed": 3
+    "extremeFear": 1,
+    "extremeGreed": 2
   },
   "signals": [
     {
       "key": "optionVolatility",
-      "status": "ok",
-      "value": 30.35,
-      "asOf": "2026-10-22",
+      "status": "unavailable",
+      "value": null,
+      "asOf": null,
       "source": "TAIFEX",
-      "frequency": "daily",
-      "sourceUrl": "https://www.taifex.com.tw/file/taifex/Dailydownload/vix/log2data_eng/202610new.txt",
-      "components": {
-        "date": "2026-10-22",
-        "close": 30.31,
-        "lastMinuteAverage": 30.35
-      },
+      "error": "https://www.taifex.com.tw/file/taifex/Dailydownload/vix/log2data_eng/202610new.txt: HTTP 403",
       "label": "選擇權波動率",
       "unit": "index",
       "description": "TAIFEX 臺指選擇權波動率最後一分鐘平均值",
-      "score": 32.2,
+      "score": null,
       "anchors": {
         "fear": 40,
         "greed": 10
@@ -41,25 +40,15 @@
     },
     {
       "key": "putCallRatio",
-      "status": "ok",
-      "value": 66.18,
-      "asOf": "2026-10-22",
+      "status": "unavailable",
+      "value": null,
+      "asOf": null,
       "source": "TAIFEX",
-      "frequency": "daily",
-      "sourceUrl": "https://www.taifex.com.tw/enl/eng3/pcRatio",
-      "components": {
-        "date": "2026-10-22",
-        "putVolume": 172113,
-        "callVolume": 199654,
-        "volumeRatioPercent": 86.21,
-        "putOpenInterest": 64809,
-        "callOpenInterest": 97930,
-        "openInterestRatioPercent": 66.18
-      },
+      "error": "https://www.taifex.com.tw/enl/eng3/pcRatio: HTTP 403",
       "label": "賣權／買權比率",
       "unit": "%",
       "description": "TXO 賣權／買權未平倉量比率；比率升高代表避險需求增加",
-      "score": 100,
+      "score": null,
       "anchors": {
         "fear": 130,
         "greed": 70
@@ -67,21 +56,15 @@
     },
     {
       "key": "usdTwd",
-      "status": "ok",
-      "value": 2.361609673153242,
-      "asOf": "2026-10-22",
+      "status": "unavailable",
+      "value": null,
+      "asOf": null,
       "source": "TAIFEX",
-      "frequency": "daily",
-      "sourceUrl": "https://www.taifex.com.tw/enl/eng3/dailyFXRate",
-      "components": {
-        "usdTwd": 32.508,
-        "baseDate": "2026-09-21",
-        "baseUsdTwd": 31.758
-      },
+      "error": "https://www.taifex.com.tw/enl/eng3/dailyFXRate: HTTP 403",
       "label": "美元／新台幣匯率",
       "unit": "20D %",
       "description": "USD/NTD 二十個觀測日變動率；新台幣貶值為恐懼方向",
-      "score": 10.6,
+      "score": null,
       "anchors": {
         "fear": 3,
         "greed": -3
@@ -112,22 +95,15 @@
     },
     {
       "key": "foreignFutures",
-      "status": "ok",
-      "value": -87297,
-      "asOf": "2026-10-22",
+      "status": "unavailable",
+      "value": null,
+      "asOf": null,
       "source": "TAIFEX",
-      "frequency": "daily",
-      "sourceUrl": "https://www.taifex.com.tw/enl/eng3/futContractsDate",
-      "components": {
-        "date": "2026-10-22",
-        "longOpenInterest": 8126,
-        "shortOpenInterest": 95423,
-        "netOpenInterest": -87297
-      },
+      "error": "https://www.taifex.com.tw/enl/eng3/futContractsDate: HTTP 403",
       "label": "境外機構期貨持倉",
       "unit": "contracts",
       "description": "外資在臺股期貨（TX）的淨未平倉口數",
-      "score": 0,
+      "score": null,
       "anchors": {
         "fear": -60000,
         "greed": 30000
