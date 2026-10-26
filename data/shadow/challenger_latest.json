@@ -176,7 +176,7 @@
   },
   "training": {
     "version": "v0.3.1",
-    "generatedAt": "2026-10-18T07:02:21.107356+00:00",
+    "generatedAt": "2026-10-25T07:20:56.575204+00:00",
     "featureNames": [
       "momentum5",
       "momentum10",
@@ -196,27 +196,27 @@
     ],
     "label": "P(5d sector return > 5d TAIEX return)",
     "horizonTradingDays": 5,
-    "matureSamples": 3690,
-    "dateCount": 615,
-    "trainedThrough": "2026-10-08",
-    "labelThrough": "2026-10-16",
-    "validationSplitDate": "2026-04-13",
-    "validationSamples": 738,
+    "matureSamples": 3714,
+    "dateCount": 619,
+    "trainedThrough": "2026-10-15",
+    "labelThrough": "2026-10-22",
+    "validationSplitDate": "2026-04-16",
+    "validationSamples": 744,
     "validation": {
       "baseline": {
-        "brier": 0.24964379226724198,
-        "logloss": 0.6924338118167911,
-        "rocAuc": 0.5304978811225277
+        "brier": 0.24963766469369636,
+        "logloss": 0.6924223222673712,
+        "rocAuc": 0.5293033675386616
       },
       "lightgbm": {
-        "brier": 0.2797219991752593,
-        "logloss": 0.7658751180123837,
-        "rocAuc": 0.48747769119472373
+        "brier": 0.2829080569284426,
+        "logloss": 0.7732464954310567,
+        "rocAuc": 0.4833429686370863
       },
       "xgboost": {
-        "brier": 0.2697553038597107,
-        "logloss": 0.7378091812133789,
-        "rocAuc": 0.481730649177053
+        "brier": 0.27276739478111267,
+        "logloss": 0.7440405488014221,
+        "rocAuc": 0.4731030495736378
       }
     }
   }
