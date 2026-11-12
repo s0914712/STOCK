@@ -1,9 +1,9 @@
 {
   "shadowVersion": "v0.2",
   "latestPrediction": {
-    "id": "2026-11-11:sector-radar-baseline-v0.1",
-    "generatedAt": "2026-11-11T15:32:47.348Z",
-    "asOf": "2026-11-11",
+    "id": "2026-11-12:sector-radar-baseline-v0.1",
+    "generatedAt": "2026-11-12T16:06:36.878Z",
+    "asOf": "2026-11-12",
     "model": "sector-radar-baseline-v0.1",
     "modelType": "cross-sectional heuristic baseline",
     "horizonTradingDays": 5,
@@ -13,161 +13,161 @@
       {
         "sector": "金融",
         "rank": 1,
-        "score": 74.1,
+        "score": 67.1,
         "signal": "強勢",
         "coverage": 1,
         "anchors": [
           {
             "symbol": "2881",
-            "asOf": "2026-11-11",
-            "close": 159.5
+            "asOf": "2026-11-12",
+            "close": 159
           },
           {
             "symbol": "2882",
-            "asOf": "2026-11-11",
-            "close": 113
+            "asOf": "2026-11-12",
+            "close": 112
           },
           {
             "symbol": "2891",
-            "asOf": "2026-11-11",
-            "close": 74.7
-          }
-        ]
-      },
-      {
-        "sector": "半導體",
-        "rank": 2,
-        "score": 62.9,
-        "signal": "強勢",
-        "coverage": 1,
-        "anchors": [
-          {
-            "symbol": "2330",
-            "asOf": "2026-11-11",
-            "close": 2395
-          },
-          {
-            "symbol": "2454",
-            "asOf": "2026-11-11",
-            "close": 3990
-          },
-          {
-            "symbol": "2303",
-            "asOf": "2026-11-11",
-            "close": 104
+            "asOf": "2026-11-12",
+            "close": 75.4
           }
         ]
       },
       {
         "sector": "PCB",
-        "rank": 3,
-        "score": 50.9,
-        "signal": "中性",
+        "rank": 2,
+        "score": 64,
+        "signal": "強勢",
         "coverage": 1,
         "anchors": [
           {
             "symbol": "3037",
-            "asOf": "2026-11-11",
-            "close": 864
+            "asOf": "2026-11-12",
+            "close": 792
           },
           {
             "symbol": "2368",
-            "asOf": "2026-11-11",
-            "close": 1050
+            "asOf": "2026-11-12",
+            "close": 975
           },
           {
             "symbol": "3044",
-            "asOf": "2026-11-11",
-            "close": 520
+            "asOf": "2026-11-12",
+            "close": 534
+          }
+        ]
+      },
+      {
+        "sector": "半導體",
+        "rank": 3,
+        "score": 53.2,
+        "signal": "中性",
+        "coverage": 1,
+        "anchors": [
+          {
+            "symbol": "2330",
+            "asOf": "2026-11-12",
+            "close": 2340
+          },
+          {
+            "symbol": "2454",
+            "asOf": "2026-11-12",
+            "close": 3850
+          },
+          {
+            "symbol": "2303",
+            "asOf": "2026-11-12",
+            "close": 101
           }
         ]
       },
       {
         "sector": "AI伺服器",
         "rank": 4,
-        "score": 49.4,
+        "score": 46.8,
         "signal": "中性",
         "coverage": 1,
         "anchors": [
           {
             "symbol": "2317",
-            "asOf": "2026-11-11",
-            "close": 242
+            "asOf": "2026-11-12",
+            "close": 240
           },
           {
             "symbol": "2382",
-            "asOf": "2026-11-11",
-            "close": 298
+            "asOf": "2026-11-12",
+            "close": 278.5
           },
           {
             "symbol": "3231",
-            "asOf": "2026-11-11",
-            "close": 174.5
+            "asOf": "2026-11-12",
+            "close": 170
           }
         ]
       },
       {
         "sector": "電子零組件",
         "rank": 5,
-        "score": 33.7,
+        "score": 36.3,
         "signal": "弱勢",
         "coverage": 1,
         "anchors": [
           {
             "symbol": "2308",
-            "asOf": "2026-11-11",
-            "close": 1295
+            "asOf": "2026-11-12",
+            "close": 1240
           },
           {
             "symbol": "2327",
-            "asOf": "2026-11-11",
-            "close": 424.5
+            "asOf": "2026-11-12",
+            "close": 407
           },
           {
             "symbol": "3008",
-            "asOf": "2026-11-11",
-            "close": 5325
+            "asOf": "2026-11-12",
+            "close": 5055
           }
         ]
       },
       {
         "sector": "航運",
         "rank": 6,
-        "score": 28.5,
+        "score": 32.6,
         "signal": "弱勢",
         "coverage": 1,
         "anchors": [
           {
             "symbol": "2603",
-            "asOf": "2026-11-11",
-            "close": 257.5
+            "asOf": "2026-11-12",
+            "close": 251.5
           },
           {
             "symbol": "2609",
-            "asOf": "2026-11-11",
-            "close": 59.1
+            "asOf": "2026-11-12",
+            "close": 58.2
           },
           {
             "symbol": "2615",
-            "asOf": "2026-11-11",
-            "close": 111
+            "asOf": "2026-11-12",
+            "close": 107
           }
         ]
       }
     ]
   },
   "latestScore": {
-    "id": "2026-11-04:sector-radar-baseline-v0.1",
-    "scoredAt": "2026-11-11T15:33:35.263Z",
-    "asOf": "2026-11-04",
-    "targetDate": "2026-11-11",
+    "id": "2026-11-05:sector-radar-baseline-v0.1",
+    "scoredAt": "2026-11-12T16:07:26.039Z",
+    "asOf": "2026-11-05",
+    "targetDate": "2026-11-12",
     "horizonTradingDays": 5,
     "model": "sector-radar-baseline-v0.1",
     "benchmark": "TAIEX",
-    "benchmarkReturn": 0.030460377224940105,
+    "benchmarkReturn": 0.036492127908498206,
     "metrics": {
-      "directionAccuracy": 0.16666666666666666,
-      "top3HitRate": 0.3333333333333333,
+      "directionAccuracy": 0,
+      "top3HitRate": 0,
       "evaluatedSectors": 6
     },
     "predictedTop3": [
@@ -177,71 +177,71 @@
     ],
     "actualTop3": [
       "PCB",
-      "半導體",
-      "金融"
+      "電子零組件",
+      "半導體"
     ],
     "sectors": [
       {
         "sector": "金融",
         "predictedRank": 1,
-        "predictedScore": 76.2,
+        "predictedScore": 77.2,
         "predictedOutperform": true,
-        "sectorReturn": 0.023624093614544057,
-        "benchmarkReturn": 0.030460377224940105,
-        "relativeReturn": -0.006836283610396048,
+        "sectorReturn": 0.009727868669480019,
+        "benchmarkReturn": 0.036492127908498206,
+        "relativeReturn": -0.026764259239018186,
         "actualOutperform": false,
         "coverage": 1,
         "members": [
           {
             "symbol": "2881",
-            "anchorClose": 154.5,
-            "targetClose": 159.5,
-            "return": 0.032362459546925626
+            "anchorClose": 155.5,
+            "targetClose": 159,
+            "return": 0.022508038585209
           },
           {
             "symbol": "2882",
-            "anchorClose": 111,
-            "targetClose": 113,
-            "return": 0.018018018018018056
+            "anchorClose": 112,
+            "targetClose": 112,
+            "return": 0
           },
           {
             "symbol": "2891",
-            "anchorClose": 73.2,
-            "targetClose": 74.7,
-            "return": 0.020491803278688492
+            "anchorClose": 74.9,
+            "targetClose": 75.4,
+            "return": 0.006675567423231055
           }
         ],
-        "actualRank": 3,
+        "actualRank": 4,
         "hit": false
       },
       {
         "sector": "航運",
         "predictedRank": 2,
-        "predictedScore": 72.6,
+        "predictedScore": 69.8,
         "predictedOutperform": true,
-        "sectorReturn": -0.04316816980325281,
-        "benchmarkReturn": 0.030460377224940105,
-        "relativeReturn": -0.07362854702819291,
+        "sectorReturn": -0.03735162469675742,
+        "benchmarkReturn": 0.036492127908498206,
+        "relativeReturn": -0.07384375260525564,
         "actualOutperform": false,
         "coverage": 1,
         "members": [
           {
             "symbol": "2603",
-            "anchorClose": 268,
-            "targetClose": 257.5,
-            "return": -0.03917910447761197
+            "anchorClose": 259,
+            "targetClose": 251.5,
+            "return": -0.02895752895752901
           },
           {
             "symbol": "2609",
-            "anchorClose": 62.3,
-            "targetClose": 59.1,
-            "return": -0.051364365971107495
+            "anchorClose": 60,
+            "targetClose": 58.2,
+            "return": -0.029999999999999916
           },
           {
             "symbol": "2615",
-            "anchorClose": 115.5,
-            "targetClose": 111,
-            "return": -0.038961038961038974
+            "anchorClose": 113,
+            "targetClose": 107,
+            "return": -0.053097345132743334
           }
         ],
         "actualRank": 6,
@@ -250,31 +250,31 @@
       {
         "sector": "AI伺服器",
         "predictedRank": 3,
-        "predictedScore": 53.5,
+        "predictedScore": 55.3,
         "predictedOutperform": true,
-        "sectorReturn": -0.005021808999081741,
-        "benchmarkReturn": 0.030460377224940105,
-        "relativeReturn": -0.03548218622402185,
+        "sectorReturn": -0.013829331256883534,
+        "benchmarkReturn": 0.036492127908498206,
+        "relativeReturn": -0.05032145916538174,
         "actualOutperform": false,
         "coverage": 1,
         "members": [
           {
             "symbol": "2317",
-            "anchorClose": 240,
-            "targetClose": 242,
-            "return": 0.008333333333333304
+            "anchorClose": 235,
+            "targetClose": 240,
+            "return": 0.02127659574468077
           },
           {
             "symbol": "2382",
-            "anchorClose": 302.5,
-            "targetClose": 298,
-            "return": -0.014876033057851235
+            "anchorClose": 300,
+            "targetClose": 278.5,
+            "return": -0.07166666666666666
           },
           {
             "symbol": "3231",
-            "anchorClose": 176,
-            "targetClose": 174.5,
-            "return": -0.008522727272727293
+            "anchorClose": 168.5,
+            "targetClose": 170,
+            "return": 0.008902077151335286
           }
         ],
         "actualRank": 5,
@@ -283,64 +283,64 @@
       {
         "sector": "半導體",
         "predictedRank": 4,
-        "predictedScore": 43.6,
+        "predictedScore": 47.9,
         "predictedOutperform": false,
-        "sectorReturn": 0.03984690996867557,
-        "benchmarkReturn": 0.030460377224940105,
-        "relativeReturn": 0.009386532743735465,
+        "sectorReturn": 0.061260794792093266,
+        "benchmarkReturn": 0.036492127908498206,
+        "relativeReturn": 0.02476866688359506,
         "actualOutperform": true,
         "coverage": 1,
         "members": [
           {
             "symbol": "2330",
-            "anchorClose": 2260,
-            "targetClose": 2395,
-            "return": 0.05973451327433632
+            "anchorClose": 2240,
+            "targetClose": 2340,
+            "return": 0.044642857142857206
           },
           {
             "symbol": "2454",
-            "anchorClose": 3715,
-            "targetClose": 3990,
-            "return": 0.07402422611036341
+            "anchorClose": 3460,
+            "targetClose": 3850,
+            "return": 0.11271676300578037
           },
           {
             "symbol": "2303",
-            "anchorClose": 105.5,
-            "targetClose": 104,
-            "return": -0.014218009478673022
+            "anchorClose": 98.4,
+            "targetClose": 101,
+            "return": 0.026422764227642226
           }
         ],
-        "actualRank": 2,
+        "actualRank": 3,
         "hit": false
       },
       {
         "sector": "PCB",
         "predictedRank": 5,
-        "predictedScore": 30.6,
+        "predictedScore": 27,
         "predictedOutperform": false,
-        "sectorReturn": 0.04552158550649684,
-        "benchmarkReturn": 0.030460377224940105,
-        "relativeReturn": 0.015061208281556736,
+        "sectorReturn": 0.11035326758061892,
+        "benchmarkReturn": 0.036492127908498206,
+        "relativeReturn": 0.07386113967212071,
         "actualOutperform": true,
         "coverage": 1,
         "members": [
           {
             "symbol": "3037",
-            "anchorClose": 888,
-            "targetClose": 864,
-            "return": -0.027027027027026973
+            "anchorClose": 800,
+            "targetClose": 792,
+            "return": -0.010000000000000009
           },
           {
             "symbol": "2368",
-            "anchorClose": 964,
-            "targetClose": 1050,
-            "return": 0.08921161825726132
+            "anchorClose": 868,
+            "targetClose": 975,
+            "return": 0.12327188940092171
           },
           {
             "symbol": "3044",
-            "anchorClose": 484,
-            "targetClose": 520,
-            "return": 0.07438016528925617
+            "anchorClose": 438.5,
+            "targetClose": 534,
+            "return": 0.21778791334093506
           }
         ],
         "actualRank": 1,
@@ -349,42 +349,42 @@
       {
         "sector": "電子零組件",
         "predictedRank": 6,
-        "predictedScore": 23.1,
+        "predictedScore": 23.3,
         "predictedOutperform": false,
-        "sectorReturn": 0.023261319924683794,
-        "benchmarkReturn": 0.030460377224940105,
-        "relativeReturn": -0.007199057300256311,
-        "actualOutperform": false,
+        "sectorReturn": 0.07355089142742188,
+        "benchmarkReturn": 0.036492127908498206,
+        "relativeReturn": 0.037058763518923676,
+        "actualOutperform": true,
         "coverage": 1,
         "members": [
           {
             "symbol": "2308",
-            "anchorClose": 1220,
-            "targetClose": 1295,
-            "return": 0.061475409836065475
+            "anchorClose": 1130,
+            "targetClose": 1240,
+            "return": 0.09734513274336276
           },
           {
             "symbol": "2327",
-            "anchorClose": 449,
-            "targetClose": 424.5,
-            "return": -0.054565701559020074
+            "anchorClose": 404.5,
+            "targetClose": 407,
+            "return": 0.006180469715698411
           },
           {
             "symbol": "3008",
-            "anchorClose": 5010,
-            "targetClose": 5325,
-            "return": 0.06287425149700598
+            "anchorClose": 4525,
+            "targetClose": 5055,
+            "return": 0.11712707182320448
           }
         ],
-        "actualRank": 4,
-        "hit": true
+        "actualRank": 2,
+        "hit": false
       }
     ]
   },
   "performance": {
-    "scoredSnapshots": 57,
-    "meanDirectionAccuracy": 0.5263157894736842,
-    "meanTop3HitRate": 0.5555555555555555,
-    "latestAsOf": "2026-11-04"
+    "scoredSnapshots": 58,
+    "meanDirectionAccuracy": 0.5172413793103449,
+    "meanTop3HitRate": 0.5459770114942528,
+    "latestAsOf": "2026-11-05"
   }
 }
