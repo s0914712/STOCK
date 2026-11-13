@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-12T18:29:40.376Z",
-  "asOf": "2026-11-11",
+  "generatedAt": "2026-11-13T17:57:02.801Z",
+  "asOf": "2026-11-12",
   "source": "TWSE OpenAPI v1 STOCK_DAY_ALL",
   "method": "highest same-day trade value among curated sector anchors; ties resolved by stock symbol ascending",
   "sectors": [
@@ -9,48 +9,48 @@
       "sector": "半導體",
       "symbol": "2330",
       "name": "台積電",
-      "close": 2395,
-      "tradeValue": 77900786705,
+      "close": 2340,
+      "tradeValue": 81282658016,
       "anchorCount": 3
     },
     {
       "sector": "AI伺服器",
-      "symbol": "2317",
-      "name": "鴻海",
-      "close": 242,
-      "tradeValue": 5873638161,
+      "symbol": "2382",
+      "name": "廣達",
+      "close": 278.5,
+      "tradeValue": 9383796609,
       "anchorCount": 3
     },
     {
       "sector": "PCB",
       "symbol": "3037",
       "name": "欣興",
-      "close": 864,
-      "tradeValue": 25311818545,
+      "close": 792,
+      "tradeValue": 24194327584,
       "anchorCount": 3
     },
     {
       "sector": "金融",
       "symbol": "2881",
       "name": "富邦金",
-      "close": 159.5,
-      "tradeValue": 3560428903,
+      "close": 159,
+      "tradeValue": 3210020539,
       "anchorCount": 3
     },
     {
       "sector": "航運",
       "symbol": "2603",
       "name": "長榮",
-      "close": 257.5,
-      "tradeValue": 2238289046,
+      "close": 251.5,
+      "tradeValue": 1889386733,
       "anchorCount": 3
     },
     {
       "sector": "電子零組件",
       "symbol": "2308",
       "name": "台達電",
-      "close": 1295,
-      "tradeValue": 26119682575,
+      "close": 1240,
+      "tradeValue": 20167725140,
       "anchorCount": 3
     }
   ]
